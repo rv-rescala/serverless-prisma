@@ -1,0 +1,18 @@
+overwrite: true
+schema:
+  - appsync/generated/schema.gql
+generates:
+  ./appsync/generated/generated-types.ts:
+    config:
+      scalars:
+        AWSDateTime: Date
+        AWSEmail: string
+        AWSJSON: string
+        AWSURL: string
+        AWSTimestamp: string
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-resolvers
+
+# https://github.com/dotansimha/graphql-code-generator/discussions/4311

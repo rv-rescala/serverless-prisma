@@ -1,0 +1,118 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Mutation {
+  createTransactionHistory(
+    input: CreateTransactionHistoryInput!
+  ): TransactionHistory
+  deleteTransactionHistory(
+    input: DeleteTransactionHistoryInput!
+  ): TransactionHistory
+  updateTransactionHistory(
+    input: UpdateTransactionHistoryInput!
+  ): TransactionHistory
+}
+
+type Query {
+  getTransactionHistory(id: ID!): TransactionHistory
+  listTransactionHistory(
+    filter: TableTransactionHistoryFilterInput
+    limit: Int
+    nextToken: String
+  ): TransactionHistoryConnection
+}
+
+type Subscription {
+  onCreateTransactionHistory(id: ID, comment: String): TransactionHistory
+    @aws_subscribe(mutations: ["createTransactionHistory"])
+  onDeleteTransactionHistory(id: ID, comment: String): TransactionHistory
+    @aws_subscribe(mutations: ["deleteTransactionHistory"])
+  onUpdateTransactionHistory(id: ID, comment: String): TransactionHistory
+    @aws_subscribe(mutations: ["updateTransactionHistory"])
+}
+
+type TransactionHistory {
+  id: ID!
+  comment: String
+}
+
+type TransactionHistoryConnection {
+  items: [TransactionHistory]
+  nextToken: String
+}
+
+input CreateTransactionHistoryInput {
+  comment: String
+}
+
+input DeleteTransactionHistoryInput {
+  id: ID!
+}
+
+input TableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input TableFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input TableIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input TableIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input TableStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input TableTransactionHistoryFilterInput {
+  id: TableIDFilterInput
+  comment: TableStringFilterInput
+}
+
+input UpdateTransactionHistoryInput {
+  id: ID!
+  comment: String
+}

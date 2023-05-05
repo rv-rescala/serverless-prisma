@@ -1,0 +1,18 @@
+projects:
+  serverlss-prisma-yoshi-prisma-app-sync:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/API.ts
+        docsFilePath: src/graphql
+        region: ap-northeast-1
+        apiId: 7fdsj4ahwbg7xet7cwq2bjjjkm
+        maxDepth: 4
+extensions:
+  amplify:
+    version: 3

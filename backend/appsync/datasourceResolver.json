@@ -1,0 +1,25 @@
+[
+    {
+        "name": "UserHistory",
+        "dynamodbSource": {
+            "tableName": "UserHistory",
+            "schemaName": "user-history"
+        }
+    },
+    {
+        "name": "TransactionHistory",
+        "dynamodbSource": {
+            "tableName": "TransactionHistory",
+            "schemaName": "transaction-history"
+        },
+        "lambdaSource": {
+            "functionName": "transaction-history-handler",
+            "resolvers": [
+                {
+                    "typeName": "Query",
+                    "fieldName": "listLatestTransactionHistory"
+                }
+            ]
+        }
+    }
+]

@@ -1,0 +1,32 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+generator appsync {
+    provider = "prisma-appsync"
+    defaultDirective = "@auth(model: [{ allow: apiKey }, { allow: userPools, groups: ['user', 'admin'] }])"
+}
+
+model User {
+    cognitoid        String  @id @unique
+    group           String
+    username     String   @unique
+    userInfo     UserInfo[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model UserInfo {
+    id        Int      @id @default(autoincrement())
+    cognitoid   String
+    status  String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    user    User    @relation(fields: [cognitoid], references: [cognitoid])
+}
