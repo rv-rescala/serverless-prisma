@@ -1,0 +1,12 @@
+[
+  {
+    "category": "auth",
+    "resourceName": "backend78a42004",
+    "service": "Cognito"
+  },
+  {
+    "category": "api",
+    "resourceName": "backend",
+    "service": "AppSync"
+  }
+]

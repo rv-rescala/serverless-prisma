@@ -52,11 +52,13 @@ const IndexPage = () => {
 	return (
 	  <>
 		<Authenticator
+		/*
 		  onStateChange={(authState) => {
 			if (authState === "signedIn") {
 			  fetchCognitoIdAndGroups();
 			}
 		  }}
+		  */
 		>
 		  {({ signOut, user }) => (
 			<main>

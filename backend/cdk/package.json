@@ -2,7 +2,7 @@
     "name": "prisma-appsync-cdk",
     "version": "1.0.0",
     "description": "Sample AWS CDK template for Prisma-AppSync",
-    "author": "maoosi <hello@sylvainsimao.fr>",
+    "author": "Yoshihsia Maruya",
     "private": true,
     "license": "BSD-2-Clause",
     "devDependencies": {

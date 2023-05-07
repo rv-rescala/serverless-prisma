@@ -29,32 +29,32 @@
   fieldName: deleteManyUsers
   dataSource: prisma-appsync
 - typeName: Query
-  fieldName: getUserInfo
+  fieldName: getPost
   dataSource: prisma-appsync
 - typeName: Query
-  fieldName: listUserInfos
+  fieldName: listPosts
   dataSource: prisma-appsync
 - typeName: Query
-  fieldName: countUserInfos
+  fieldName: countPosts
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: createUserInfo
+  fieldName: createPost
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: updateUserInfo
+  fieldName: updatePost
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: upsertUserInfo
+  fieldName: upsertPost
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: deleteUserInfo
+  fieldName: deletePost
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: createManyUserInfos
+  fieldName: createManyPosts
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: updateManyUserInfos
+  fieldName: updateManyPosts
   dataSource: prisma-appsync
 - typeName: Mutation
-  fieldName: deleteManyUserInfos
+  fieldName: deleteManyPosts
   dataSource: prisma-appsync

@@ -2,9 +2,17 @@
 
 Fully serverless web architecture on AWS with Prisma and GraphQL.
 
+CDK version 2 and Amplify are used for deployment and development.
+
+Please read this article for more information.
+
+1. [Prisma](https://www.prisma.io/)
+2. [Prisma with AWS AppSync](https://github.com/maoosi/prisma-appsync)
+3. [Amplifyで構築したバックエンドをCDKで出力して既存のデプロイパイプラインで使用する新機能「エクスポート」のご紹介](https://aws.amazon.com/jp/blogs/news/export-amplify-backends-to-cdk-and-use-with-existing-deployment-pipelines/)
+
 ## Features
 
-This template provides GraphQL and REST API using AWS serveless services.
+This template provides GraphQL using AWS serveless services.
 
 - AppSync and API gateway support
 
@@ -47,21 +55,9 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 
 1. Appsync -> Lambda -> RDS
 
-User and UserInfo at this demo
-
 2. Appsync -> DynamoDB
 
-User History at this demo
-
 3. Appsync -> Lambda -> RDS and DynamoDB
-
-Transction History at this demo
-
-4. API Gateway -> Lambda -> RDS or DynamoDB or (RDS and DynamoDB)
-
-TBD
-
-
 
 ## Directory Structure
 
@@ -95,6 +91,7 @@ npm install
 2. Run docker
 
 ```bash
+cd ../
 docker-compose up -d
 ```
 
@@ -132,7 +129,8 @@ npm install
 
 ```bash
 # edit cdk.json, change app "name" and "schema" to your name
-yarn cdk deploy --all env=[your name]
+amplify export --out ./cdk/lib/
+npx cdk deploy --all env=[your name]
 ```
 
 3. Create schema
@@ -285,4 +283,4 @@ amplify codegen
 # Reference
 1. [Prisma](https://www.prisma.io/)
 2. [Prisma with AWS AppSync](https://github.com/maoosi/prisma-appsync)
-3. [AWS CDK Pipeline × Prisma でRDSに接続するLambdaを実装する](https://zenn.dev/taroman_zenn/articles/da11f27537c37d)
+3. [Amplifyで構築したバックエンドをCDKで出力して既存のデプロイパイプラインで使用する新機能「エクスポート」のご紹介]https://aws.amazon.com/jp/blogs/news/export-amplify-backends-to-cdk-and-use-with-existing-deployment-pipelines/
