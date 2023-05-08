@@ -26,16 +26,19 @@ mergeSchema();
 
 const amplifyStack = new AmplifyExportedBackend(app, `${fullEnvName}AmplifyExportedBackend`, {
     path: path.resolve(__dirname, '..', './lib/amplify-export-backend'),
-    amplifyEnvironment: `${fullEnvName}-amplify`.toLowerCase()
+    amplifyEnvironment: (`${fullEnvName}-amplify`).toLowerCase()
 });
+
 const graphqlApi = amplifyStack.graphqlNestedStacks().graphQLAPI();
 //const graphQLSchema = amplifyStack.graphqlNestedStacks().graphQLSchema();
+
 
 const rdsStack = new RDSStack(app, `${fullEnvName}RDSStack`, { 
     envName: `${fullEnvName}RDSStack`, 
     schemaName: appVals['schema'],
     cidrRange: "10.100.0.0/16"
 });
+
 
 const prismaStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStack`, {
     resourcesPrefix: `${fullEnvName}PrismaAppSync`,
@@ -86,6 +89,7 @@ const prismaStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStac
     graphqlApi: graphqlApi,
     vpcRds: rdsStack.vpcRds
 });
+
 
 new ResolverStack(app, `${fullEnvName}ResolverStrack`, {
     envName: `${fullEnvName}ResolverStrack`,

@@ -2,7 +2,6 @@ type User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"]
   id: Int!
   email: AWSEmail!
   fullname: String
-  age: Int
   posts: [Post]
   createdAt: AWSDateTime!
 }
@@ -44,7 +43,6 @@ input UserWhereInputWithoutNullables {
   id: IntFilter
   email: AWSEmailFilter
   fullname: StringNullableFilter
-  age: IntNullableFilter
   posts: PostFilter
   createdAt: AWSDateTimeFilter
 }
@@ -58,7 +56,6 @@ input UserWhereInput {
   id: IntFilter
   email: AWSEmailFilter
   fullname: StringNullableFilter
-  age: IntNullableFilter
   posts: PostFilter
   createdAt: AWSDateTimeFilter
 }
@@ -70,7 +67,6 @@ input UserScalarWhereInput {
   id: IntFilter
   email: AWSEmailFilter
   fullname: StringNullableFilter
-  age: IntNullableFilter
   createdAt: AWSDateTimeFilter
 }
 
@@ -86,7 +82,6 @@ input UserExtendedWhereUniqueInput {
   id: Int
   email: AWSEmail
   fullname: StringNullableFilter
-  age: IntNullableFilter
   posts: PostFilter
   createdAt: AWSDateTimeFilter
 }
@@ -95,7 +90,6 @@ input UserOrderByInput {
   id: OrderByArg
   email: OrderByArg
   fullname: OrderByArg
-  age: OrderByArg
   posts: PostOrderByInput
   createdAt: OrderByArg
 }
@@ -104,7 +98,6 @@ input UserCreateInput {
   id: Int
   email: AWSEmail!
   fullname: String
-  age: Int
   posts: UserPostsCreateNestedInput
   createdAt: AWSDateTime
 }
@@ -113,7 +106,6 @@ input UserCreateManyInput {
   id: Int
   email: AWSEmail!
   fullname: String
-  age: Int
   createdAt: AWSDateTime
 }
 
@@ -121,14 +113,12 @@ input UserUpdateInput {
   id: Int
   email: AWSEmail
   fullname: String
-  age: Int
   posts: UserPostsUpdateNestedInput
   createdAt: AWSDateTime
 }
 
 input UserOperationInput {
   id: IntOperation
-  age: IntOperation
 }
 
 input UserUpdateUniqueInput {

@@ -30,7 +30,7 @@ export class ResolverStack extends cdk.Stack {
 
     fourceUpdate() {
         const id = Math.random().toString();
-        new cdk.CfnParameter(this, id, {
+        new cdk.CfnParameter(this, `$force${id}`, {
             type: "String",
             description: "Force Update Param",
             default: "HogeDefaultValue"
