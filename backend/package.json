@@ -8,7 +8,11 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "generate": "npx prisma generate",
+    "dev": "npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx vite-node ./graphqlserver/server.ts --watch -- --schema prisma/generated/prisma-appsync/schema.gql --watchers '[{\"watch\":[\"**/*.prisma\",\"*.prisma\"],\"exec\":\"npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && touch ./graphsqlserver/server.ts\"}]'",
+    "deploy": "cdk synth && cdk bootstrap && cdk deploy",
+    "codegen": "npx graphql-codegen"
   },
   "devDependencies": {
     "@aws-cdk/aws-appsync-alpha": "^2.47.0-alpha.0",
@@ -24,13 +28,15 @@
     "scule": "^0.2.1",
     "ts-jest": "^26.2.0",
     "ts-node": "^9.0.0",
-    "typescript": "~3.9.7"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@aws-amplify/cdk-exported-backend": "^0.0.6",
     "@aws-sdk/client-secrets-manager": "^3.328.0",
+    "@graphql-tools/merge": "^8.4.1",
     "@types/aws-lambda": "^8.10.85",
     "aws-sdk": "^2.1373.0",
+    "graphql": "^16.6.0",
     "source-map-support": "^0.5.16"
   }
 }

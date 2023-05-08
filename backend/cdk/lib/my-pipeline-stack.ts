@@ -40,7 +40,8 @@ export class MyPipelineStack extends Stack {
     // This is where we add the application stages
     //pipeline.addStage(new AmplifyStage(this, "amplifyStage"))
     //pipeline.addStage(new OtherApiStage(this, "otherApiStage"))
-    new PrismaAppsyncStage(this, 'prismaAppsyncStage', {});
     new AmplifyStage(this, "amplifyStage");
+    new PrismaAppsyncStage(this, 'prismaAppsyncStage', {});
+
   }
 }

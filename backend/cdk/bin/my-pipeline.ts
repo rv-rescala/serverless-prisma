@@ -5,6 +5,8 @@ import { PrismaAppSyncStack } from '../lib/stacks/prisma-appsync-stack';
 import { join } from 'path'
 import { AmplifyExportedBackend } from '@aws-amplify/cdk-exported-backend';
 import * as path from 'path'
+import { mergeSchema } from '../lib/module/mergeGraphqlSchema';
+import { ResolverStack } from '../lib/stacks/resolver-stack';
 
 
 const app = new App();
@@ -19,16 +21,19 @@ const appVals = app.node.tryGetContext("app");
 if (appVals == undefined) throw new Error('Invalid environment.');
 const fullEnvName = `${appVals['name']}${envName}`;
 
+// merge schema
+mergeSchema();
+
 const amplifyStack = new AmplifyExportedBackend(app, `${fullEnvName}AmplifyExportedBackend`, {
     path: path.resolve(__dirname, '..', './lib/amplify-export-backend'),
     amplifyEnvironment: "dev"
 });
 const graphqlApi = amplifyStack.graphqlNestedStacks().graphQLAPI();
+//const graphQLSchema = amplifyStack.graphqlNestedStacks().graphQLSchema();
 
-new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStack`, {
+
+const prismaAppSyncStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStack`, {
     resourcesPrefix: `${fullEnvName}PrismaAppSync`,
-    schema: join(process.cwd(), 'prisma/generated/prisma-appsync/schema.gql'),
-    resolvers: join(process.cwd(), 'prisma/generated/prisma-appsync/resolvers.yaml'),
     function: {
         code: join(process.cwd(), 'cdk/lambda/prisma-appsync-handler.ts'),
         memorySize: 512,
@@ -71,5 +76,13 @@ new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStack`, {
     },
     graphqlApi: graphqlApi
 })
+
+new ResolverStack(app, `${fullEnvName}ResolverStack`, {
+    resourcesPrefix: `${fullEnvName}PrismaAppSync`,
+    schema: join(process.cwd(), 'prisma/generated/merged-schema.graphql'),
+    resolvers: join(process.cwd(), 'prisma/generated/prisma-appsync/resolvers.yaml'),
+    graphqlApi: graphqlApi,
+    dataSources: prismaAppSyncStack.dataSources
+});
 
 app.synth()

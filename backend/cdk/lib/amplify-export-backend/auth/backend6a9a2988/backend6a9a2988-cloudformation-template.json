@@ -204,7 +204,7 @@
         "UserPoolId": {
           "Ref": "UserPool"
         },
-        "ClientName": "backen78a42004_app_clientWeb",
+        "ClientName": "backen6a9a2988_app_clientWeb",
         "RefreshTokenValidity": {
           "Ref": "userpoolClientRefreshTokenValidity"
         },
@@ -222,7 +222,7 @@
         "UserPoolId": {
           "Ref": "UserPool"
         },
-        "ClientName": "backen78a42004_app_client",
+        "ClientName": "backen6a9a2988_app_client",
         "GenerateSecret": {
           "Ref": "userpoolClientGenerateSecret"
         },
@@ -262,7 +262,7 @@
               "Fn::Join": [
                 "",
                 [
-                  "upClientLambdaRole78a42004",
+                  "upClientLambdaRole6a9a2988",
                   {
                     "Fn::Select": [
                       3,
@@ -330,7 +330,7 @@
             }
           ]
         },
-        "PolicyName": "backen78a42004_userpoolclient_lambda_iam_policy",
+        "PolicyName": "backen6a9a2988_userpoolclient_lambda_iam_policy",
         "Roles": [
           {
             "Ref": "UserPoolClientRole"
@@ -373,7 +373,7 @@
             }
           ]
         },
-        "PolicyName": "backen78a42004_userpoolclient_lambda_log_policy",
+        "PolicyName": "backen6a9a2988_userpoolclient_lambda_log_policy",
         "Roles": [
           {
             "Ref": "UserPoolClientRole"
@@ -453,12 +453,12 @@
         "IdentityPoolName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "backend78a42004_identitypool_78a42004",
+            "backend6a9a2988_identitypool_6a9a2988",
             {
               "Fn::Join": [
                 "",
                 [
-                  "backend78a42004_identitypool_78a42004__",
+                  "backend6a9a2988_identitypool_6a9a2988__",
                   {
                     "Ref": "env"
                   }

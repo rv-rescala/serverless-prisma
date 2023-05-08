@@ -17,9 +17,6 @@ import * as appsync_alpha from '@aws-cdk/aws-appsync-alpha'
 
 export interface PrismaAppSyncStackProps {
     resourcesPrefix: string
-    cognitoUserPoolId?: string
-    schema: string
-    resolvers: string
     function: {
         code: string
         memorySize: number
@@ -28,7 +25,6 @@ export interface PrismaAppSyncStackProps {
         bundling?: lambdaNodejs.BundlingOptions
         environment?: {}
     }
-    additionalApiKeys?: string[]
     graphqlApi: appsync.CfnGraphQLApi
 }
 
@@ -38,7 +34,7 @@ export class PrismaAppSyncStack extends Stack {
     private resourcesPrefixCamel: string
     private directResolverFn: lambda.Alias
     private apiRole: iam.Role
-    private dataSources: {
+    public dataSources: {
         lambda?: appsync.CfnDataSource
         none?: appsync.CfnDataSource
     }
@@ -53,7 +49,6 @@ export class PrismaAppSyncStack extends Stack {
 
         this.createLambdaResolver()
         this.createDataSources()
-        this.createPrismaAppSyncResolvers()
     }
 
   
@@ -139,43 +134,5 @@ export class PrismaAppSyncStack extends Stack {
             name: `${this.resourcesPrefixCamel}NoneDatasource`,
             type: 'NONE'
         });
-    }
-
-    createPrismaAppSyncResolvers() {
-        const schema = new appsync.CfnGraphQLSchema(this,  `${this.resourcesPrefixCamel}Schema`, {
-            apiId: this.props.graphqlApi.attrApiId,
-            definition: readFileSync(this.props.schema).toString()
-        });
-
-        // read resolvers from yaml
-        const resolvers = load(readFileSync(this.props.resolvers, 'utf8'))
-
-        // create resolvers
-        if (Array.isArray(resolvers)) {
-            resolvers.forEach((resolver: any) => {
-                const resolvername = `${resolver.fieldName}${resolver.typeName}_resolver`
-
-                if (['lambda', 'prisma-appsync'].includes(resolver.dataSource) && this.dataSources.lambda) {
-                    const cfnResolver = new appsync.CfnResolver(this, resolvername, {
-                        apiId: this.props.graphqlApi.attrApiId,
-                        typeName: resolver.typeName,
-                        fieldName: resolver.fieldName,
-                        dataSourceName: this.dataSources.lambda.name
-                    });
-                    cfnResolver.addDependsOn(schema);
-                }
-                else if (resolver.dataSource === 'none' && this.dataSources.none) {
-                    const cfnResolver = new appsync.CfnResolver(this, resolvername, {
-                        apiId: this.props.graphqlApi.attrApiId,
-                        typeName: resolver.typeName,
-                        fieldName: resolver.fieldName,
-                        dataSourceName: this.dataSources.none.name,
-                        requestMappingTemplate: resolver.requestMappingTemplate,
-                        responseMappingTemplate: resolver.responseMappingTemplate
-                    });
-                    cfnResolver.addDependsOn(schema);
-                }
-            })
-        }
     }
 }

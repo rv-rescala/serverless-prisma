@@ -7,7 +7,7 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "backend78a42004"
+          "resourceName": "backend6a9a2988"
         }
       ],
       "output": {
@@ -15,7 +15,7 @@
           "additionalAuthenticationProviders": [
             {
               "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-05-06T10:58:10.683Z",
+                "apiKeyExpirationDate": "2024-05-07T02:16:04.004Z",
                 "apiKeyExpirationDays": 365,
                 "description": ""
               },
@@ -25,7 +25,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authbackend78a42004"
+              "userPoolId": "authbackend6a9a2988"
             }
           }
         }
@@ -35,7 +35,7 @@
     }
   },
   "auth": {
-    "backend78a42004": {
+    "backend6a9a2988": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
