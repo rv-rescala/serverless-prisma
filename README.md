@@ -125,42 +125,9 @@ aws lambda list-functions | grep "migration" # Please check function-name you de
 aws lambda invoke --function-name <function-name> output.json 
 ```
 
-4. Insert data to RDS via Lambda
-
-```bash
-aws lambda list-functions | grep "insertuser" # Please check function-name you deployed to AWS which include "insert-user"
-aws lambda invoke --function-name <function-name>  output.json
-```
-
-5. Insert data to RDS via GraphQL API
+4. Insert data to DynamoDB/RDS via GraphQL API
 
 Please open Appsync and run GraphQL on the editor.
-
-
-6. Insert data to Dynamo
-
-```bash
-aws dynamodb list-tables | grep "TransactionHistory" # Please check table-name you deployed to AWS which include "transaction"
-aws dynamodb put-item \
-    --table-name {table-name} \
-    --item '{
-        "id": {
-            "S": "1"
-        },
-        "completed": {
-            "BOOL": false
-        },
-        "createdAt": {
-            "N": "1682484212"
-        },
-        "title": {
-            "S": "aaaa"
-        }
-    }'
-```
-
-
-7. Check the data via Appsync and run GraphQL on the editor.
 
 
 x. Delete all resources
@@ -188,38 +155,14 @@ npx prisma migrate dev --name init
 
 4. Test and Deploy to AWS
 
-## Appsync -> Lambda -> DynamoDB
+## Appsync -> DynamoDB
 
-1. Create new GraphQL definetion under appsync/
+1. Edit amplify/api/backend/schema.graphql
 
 2. Generate typescript 
 
-```bash
-yarn generate # for generate prisma client, create GraphQL client to prisma/generate
-yarn codegen # for generate typescript from GraphQL schema
 ```
-
-3. Create new lambda handler
-
-Please refer to lambda/hander/get-transactionhistory-hander.ts
-
-4. Create DynamoDB table and Lambda function
-
-Please refer to
-
-- cdk/lib/dynamodb-stack
-- cdk/lib/lambda-stack
-- bin/app.ts
-
-## Appsync -> Dynamo
-
-1. Download schema and resolver from Appsync
-
-Define Appsync schema and resolver is troblesome,
-So I recommend to use Appsync to create schema and resolver and download it.
-
-```bash
-yarn donwnloadSchema {appId} {schemaName} # appId is Appsync id, schemaName is schema name
+amplify export --out ./cdk/lib/
 ```
 
 # Frontend

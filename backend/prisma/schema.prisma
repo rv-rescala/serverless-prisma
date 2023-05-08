@@ -10,6 +10,7 @@ generator client {
 
 generator appsync {
     provider = "prisma-appsync"
+    defaultDirective = "@auth(model: [{ allow: apiKey }, { allow: userPools, groups: ['user', 'admin'] }])"
 }
 
 model User {
