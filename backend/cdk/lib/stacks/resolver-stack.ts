@@ -23,8 +23,7 @@ export class ResolverStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: ResolverStackProps) {
         super(scope, id, props);
         this.props = props;
-        // force update for shema and resolver
-        this.fourceUpdate();
+       
         this.createResolvers();
     }
 
@@ -38,7 +37,9 @@ export class ResolverStack extends cdk.Stack {
     }
 
     createResolvers() {
-        const schema = new appsync.CfnGraphQLSchema(this, `${this.props.envName}CfnSchema`, {
+        // force update for shema and resolver
+        const id = Math.random().toString();
+        const schema = new appsync.CfnGraphQLSchema(this, `${this.props.envName}${id}CfnSchema`, {
             apiId: this.props.graphqlApi.attrApiId,
             definition: readFileSync(this.props.schema).toString()
         });
@@ -49,7 +50,7 @@ export class ResolverStack extends cdk.Stack {
         // create resolvers
         if (Array.isArray(resolvers)) {
             resolvers.forEach((resolver: any) => {
-                const resolvername = `${resolver.fieldName}${resolver.typeName}-resolver`
+                const resolvername = `${resolver.fieldName}${resolver.typeName}${id}-resolver`
 
                 if (['lambda', 'prisma-appsync'].includes(resolver.dataSource) && this.props.dataSources.lambda) {
                     const cfnResolver = new appsync.CfnResolver(this, resolvername, {

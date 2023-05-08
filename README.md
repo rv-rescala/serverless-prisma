@@ -115,6 +115,7 @@ npm install
 
 ```bash
 # edit cdk.json, change app "name" and "schema" to your name
+# please update amplify/api/backend/cli-inputs.json and paramers.json of api name
 amplify export --out ./cdk/lib/
 cdk deploy --all -c env=[Name]
 ```

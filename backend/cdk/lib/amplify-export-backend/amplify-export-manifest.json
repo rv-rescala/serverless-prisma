@@ -12,11 +12,11 @@
       "apibackend": {
         "templateFile": "api/backend/cloudformation-template.json",
         "parameters": {
-          "AppSyncApiName": "backend",
+          "AppSyncApiName": "serverlessprisma",
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
           "DynamoDBEnableServerSideEncryption": false,
           "S3DeploymentBucket": "amplify-backend-dev-230022-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/59de4b4c236755a5a8ef88b4b85571d867c6acd5",
+          "S3DeploymentRootKey": "amplify-appsync-files/0e8183c89b86307f53f6818ddfe699ce5db3743d",
           "env": "dev"
         },
         "preserveLogicalIds": true,
