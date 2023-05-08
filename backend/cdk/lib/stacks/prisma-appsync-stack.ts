@@ -1,7 +1,6 @@
 /* eslint-disable no-new */
 import { readFileSync } from 'fs'
 import type { Construct } from 'constructs'
-import { camelCase, kebabCase, pascalCase } from 'scule'
 import { load } from 'js-yaml'
 import type { StackProps } from 'aws-cdk-lib'
 import {
@@ -13,14 +12,15 @@ import {
     aws_lambda as lambda,
     aws_lambda_nodejs as lambdaNodejs,
 } from 'aws-cdk-lib'
-import * as appsync_alpha from '@aws-cdk/aws-appsync-alpha'
 import { VpcRds } from '../modules/vpc-rds'
-import { aws_ec2 } from "aws-cdk-lib";
+import { aws_ec2 } from "aws-cdk-lib"
+import { kebabCase, camelCase } from 'scule'
+import { join } from 'path'
 
 export interface PrismaAppSyncStackProps {
     resourcesPrefix: string
     function: {
-        code: string
+        handlerPath: string
         memorySize: number
         useWarmUp: number
         policies?: iam.PolicyStatementProps[]
@@ -29,6 +29,8 @@ export interface PrismaAppSyncStackProps {
     }
     graphqlApi: appsync.CfnGraphQLApi
     vpcRds: VpcRds
+    schema: string
+    resolvers: string
 }
 
 export class PrismaAppSyncStack extends Stack {
@@ -52,6 +54,7 @@ export class PrismaAppSyncStack extends Stack {
 
         this.createLambdaResolver()
         this.createDataSources()
+        this.createResolvers()
     }
 
 
@@ -84,13 +87,12 @@ export class PrismaAppSyncStack extends Stack {
             role: lambdaExecutionRole,
             environment: {
                 ...this.props.function.environment,
-                PG_HOST: this.props.vpcRds.dbHostName,
                 SECRET_ID: this.props.vpcRds.rdsSecretArn
             },
             runtime: lambda.Runtime.NODEJS_16_X,
             timeout: Duration.seconds(30),
             handler: 'main',
-            entry: this.props.function.code,
+            entry: join(this.props.function.handlerPath, 'prisma-appsync-handler.ts'),
             memorySize: this.props.function.memorySize,
             tracing: lambda.Tracing.ACTIVE,
             currentVersionOptions: {
@@ -106,6 +108,34 @@ export class PrismaAppSyncStack extends Stack {
                 subnetType: aws_ec2.SubnetType.PRIVATE_WITH_EGRESS,
             }),
         });
+
+        new lambdaNodejs.NodejsFunction(this, `${this.resourcesPrefixCamel}MigrationFn`, {
+            functionName: `${this.resourcesPrefix}_migration_fn`,
+            role: lambdaExecutionRole,
+            environment: {
+                ...this.props.function.environment,
+                SECRET_ID: this.props.vpcRds.rdsSecretArn
+            },
+            runtime: lambda.Runtime.NODEJS_16_X,
+            timeout: Duration.seconds(180),
+            handler: 'main',
+            entry: join(this.props.function.handlerPath, 'migration-handler.ts'),
+            memorySize: this.props.function.memorySize,
+            tracing: lambda.Tracing.ACTIVE,
+            currentVersionOptions: {
+                removalPolicy: RemovalPolicy.RETAIN,
+                retryAttempts: 2,
+            },
+            ...(this.props.function.bundling && {
+                bundling: this.props.function.bundling,
+            }),
+            securityGroups: [this.props.vpcRds.dbClientSg],
+            vpc: this.props.vpcRds.vpc,
+            vpcSubnets: this.props.vpcRds.vpc.selectSubnets({
+                subnetType: aws_ec2.SubnetType.PRIVATE_WITH_EGRESS,
+            }),
+        });
+
 
         // create alias (from latest version)
         this.directResolverFn = new lambda.Alias(this, `${this.resourcesPrefixCamel}_FnAliasLive`, {
@@ -136,9 +166,9 @@ export class PrismaAppSyncStack extends Stack {
     createDataSources() {
         this.dataSources = {}
 
-        this.dataSources.lambda = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}LambdaDatasource`, {
+        this.dataSources.lambda = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}CfnLambdaDatasource`, {
             apiId: this.props.graphqlApi.attrApiId,
-            name: `${this.resourcesPrefixCamel}LambdaDatasource`,
+            name: `${this.resourcesPrefixCamel}CfnLambdaDatasource`,
             serviceRoleArn: this.apiRole.roleArn,
             type: 'AWS_LAMBDA',
             lambdaConfig: {
@@ -146,10 +176,48 @@ export class PrismaAppSyncStack extends Stack {
             }
         });
 
-        this.dataSources.none = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}NoneDatasource`, {
+        this.dataSources.none = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}CfnNoneDatasource`, {
             apiId: this.props.graphqlApi.attrApiId,
-            name: `${this.resourcesPrefixCamel}NoneDatasource`,
+            name: `${this.resourcesPrefixCamel}CfnNoneDatasource`,
             type: 'NONE'
         });
+    }
+
+    createResolvers() {
+        const schema = new appsync.CfnGraphQLSchema(this, `${this.props}CfnSchema`, {
+            apiId: this.props.graphqlApi.attrApiId,
+            definition: readFileSync(this.props.schema).toString()
+        });
+
+        // read resolvers from yaml
+        const resolvers = load(readFileSync(this.props.resolvers, 'utf8'));
+
+        // create resolvers
+        if (Array.isArray(resolvers)) {
+            resolvers.forEach((resolver: any) => {
+                const resolvername = `${resolver.fieldName}${resolver.typeName}-resolver`
+
+                if (['lambda', 'prisma-appsync'].includes(resolver.dataSource) && this.dataSources.lambda) {
+                    const cfnResolver = new appsync.CfnResolver(this, resolvername, {
+                        apiId: this.props.graphqlApi.attrApiId,
+                        typeName: resolver.typeName,
+                        fieldName: resolver.fieldName,
+                        dataSourceName: this.dataSources.lambda.attrName
+                    });
+                    cfnResolver.addDependsOn(schema);
+                }
+                else if (resolver.dataSource === 'none' && this.dataSources.none) {
+                    const cfnResolver = new appsync.CfnResolver(this, resolvername, {
+                        apiId: this.props.graphqlApi.attrApiId,
+                        typeName: resolver.typeName,
+                        fieldName: resolver.fieldName,
+                        dataSourceName: this.dataSources.none.attrName,
+                        requestMappingTemplate: resolver.requestMappingTemplate,
+                        responseMappingTemplate: resolver.responseMappingTemplate
+                    });
+                    cfnResolver.addDependsOn(schema);
+                }
+            });
+        }
     }
 }

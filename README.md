@@ -115,13 +115,13 @@ npm install
 ```bash
 # edit cdk.json, change app "name" and "schema" to your name
 amplify export --out ./cdk/lib/
-npx cdk deploy --all env=[your name]
+cdk deploy --all -c env=[Name]
 ```
 
 3. Create schema
 
 ```bash
-aws lambda list-functions | grep "createschema" # Please check function-name you deployed to AWS which include "createschema"
+aws lambda list-functions | grep "migration" # Please check function-name you deployed to AWS which include "migration"
 aws lambda invoke --function-name <function-name> output.json 
 ```
 

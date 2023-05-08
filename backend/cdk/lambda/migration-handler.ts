@@ -1,25 +1,12 @@
-import { RootController } from "../controller/root-controller";
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-  GetSecretValueCommandOutput,
-} from "@aws-sdk/client-secrets-manager";
+import { RootController } from "./controller/root-controller";
+import { getPrismaClient } from "./repository/prisma/client";
 import * as fs from 'fs';
 import * as path from 'path';
 
-export async function handler() {
+export async function main() {
 
   console.log("event: ", JSON.stringify(process.env));
-  const secretsManagerClient = new SecretsManagerClient({
-    region: process.env.AWS_REGION,
-  });
-  const getSecretValueCommand = new GetSecretValueCommand({
-    SecretId: process.env.SECRET_ID,
-  });
-  const getSecretValueCommandResponse = await secretsManagerClient.send(
-    getSecretValueCommand
-  );
-
+  const prismaClient = await getPrismaClient(true);
   let fileContent = '';
   try {
     const filePath = path.join(__dirname, 'migration.sql');
@@ -31,5 +18,5 @@ export async function handler() {
   }
 
   const controller = new RootController();
-  await controller.execute(fileContent);
+  await controller.execute_sql(prismaClient, fileContent);
 }

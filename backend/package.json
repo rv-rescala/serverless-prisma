@@ -10,7 +10,7 @@
     "test": "jest",
     "cdk": "cdk",
     "generate": "npx prisma generate",
-    "dev": "npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx vite-node ./server.ts --watch -- --schema prisma/generated/prisma-appsync/schema.gql --handler cdk/lambda/prisma-appsync-handler.ts --watchers '[{\"watch\":[\"**/*.prisma\",\"*.prisma\"],\"exec\":\"npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && touch ./server.ts\"}]'",
+    "dev": "npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx vite-node ./gqlserver/server.ts --watch -- --schema prisma/generated/prisma-appsync/schema.gql --handler gqlserver/handler.ts --watchers '[{\"watch\":[\"**/*.prisma\",\"*.prisma\"],\"exec\":\"npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && touch ./gqlserver/server.ts\"}]'",
     "deploy": "cdk synth && cdk bootstrap && cdk deploy",
     "codegen": "npx graphql-codegen"
   },
@@ -25,8 +25,6 @@
   },
   "dependencies": {
     "@aws-amplify/cdk-exported-backend": "^0.0.6",
-    "@types/aws-lambda": "^8.10.85",
-    "source-map-support": "^0.5.16",
     "@aws-cdk/aws-cognito": "^1.200.0",
     "@aws-sdk/client-appsync": "^3.321.1",
     "@aws-sdk/client-secrets-manager": "^3.319.0",
@@ -36,6 +34,7 @@
     "@graphql-codegen/typescript-resolvers": "^3.2.1",
     "@graphql-tools/merge": "^8.4.1",
     "@graphql-tools/schema": "^9.0.19",
+    "@types/aws-lambda": "^8.10.85",
     "aws-cdk-lib": "^2.76.0",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1365.0",
@@ -45,6 +44,8 @@
     "graphql-tools": "^8.3.20",
     "node-fetch": "^2.6.9",
     "prettier": "^2.8.8",
+    "scule": "^1.0.0",
+    "source-map-support": "^0.5.16",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }

@@ -3,6 +3,7 @@ type Todo @aws_api_key {
   id: ID!
   name: String!
   description: String
+  status: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -166,6 +167,7 @@ input ModelTodoFilterInput {
   id: ModelIDInput
   name: ModelStringInput
   description: ModelStringInput
+  status: ModelStringInput
   and: [ModelTodoFilterInput]
   or: [ModelTodoFilterInput]
   not: ModelTodoFilterInput
@@ -179,6 +181,7 @@ type Query {
 input ModelTodoConditionInput {
   name: ModelStringInput
   description: ModelStringInput
+  status: ModelStringInput
   and: [ModelTodoConditionInput]
   or: [ModelTodoConditionInput]
   not: ModelTodoConditionInput
@@ -188,12 +191,14 @@ input CreateTodoInput {
   id: ID
   name: String!
   description: String
+  status: String
 }
 
 input UpdateTodoInput {
   id: ID!
   name: String
   description: String
+  status: String
 }
 
 input DeleteTodoInput {
@@ -210,6 +215,7 @@ input ModelSubscriptionTodoFilterInput {
   id: ModelSubscriptionIDInput
   name: ModelSubscriptionStringInput
   description: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
   and: [ModelSubscriptionTodoFilterInput]
   or: [ModelSubscriptionTodoFilterInput]
 }
