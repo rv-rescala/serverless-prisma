@@ -17,11 +17,11 @@ model User {
     id        Int      @id @default(autoincrement())
     email     String   @unique
     fullname  String?
-    posts     Post[]
+    oders     Order[]
     createdAt DateTime @default(now())
 }
 
-model Post {
+model Order {
     id        Int      @id @default(autoincrement())
     author    User?    @relation(fields: [authorId], references: [id])
     authorId  Int?

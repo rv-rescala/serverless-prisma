@@ -6,11 +6,11 @@ type User
     id: Int!
     email: AWSEmail!
     fullname: String
-    posts: [Post]
+    oders: [Order]
     createdAt: AWSDateTime!
 }
 
-type Post
+type Order
     @aws_api_key
     @aws_cognito_user_pools(
         cognito_groups: ["user", "admin"]
@@ -55,7 +55,7 @@ input UserWhereInputWithoutNullables {
     id: IntFilter
     email: AWSEmailFilter
     fullname: StringNullableFilter
-    posts: PostFilter
+    oders: OrderFilter
     createdAt: AWSDateTimeFilter
 }
 
@@ -68,7 +68,7 @@ input UserWhereInput {
     id: IntFilter
     email: AWSEmailFilter
     fullname: StringNullableFilter
-    posts: PostFilter
+    oders: OrderFilter
     createdAt: AWSDateTimeFilter
 }
 
@@ -94,7 +94,7 @@ input UserExtendedWhereUniqueInput {
     id: Int
     email: AWSEmail
     fullname: StringNullableFilter
-    posts: PostFilter
+    oders: OrderFilter
     createdAt: AWSDateTimeFilter
 }
 
@@ -102,7 +102,7 @@ input UserOrderByInput {
     id: OrderByArg
     email: OrderByArg
     fullname: OrderByArg
-    posts: PostOrderByInput
+    oders: OrderOrderByInput
     createdAt: OrderByArg
 }
 
@@ -110,7 +110,7 @@ input UserCreateInput {
     id: Int
     email: AWSEmail!
     fullname: String
-    posts: UserPostsCreateNestedInput
+    oders: UserOdersCreateNestedInput
     createdAt: AWSDateTime
 }
 
@@ -125,7 +125,7 @@ input UserUpdateInput {
     id: Int
     email: AWSEmail
     fullname: String
-    posts: UserPostsUpdateNestedInput
+    oders: UserOdersUpdateNestedInput
     createdAt: AWSDateTime
 }
 
@@ -159,35 +159,35 @@ input UserConnectOrCreateInput {
     create: UserCreateInput!
 }
 
-input UserPostsCreateNestedInput {
-    create: [PostCreateInput]
-    connect: [PostWhereUniqueInput]
-    connectOrCreate: [PostConnectOrCreateInput]
+input UserOdersCreateNestedInput {
+    create: [OrderCreateInput]
+    connect: [OrderWhereUniqueInput]
+    connectOrCreate: [OrderConnectOrCreateInput]
 }
 
-input UserPostsUpdateNestedInput {
-    connect: [PostWhereUniqueInput]
-    create: [PostCreateInput]
-    connectOrCreate: [PostConnectOrCreateInput]
-    update: [PostUpdateUniqueInput]
-    upsert: [PostUpsertUniqueInput]
-    delete: [PostWhereUniqueInput]
-    disconnect: [PostWhereUniqueInput]
-    deleteMany: [PostScalarWhereInput]
-    set: [PostWhereUniqueInput]
-    updateMany: [PostUpdateManyInput]
+input UserOdersUpdateNestedInput {
+    connect: [OrderWhereUniqueInput]
+    create: [OrderCreateInput]
+    connectOrCreate: [OrderConnectOrCreateInput]
+    update: [OrderUpdateUniqueInput]
+    upsert: [OrderUpsertUniqueInput]
+    delete: [OrderWhereUniqueInput]
+    disconnect: [OrderWhereUniqueInput]
+    deleteMany: [OrderScalarWhereInput]
+    set: [OrderWhereUniqueInput]
+    updateMany: [OrderUpdateManyInput]
 }
 
-input PostFilter {
-    some: PostWhereInputWithoutNullables
-    every: PostWhereInputWithoutNullables
-    none: PostWhereInputWithoutNullables
+input OrderFilter {
+    some: OrderWhereInputWithoutNullables
+    every: OrderWhereInputWithoutNullables
+    none: OrderWhereInputWithoutNullables
 }
 
-input PostWhereInputWithoutNullables {
-    OR: [PostWhereInput]
-    NOT: [PostWhereInput]
-    AND: [PostWhereInput]
+input OrderWhereInputWithoutNullables {
+    OR: [OrderWhereInput]
+    NOT: [OrderWhereInput]
+    AND: [OrderWhereInput]
     id: IntFilter
     author: UserWhereInput
     authorId: IntNullableFilter
@@ -198,12 +198,12 @@ input PostWhereInputWithoutNullables {
     updatedAt: AWSDateTimeFilter
 }
 
-input PostWhereInput {
+input OrderWhereInput {
     is: NullArg
     isNot: NullArg
-    OR: [PostWhereInput]
-    NOT: [PostWhereInput]
-    AND: [PostWhereInput]
+    OR: [OrderWhereInput]
+    NOT: [OrderWhereInput]
+    AND: [OrderWhereInput]
     id: IntFilter
     author: UserWhereInput
     authorId: IntNullableFilter
@@ -214,10 +214,10 @@ input PostWhereInput {
     updatedAt: AWSDateTimeFilter
 }
 
-input PostScalarWhereInput {
-    OR: [PostScalarWhereInput]
-    NOT: [PostScalarWhereInput]
-    AND: [PostScalarWhereInput]
+input OrderScalarWhereInput {
+    OR: [OrderScalarWhereInput]
+    NOT: [OrderScalarWhereInput]
+    AND: [OrderScalarWhereInput]
     id: IntFilter
     authorId: IntNullableFilter
     title: StringFilter
@@ -227,14 +227,14 @@ input PostScalarWhereInput {
     updatedAt: AWSDateTimeFilter
 }
 
-input PostWhereUniqueInput {
+input OrderWhereUniqueInput {
     id: Int
 }
 
-input PostExtendedWhereUniqueInput {
-    OR: [PostWhereInput]
-    NOT: [PostWhereInput]
-    AND: [PostWhereInput]
+input OrderExtendedWhereUniqueInput {
+    OR: [OrderWhereInput]
+    NOT: [OrderWhereInput]
+    AND: [OrderWhereInput]
     id: Int
     author: UserWhereInput
     authorId: IntNullableFilter
@@ -245,7 +245,7 @@ input PostExtendedWhereUniqueInput {
     updatedAt: AWSDateTimeFilter
 }
 
-input PostOrderByInput {
+input OrderOrderByInput {
     id: OrderByArg
     author: UserOrderByInput
     authorId: OrderByArg
@@ -256,9 +256,9 @@ input PostOrderByInput {
     updatedAt: OrderByArg
 }
 
-input PostCreateInput {
+input OrderCreateInput {
     id: Int
-    author: PostAuthorCreateNestedInput
+    author: OrderAuthorCreateNestedInput
     title: String!
     views: Int
     published: Boolean
@@ -266,7 +266,7 @@ input PostCreateInput {
     updatedAt: AWSDateTime
 }
 
-input PostCreateManyInput {
+input OrderCreateManyInput {
     id: Int
     title: String!
     views: Int
@@ -275,9 +275,9 @@ input PostCreateManyInput {
     updatedAt: AWSDateTime
 }
 
-input PostUpdateInput {
+input OrderUpdateInput {
     id: Int
-    author: PostAuthorUpdateNestedInput
+    author: OrderAuthorUpdateNestedInput
     title: String
     views: Int
     published: Boolean
@@ -285,44 +285,44 @@ input PostUpdateInput {
     updatedAt: AWSDateTime
 }
 
-input PostOperationInput {
+input OrderOperationInput {
     id: IntOperation
     views: IntOperation
 }
 
-input PostUpdateUniqueInput {
-    data: PostUpdateInput!
-    where: PostWhereUniqueInput!
+input OrderUpdateUniqueInput {
+    data: OrderUpdateInput!
+    where: OrderWhereUniqueInput!
 }
 
-input PostUpdateManyInput {
-    where: PostScalarWhereInput!
-    data: PostUpdateInput!
+input OrderUpdateManyInput {
+    where: OrderScalarWhereInput!
+    data: OrderUpdateInput!
 }
 
-input PostUpsertInput {
-    create: PostCreateInput!
-    update: PostUpdateInput!
+input OrderUpsertInput {
+    create: OrderCreateInput!
+    update: OrderUpdateInput!
 }
 
-input PostUpsertUniqueInput {
-    where: PostWhereUniqueInput!
-    create: PostCreateInput!
-    update: PostUpdateInput!
+input OrderUpsertUniqueInput {
+    where: OrderWhereUniqueInput!
+    create: OrderCreateInput!
+    update: OrderUpdateInput!
 }
 
-input PostConnectOrCreateInput {
-    where: PostWhereUniqueInput!
-    create: PostCreateInput!
+input OrderConnectOrCreateInput {
+    where: OrderWhereUniqueInput!
+    create: OrderCreateInput!
 }
 
-input PostAuthorCreateNestedInput {
+input OrderAuthorCreateNestedInput {
     create: UserCreateInput
     connect: UserWhereUniqueInput
     connectOrCreate: UserConnectOrCreateInput
 }
 
-input PostAuthorUpdateNestedInput {
+input OrderAuthorUpdateNestedInput {
     connect: UserWhereUniqueInput
     create: UserCreateInput
     connectOrCreate: UserConnectOrCreateInput
@@ -658,19 +658,19 @@ type Mutation {
         )
 
     """
-    Create a new single Post record.
+    Create a new single Order record.
     """
-    createPost(data: PostCreateInput!): Post
+    createOrder(data: OrderCreateInput!): Order
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Create multiple new Post records.
+    Create multiple new Order records.
     """
-    createManyPosts(
-        data: [PostCreateManyInput!]
+    createManyOrders(
+        data: [OrderCreateManyInput!]
         skipDuplicates: Boolean
     ): BatchPayload
         @aws_api_key
@@ -679,25 +679,25 @@ type Mutation {
         )
 
     """
-    Update an existing single Post record.
+    Update an existing single Order record.
     """
-    updatePost(
-        where: PostWhereUniqueInput!
-        data: PostUpdateInput
-        operation: PostOperationInput
-    ): Post
+    updateOrder(
+        where: OrderWhereUniqueInput!
+        data: OrderUpdateInput
+        operation: OrderOperationInput
+    ): Order
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Update multiple existing Post records.
+    Update multiple existing Order records.
     """
-    updateManyPosts(
-        where: PostWhereInput!
-        data: PostUpdateInput
-        operation: PostOperationInput
+    updateManyOrders(
+        where: OrderWhereInput!
+        data: OrderUpdateInput
+        operation: OrderOperationInput
     ): BatchPayload
         @aws_api_key
         @aws_cognito_user_pools(
@@ -705,31 +705,31 @@ type Mutation {
         )
 
     """
-    Update an existing or create a new single Post record.
+    Update an existing or create a new single Order record.
     """
-    upsertPost(
-        create: PostCreateInput!
-        update: PostUpdateInput!
-        where: PostWhereUniqueInput!
-    ): Post
+    upsertOrder(
+        create: OrderCreateInput!
+        update: OrderUpdateInput!
+        where: OrderWhereUniqueInput!
+    ): Order
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Delete a single Post record.
+    Delete a single Order record.
     """
-    deletePost(where: PostWhereUniqueInput!): Post
+    deleteOrder(where: OrderWhereUniqueInput!): Order
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Delete multiple Post records.
+    Delete multiple Order records.
     """
-    deleteManyPosts(where: PostWhereInput!): BatchPayload
+    deleteManyOrders(where: OrderWhereInput!): BatchPayload
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
@@ -774,34 +774,34 @@ type Query {
         )
 
     """
-    Find a single Post record by unique identifier.
+    Find a single Order record by unique identifier.
     """
-    getPost(where: PostWhereUniqueInput!): Post
+    getOrder(where: OrderWhereUniqueInput!): Order
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Find many Post records (optional query filters).
+    Find many Order records (optional query filters).
     """
-    listPosts(
-        where: PostWhereInput
-        orderBy: [PostOrderByInput]
+    listOrders(
+        where: OrderWhereInput
+        orderBy: [OrderOrderByInput]
         skip: Int
         take: Int
-    ): [Post]
+    ): [Order]
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Count all Post records (optional query filters).
+    Count all Order records (optional query filters).
     """
-    countPosts(
-        where: PostWhereInput
-        orderBy: [PostOrderByInput]
+    countOrders(
+        where: OrderWhereInput
+        orderBy: [OrderOrderByInput]
         skip: Int
         take: Int
     ): Int
@@ -915,40 +915,40 @@ type Subscription {
         )
 
     """
-    Triggered from `createPost` mutation (excl. `createManyPosts` and `upsertPost`).
+    Triggered from `createOrder` mutation (excl. `createManyOrders` and `upsertOrder`).
     """
-    onCreatedPost(id: Int): Post
-        @aws_subscribe(mutations: ["createPost"])
+    onCreatedOrder(id: Int): Order
+        @aws_subscribe(mutations: ["createOrder"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Triggered from `updatePost` mutation (excl. `updateManyPosts` and `upsertPost`).
+    Triggered from `updateOrder` mutation (excl. `updateManyOrders` and `upsertOrder`).
     """
-    onUpdatedPost(id: Int): Post
-        @aws_subscribe(mutations: ["updatePost"])
+    onUpdatedOrder(id: Int): Order
+        @aws_subscribe(mutations: ["updateOrder"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Triggered from `upsertPost` mutation.
+    Triggered from `upsertOrder` mutation.
     """
-    onUpsertedPost(id: Int): Post
-        @aws_subscribe(mutations: ["upsertPost"])
+    onUpsertedOrder(id: Int): Order
+        @aws_subscribe(mutations: ["upsertOrder"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Triggered from `deletePost` mutation (excl. `deleteManyPosts`).
+    Triggered from `deleteOrder` mutation (excl. `deleteManyOrders`).
     """
-    onDeletedPost(id: Int): Post
-        @aws_subscribe(mutations: ["deletePost"])
+    onDeletedOrder(id: Int): Order
+        @aws_subscribe(mutations: ["deleteOrder"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
@@ -957,13 +957,13 @@ type Subscription {
     """
     Triggered from ANY SINGLE record mutation.
     """
-    onMutatedPost(id: Int): Post
+    onMutatedOrder(id: Int): Order
         @aws_subscribe(
             mutations: [
-                "createPost"
-                "updatePost"
-                "upsertPost"
-                "deletePost"
+                "createOrder"
+                "updateOrder"
+                "upsertOrder"
+                "deleteOrder"
             ]
         )
         @aws_api_key
@@ -972,20 +972,20 @@ type Subscription {
         )
 
     """
-    Triggered from `createManyPosts` mutation.
+    Triggered from `createManyOrders` mutation.
     """
-    onCreatedManyPosts: BatchPayload
-        @aws_subscribe(mutations: ["createManyPosts"])
+    onCreatedManyOrders: BatchPayload
+        @aws_subscribe(mutations: ["createManyOrders"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
         )
 
     """
-    Triggered from `updateManyPosts` mutation.
+    Triggered from `updateManyOrders` mutation.
     """
-    onUpdatedManyPosts: BatchPayload
-        @aws_subscribe(mutations: ["updateManyPosts"])
+    onUpdatedManyOrders: BatchPayload
+        @aws_subscribe(mutations: ["updateManyOrders"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
@@ -994,12 +994,12 @@ type Subscription {
     """
     Triggered from ANY MULTIPLE records mutation.
     """
-    onMutatedManyPosts: BatchPayload
+    onMutatedManyOrders: BatchPayload
         @aws_subscribe(
             mutations: [
-                "createManyPosts"
-                "updateManyPosts"
-                "deleteManyPosts"
+                "createManyOrders"
+                "updateManyOrders"
+                "deleteManyOrders"
             ]
         )
         @aws_api_key
@@ -1008,10 +1008,10 @@ type Subscription {
         )
 
     """
-    Triggered from `deleteManyPosts` mutation.
+    Triggered from `deleteManyOrders` mutation.
     """
-    onDeletedManyPosts: BatchPayload
-        @aws_subscribe(mutations: ["deleteManyPosts"])
+    onDeletedManyOrders: BatchPayload
+        @aws_subscribe(mutations: ["deleteManyOrders"])
         @aws_api_key
         @aws_cognito_user_pools(
             cognito_groups: ["user", "admin"]
