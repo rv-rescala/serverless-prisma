@@ -10,23 +10,28 @@ import {
 // Lambda handler (AppSync Direct Lambda Resolver)
 export const main = async (event: AppSyncResolverEvent<any>) => {
     console.log("event: ", JSON.stringify(process.env));
-    const secretsManagerClient = new SecretsManagerClient({
-        region: process.env.AWS_REGION,
-    });
-    const getSecretValueCommand = new GetSecretValueCommand({
-        SecretId: process.env.SECRET_ID,
-    });
-    const getSecretValueCommandResponse = await secretsManagerClient.send(
-        getSecretValueCommand
-    );
 
-    const secret = JSON.parse(getSecretValueCommandResponse.SecretString!);
+    let prismaAppSync;
+    if(process.env.AWS_REGION){
+        // get database information from secret
+        const secretsManagerClient = new SecretsManagerClient({
+            region: process.env.AWS_REGION,
+        });
+        const getSecretValueCommand = new GetSecretValueCommand({
+            SecretId: process.env.SECRET_ID,
+        });
+        const getSecretValueCommandResponse = await secretsManagerClient.send(
+            getSecretValueCommand
+        );
 
-    //const dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?connection_limit=1&socket_timeout=3`;
-    const dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?schema=${secret.schema}&connection_limit=1&socket_timeout=3`;
+        const secret = JSON.parse(getSecretValueCommandResponse.SecretString!);
 
-    // Instantiate Prisma-AppSync Client
-    const prismaAppSync = new PrismaAppSync({ connectionString: dbUrl });
-
+        //const dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?connection_limit=1&socket_timeout=3`;
+        const dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?schema=${secret.schema}&connection_limit=1&socket_timeout=3`;
+         prismaAppSync = new PrismaAppSync({ connectionString: dbUrl });
+    }
+    else{
+        prismaAppSync = new PrismaAppSync({ });
+    }
     return await prismaAppSync.resolve({event});
 }

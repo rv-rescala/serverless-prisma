@@ -14,6 +14,8 @@ import {
     aws_lambda_nodejs as lambdaNodejs,
 } from 'aws-cdk-lib'
 import * as appsync_alpha from '@aws-cdk/aws-appsync-alpha'
+import { VpcRds } from '../modules/vpc-rds'
+import { aws_ec2 } from "aws-cdk-lib";
 
 export interface PrismaAppSyncStackProps {
     resourcesPrefix: string
@@ -26,6 +28,7 @@ export interface PrismaAppSyncStackProps {
         environment?: {}
     }
     graphqlApi: appsync.CfnGraphQLApi
+    vpcRds: VpcRds
 }
 
 export class PrismaAppSyncStack extends Stack {
@@ -51,13 +54,18 @@ export class PrismaAppSyncStack extends Stack {
         this.createDataSources()
     }
 
-  
+
     createLambdaResolver() {
+
         // create function execution role
         const lambdaExecutionRole = new iam.Role(this, `${this.resourcesPrefixCamel}FnExecRole`, {
             roleName: `${this.resourcesPrefix}_fn-exec-role`,
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-            managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')],
+            managedPolicies: [
+                iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+                iam.ManagedPolicy.fromAwsManagedPolicyName(`service-role/AWSLambdaVPCAccessExecutionRole`), // for rds
+                this.props.vpcRds.iamGetSecretPolicy, // for rds
+            ],
             ...(this.props.function?.policies
                 && this.props.function.policies.length > 0 && {
                 inlinePolicies: {
@@ -74,9 +82,13 @@ export class PrismaAppSyncStack extends Stack {
         const lambdaFunction = new lambdaNodejs.NodejsFunction(this, `${this.resourcesPrefixCamel}Fn`, {
             functionName: `${this.resourcesPrefix}_fn`,
             role: lambdaExecutionRole,
-            environment: this.props.function.environment || {},
+            environment: {
+                ...this.props.function.environment,
+                PG_HOST: this.props.vpcRds.dbHostName,
+                SECRET_ID: this.props.vpcRds.rdsSecretArn
+            },
             runtime: lambda.Runtime.NODEJS_16_X,
-            timeout: Duration.seconds(10),
+            timeout: Duration.seconds(30),
             handler: 'main',
             entry: this.props.function.code,
             memorySize: this.props.function.memorySize,
@@ -88,7 +100,12 @@ export class PrismaAppSyncStack extends Stack {
             ...(this.props.function.bundling && {
                 bundling: this.props.function.bundling,
             }),
-        })
+            securityGroups: [this.props.vpcRds.dbClientSg],
+            vpc: this.props.vpcRds.vpc,
+            vpcSubnets: this.props.vpcRds.vpc.selectSubnets({
+                subnetType: aws_ec2.SubnetType.PRIVATE_WITH_EGRESS,
+            }),
+        });
 
         // create alias (from latest version)
         this.directResolverFn = new lambda.Alias(this, `${this.resourcesPrefixCamel}_FnAliasLive`, {
@@ -118,7 +135,7 @@ export class PrismaAppSyncStack extends Stack {
 
     createDataSources() {
         this.dataSources = {}
-      
+
         this.dataSources.lambda = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}LambdaDatasource`, {
             apiId: this.props.graphqlApi.attrApiId,
             name: `${this.resourcesPrefixCamel}LambdaDatasource`,

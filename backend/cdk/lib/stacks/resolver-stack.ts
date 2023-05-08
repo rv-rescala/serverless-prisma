@@ -55,7 +55,7 @@ export class ResolverStack extends Stack {
                         apiId: this.props.graphqlApi.attrApiId,
                         typeName: resolver.typeName,
                         fieldName: resolver.fieldName,
-                        dataSourceName: this.props.dataSources.lambda.name
+                        dataSourceName: this.props.dataSources.lambda.attrName
                     });
                     cfnResolver.addDependsOn(schema);
                 }

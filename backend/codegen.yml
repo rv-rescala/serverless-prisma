@@ -1,0 +1,16 @@
+overwrite: true
+schema:
+  - prisma/generated/merged-schema.gql
+generates:
+  ./prisma/generated/generated-types.ts:
+    config:
+      scalars:
+        AWSDateTime: Date
+        AWSEmail: string
+        AWSJSON: string
+        AWSURL: string
+        AWSTimestamp: string
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-resolvers

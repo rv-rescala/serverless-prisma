@@ -62,19 +62,6 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 ## Directory Structure
 
 ```bash
-├── backend
-│   ├── cdk # for AWS CDK
-│   ├── cdk.json # for AWS CDK
-│   ├── codegen.yml # for Prisma codegen
-│   ├── docker # for local development
-│   ├── docker-compose.yaml # for local development
-│   ├── jest.config.js # for jest
-│   ├── lambda # for lambda functions
-│   ├── package.json # for npm
-│   ├── prisma # for Prisma
-│   ├── appsync # for GraphQL Defenition and Resolver
-│   ├── graphsqlserver # for local development(GraphQL server), the target is prisma/generate/schema.gql
-│   └── test # for jest
 ```
 
 # Getting Started
@@ -91,7 +78,6 @@ npm install
 2. Run docker
 
 ```bash
-cd ../
 docker-compose up -d
 ```
 
@@ -99,12 +85,11 @@ docker-compose up -d
 
 ```bash
 yarn generate # for generate prisma client, create GraphQL client to prisma/generate
-yarn codegen # for generate typescript from GraphQL schema
 npx prisma migrate dev --name init # for create migration file, create sql and migrate it to DB to prisma/migration
-cp prisma/generated/migration/[target_date]/migration.sql prisma/migration.sql # for migration target sql. if you create with schema, please add
+cp prisma/generated/migration/[target_date]/migration.sql prisma/migration.sql # for migration target sql
 ```
 
-3. Test by jest
+3. Test by jest(Prisma Unit Test)
 
 ```bash
 npx jest -- user-controller.test.ts

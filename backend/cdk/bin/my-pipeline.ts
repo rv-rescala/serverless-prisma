@@ -5,9 +5,9 @@ import { PrismaAppSyncStack } from '../lib/stacks/prisma-appsync-stack';
 import { join } from 'path'
 import { AmplifyExportedBackend } from '@aws-amplify/cdk-exported-backend';
 import * as path from 'path'
-import { mergeSchema } from '../lib/module/mergeGraphqlSchema';
+import { mergeSchema } from '../lib/tools/mergeGraphqlSchema';
 import { ResolverStack } from '../lib/stacks/resolver-stack';
-
+import { RDSStack } from '../lib/stacks/rds-stack';
 
 const app = new App();
 
@@ -31,6 +31,7 @@ const amplifyStack = new AmplifyExportedBackend(app, `${fullEnvName}AmplifyExpor
 const graphqlApi = amplifyStack.graphqlNestedStacks().graphQLAPI();
 //const graphQLSchema = amplifyStack.graphqlNestedStacks().graphQLSchema();
 
+const rdsStack = new RDSStack(app, `${fullEnvName}RDSStack`, { envName: `${fullEnvName}RDSStack`, schemaName: appVals['schema'] });
 
 const prismaAppSyncStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStack`, {
     resourcesPrefix: `${fullEnvName}PrismaAppSync`,
@@ -49,7 +50,11 @@ const prismaAppSyncStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppS
             commandHooks: {
                 beforeBundling(inputDir: string, outputDir: string): string[] {
                     const schemaPath = join(process.cwd(), 'prisma/schema.prisma');
-                    return [`cp ${schemaPath} ${outputDir}`];
+                    const migrationSQLPath =  join(process.cwd(), 'prisma/migration.sql');
+                    return [
+                        `cp ${schemaPath} ${outputDir}`,
+                        `cp ${migrationSQLPath} ${outputDir}`
+                    ];
                 },
                 beforeInstall() {
                     return []
@@ -74,7 +79,8 @@ const prismaAppSyncStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppS
             },
         },
     },
-    graphqlApi: graphqlApi
+    graphqlApi: graphqlApi,
+    vpcRds: rdsStack.vpcRds
 })
 
 new ResolverStack(app, `${fullEnvName}ResolverStack`, {
