@@ -1,12 +1,29 @@
 
-type Todo @aws_api_key @aws_cognito_user_pools {
+type Blog @aws_api_key {
   id: ID!
   name: String!
-  description: String
-  status: String
-  comment: String
+  posts(filter: ModelPostFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+}
+
+type Post @aws_api_key {
+  id: ID!
+  title: String!
+  blog: Blog
+  comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  blogPostsId: ID
+}
+
+type Comment @aws_api_key {
+  id: ID!
+  post: Post
+  content: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  postCommentsId: ID
 }
 
 input ModelStringInput {
@@ -159,76 +176,167 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelTodoConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Todo]!
+type ModelBlogConnection @aws_api_key {
+  items: [Blog]!
   nextToken: String
 }
 
-input ModelTodoFilterInput {
+input ModelBlogFilterInput {
   id: ModelIDInput
   name: ModelStringInput
-  description: ModelStringInput
-  status: ModelStringInput
-  comment: ModelStringInput
-  and: [ModelTodoFilterInput]
-  or: [ModelTodoFilterInput]
-  not: ModelTodoFilterInput
+  and: [ModelBlogFilterInput]
+  or: [ModelBlogFilterInput]
+  not: ModelBlogFilterInput
 }
 
 type Query {
-  getTodo(id: ID!): Todo @aws_api_key @aws_cognito_user_pools
-  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection @aws_api_key @aws_cognito_user_pools
+  getBlog(id: ID!): Blog @aws_api_key
+  listBlogs(filter: ModelBlogFilterInput, limit: Int, nextToken: String): ModelBlogConnection @aws_api_key
+  getPost(id: ID!): Post @aws_api_key
+  listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_api_key
+  getComment(id: ID!): Comment @aws_api_key
+  listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_api_key
 }
 
-input ModelTodoConditionInput {
+input ModelBlogConditionInput {
   name: ModelStringInput
-  description: ModelStringInput
-  status: ModelStringInput
-  comment: ModelStringInput
-  and: [ModelTodoConditionInput]
-  or: [ModelTodoConditionInput]
-  not: ModelTodoConditionInput
+  and: [ModelBlogConditionInput]
+  or: [ModelBlogConditionInput]
+  not: ModelBlogConditionInput
 }
 
-input CreateTodoInput {
+input CreateBlogInput {
   id: ID
   name: String!
-  description: String
-  status: String
-  comment: String
 }
 
-input UpdateTodoInput {
+input UpdateBlogInput {
   id: ID!
   name: String
-  description: String
-  status: String
-  comment: String
 }
 
-input DeleteTodoInput {
+input DeleteBlogInput {
   id: ID!
 }
 
 type Mutation {
-  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo @aws_api_key @aws_cognito_user_pools
-  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo @aws_api_key @aws_cognito_user_pools
-  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo @aws_api_key @aws_cognito_user_pools
+  createBlog(input: CreateBlogInput!, condition: ModelBlogConditionInput): Blog @aws_api_key
+  updateBlog(input: UpdateBlogInput!, condition: ModelBlogConditionInput): Blog @aws_api_key
+  deleteBlog(input: DeleteBlogInput!, condition: ModelBlogConditionInput): Blog @aws_api_key
+  createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post @aws_api_key
+  updatePost(input: UpdatePostInput!, condition: ModelPostConditionInput): Post @aws_api_key
+  deletePost(input: DeletePostInput!, condition: ModelPostConditionInput): Post @aws_api_key
+  createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment @aws_api_key
+  updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment @aws_api_key
+  deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment @aws_api_key
 }
 
-input ModelSubscriptionTodoFilterInput {
+input ModelSubscriptionBlogFilterInput {
   id: ModelSubscriptionIDInput
   name: ModelSubscriptionStringInput
-  description: ModelSubscriptionStringInput
-  status: ModelSubscriptionStringInput
-  comment: ModelSubscriptionStringInput
-  and: [ModelSubscriptionTodoFilterInput]
-  or: [ModelSubscriptionTodoFilterInput]
+  and: [ModelSubscriptionBlogFilterInput]
+  or: [ModelSubscriptionBlogFilterInput]
 }
 
 type Subscription {
-  onCreateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["createTodo"]) @aws_api_key @aws_cognito_user_pools
-  onUpdateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["updateTodo"]) @aws_api_key @aws_cognito_user_pools
-  onDeleteTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["deleteTodo"]) @aws_api_key @aws_cognito_user_pools
+  onCreateBlog(filter: ModelSubscriptionBlogFilterInput): Blog @aws_subscribe(mutations: ["createBlog"]) @aws_api_key
+  onUpdateBlog(filter: ModelSubscriptionBlogFilterInput): Blog @aws_subscribe(mutations: ["updateBlog"]) @aws_api_key
+  onDeleteBlog(filter: ModelSubscriptionBlogFilterInput): Blog @aws_subscribe(mutations: ["deleteBlog"]) @aws_api_key
+  onCreatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["createPost"]) @aws_api_key
+  onUpdatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["updatePost"]) @aws_api_key
+  onDeletePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["deletePost"]) @aws_api_key
+  onCreateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["createComment"]) @aws_api_key
+  onUpdateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["updateComment"]) @aws_api_key
+  onDeleteComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_api_key
+}
+
+type ModelPostConnection @aws_api_key {
+  items: [Post]!
+  nextToken: String
+}
+
+input ModelPostFilterInput {
+  id: ModelIDInput
+  title: ModelStringInput
+  and: [ModelPostFilterInput]
+  or: [ModelPostFilterInput]
+  not: ModelPostFilterInput
+  blogPostsId: ModelIDInput
+}
+
+input ModelPostConditionInput {
+  title: ModelStringInput
+  and: [ModelPostConditionInput]
+  or: [ModelPostConditionInput]
+  not: ModelPostConditionInput
+  blogPostsId: ModelIDInput
+}
+
+input CreatePostInput {
+  id: ID
+  title: String!
+  blogPostsId: ID
+}
+
+input UpdatePostInput {
+  id: ID!
+  title: String
+  blogPostsId: ID
+}
+
+input DeletePostInput {
+  id: ID!
+}
+
+input ModelSubscriptionPostFilterInput {
+  id: ModelSubscriptionIDInput
+  title: ModelSubscriptionStringInput
+  and: [ModelSubscriptionPostFilterInput]
+  or: [ModelSubscriptionPostFilterInput]
+}
+
+type ModelCommentConnection @aws_api_key {
+  items: [Comment]!
+  nextToken: String
+}
+
+input ModelCommentFilterInput {
+  id: ModelIDInput
+  content: ModelStringInput
+  and: [ModelCommentFilterInput]
+  or: [ModelCommentFilterInput]
+  not: ModelCommentFilterInput
+  postCommentsId: ModelIDInput
+}
+
+input ModelCommentConditionInput {
+  content: ModelStringInput
+  and: [ModelCommentConditionInput]
+  or: [ModelCommentConditionInput]
+  not: ModelCommentConditionInput
+  postCommentsId: ModelIDInput
+}
+
+input CreateCommentInput {
+  id: ID
+  content: String!
+  postCommentsId: ID
+}
+
+input UpdateCommentInput {
+  id: ID!
+  content: String
+  postCommentsId: ID
+}
+
+input DeleteCommentInput {
+  id: ID!
+}
+
+input ModelSubscriptionCommentFilterInput {
+  id: ModelSubscriptionIDInput
+  content: ModelSubscriptionStringInput
+  and: [ModelSubscriptionCommentFilterInput]
+  or: [ModelSubscriptionCommentFilterInput]
 }
 

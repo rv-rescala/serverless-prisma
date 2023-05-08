@@ -1,11 +1,11 @@
 {
-  "stackName": "amplify-backend-dev-111440",
+  "stackName": "amplify-backend-dev-230022",
   "props": {
     "templateFile": "root-stack-template.json",
     "parameters": {
-      "AuthRoleName": "amplify-backend-dev-111440-authRole",
-      "UnauthRoleName": "amplify-backend-dev-111440-unauthRole",
-      "DeploymentBucketName": "amplify-backend-dev-111440-deployment"
+      "AuthRoleName": "amplify-backend-dev-230022-authRole",
+      "UnauthRoleName": "amplify-backend-dev-230022-unauthRole",
+      "DeploymentBucketName": "amplify-backend-dev-230022-deployment"
     },
     "preserveLogicalIds": true,
     "loadNestedStacks": {
@@ -15,31 +15,46 @@
           "AppSyncApiName": "backend",
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
           "DynamoDBEnableServerSideEncryption": false,
-          "S3DeploymentBucket": "amplify-backend-dev-111440-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/f4eeebe40d336eb34ac024ac00755d91f6025abc",
+          "S3DeploymentBucket": "amplify-backend-dev-230022-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/59de4b4c236755a5a8ef88b4b85571d867c6acd5",
           "env": "dev"
         },
         "preserveLogicalIds": true,
         "loadNestedStacks": {
+          "Blog": {
+            "templateFile": "api/backend/amplify-appsync-files/stacks/Blog.json",
+            "preserveLogicalIds": true,
+            "loadNestedStacks": {}
+          },
+          "Comment": {
+            "templateFile": "api/backend/amplify-appsync-files/stacks/Comment.json",
+            "preserveLogicalIds": true,
+            "loadNestedStacks": {}
+          },
+          "ConnectionStack": {
+            "templateFile": "api/backend/amplify-appsync-files/stacks/ConnectionStack.json",
+            "preserveLogicalIds": true,
+            "loadNestedStacks": {}
+          },
           "CustomResourcesjson": {
             "templateFile": "api/backend/amplify-appsync-files/stacks/CustomResources.json",
             "preserveLogicalIds": true,
             "loadNestedStacks": {}
           },
-          "Todo": {
-            "templateFile": "api/backend/amplify-appsync-files/stacks/Todo.json",
+          "Post": {
+            "templateFile": "api/backend/amplify-appsync-files/stacks/Post.json",
             "preserveLogicalIds": true,
             "loadNestedStacks": {}
           }
         }
       },
-      "authbackend6a9a2988": {
-        "templateFile": "auth/backend6a9a2988/backend6a9a2988-cloudformation-template.json",
+      "authbackend19ccda4f": {
+        "templateFile": "auth/backend19ccda4f/backend19ccda4f-cloudformation-template.json",
         "parameters": {
-          "identityPoolName": "backend6a9a2988_identitypool_6a9a2988",
+          "identityPoolName": "backend19ccda4f_identitypool_19ccda4f",
           "allowUnauthenticatedIdentities": false,
-          "resourceNameTruncated": "backen6a9a2988",
-          "userPoolName": "backend6a9a2988_userpool_6a9a2988",
+          "resourceNameTruncated": "backen19ccda4f",
+          "userPoolName": "backend19ccda4f_userpool_19ccda4f",
           "autoVerifiedAttributes": [
             "email"
           ],
@@ -66,10 +81,10 @@
           "userpoolClientReadAttributes": [
             "email"
           ],
-          "userpoolClientLambdaRole": "backen6a9a2988_userpoolclient_lambda_role",
+          "userpoolClientLambdaRole": "backen19ccda4f_userpoolclient_lambda_role",
           "userpoolClientSetAttributes": false,
-          "sharedId": "6a9a2988",
-          "resourceName": "backend6a9a2988",
+          "sharedId": "19ccda4f",
+          "resourceName": "backend19ccda4f",
           "authSelections": "identityPoolAndUserPool",
           "useDefault": "default",
           "usernameAttributes": [

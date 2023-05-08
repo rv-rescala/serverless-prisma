@@ -21,16 +21,11 @@ const appVals = app.node.tryGetContext("app");
 if (appVals == undefined) throw new Error('Invalid environment.');
 const fullEnvName = `${appVals['name']}${envName}`;
 
-// merge schema
-mergeSchema();
 
 const amplifyStack = new AmplifyExportedBackend(app, `${fullEnvName}AmplifyExportedBackend`, {
     path: path.resolve(__dirname, '..', './lib/amplify-export-backend'),
-    amplifyEnvironment: (`${fullEnvName}-amplify`).toLowerCase()
+    amplifyEnvironment: "dev"
 });
-
-const graphqlApi = amplifyStack.graphqlNestedStacks().graphQLAPI();
-//const graphQLSchema = amplifyStack.graphqlNestedStacks().graphQLSchema();
 
 
 const rdsStack = new RDSStack(app, `${fullEnvName}RDSStack`, { 
@@ -40,6 +35,9 @@ const rdsStack = new RDSStack(app, `${fullEnvName}RDSStack`, {
 });
 
 
+// merge schema
+mergeSchema();
+const graphqlApi = amplifyStack.graphqlNestedStacks().graphQLAPI();
 const prismaStack = new PrismaAppSyncStack(app, `${fullEnvName}PrismaAppSyncStack`, {
     resourcesPrefix: `${fullEnvName}PrismaAppSync`,
     function: {
@@ -98,5 +96,6 @@ new ResolverStack(app, `${fullEnvName}ResolverStrack`, {
     graphqlApi: graphqlApi,
     dataSources: prismaStack.dataSources
 });
+
 
 app.synth()

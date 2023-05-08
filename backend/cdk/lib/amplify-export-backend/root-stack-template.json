@@ -152,7 +152,7 @@
         }
       }
     },
-    "authbackend6a9a2988": {
+    "authbackend19ccda4f": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
         "Parameters": {
@@ -177,7 +177,7 @@
         "Parameters": {
           "AuthCognitoUserPoolId": {
             "Fn::GetAtt": [
-              "authbackend6a9a2988",
+              "authbackend19ccda4f",
               "Outputs.UserPoolId"
             ]
           }
@@ -188,7 +188,7 @@
       "DependsOn": [
         "AuthRole",
         "UnauthRole",
-        "authbackend6a9a2988"
+        "authbackend19ccda4f"
       ],
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -283,7 +283,7 @@
         },
         "idpId": {
           "Fn::GetAtt": [
-            "authbackend6a9a2988",
+            "authbackend19ccda4f",
             "Outputs.IdentityPoolId"
           ]
         },

@@ -8,7 +8,8 @@ Please read this article for more information.
 
 1. [Prisma](https://www.prisma.io/)
 2. [Prisma with AWS AppSync](https://github.com/maoosi/prisma-appsync)
-3. [Amplifyで構築したバックエンドをCDKで出力して既存のデプロイパイプラインで使用する新機能「エクスポート」のご紹介](https://aws.amazon.com/jp/blogs/news/export-amplify-backends-to-cdk-and-use-with-existing-deployment-pipelines/)
+3. [Export Amplify backends to CDK and use with existing deployment pipelines](https://aws.amazon.com/jp/blogs/mobile/export-amplify-backends-to-cdk-and-use-with-existing-deployment-pipelines/)
+4. [Setup authorization rules](https://docs.amplify.aws/cli-legacy/graphql-transformer/auth/)
 
 ## Features
 
@@ -161,7 +162,8 @@ npx prisma migrate dev --name init
 
 2. Generate typescript 
 
-```
+```bash
+# Change accessibility: @auth(rules: [{ allow: public }, { allow: groups, groups: ["user"] }])
 amplify export --out ./cdk/lib/
 ```
 
