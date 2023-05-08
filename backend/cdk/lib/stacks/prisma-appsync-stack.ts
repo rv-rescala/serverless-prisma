@@ -1,7 +1,4 @@
-/* eslint-disable no-new */
-import { readFileSync } from 'fs'
 import type { Construct } from 'constructs'
-import { load } from 'js-yaml'
 import type { StackProps } from 'aws-cdk-lib'
 import {
     Duration,
@@ -29,8 +26,6 @@ export interface PrismaAppSyncStackProps {
     }
     graphqlApi: appsync.CfnGraphQLApi
     vpcRds: VpcRds
-    schema: string
-    resolvers: string
 }
 
 export class PrismaAppSyncStack extends Stack {
@@ -54,7 +49,7 @@ export class PrismaAppSyncStack extends Stack {
 
         this.createLambdaResolver()
         this.createDataSources()
-        this.createResolvers()
+        //this.createResolvers()
     }
 
 
@@ -183,6 +178,7 @@ export class PrismaAppSyncStack extends Stack {
         });
     }
 
+    /*
     createResolvers() {
         const schema = new appsync.CfnGraphQLSchema(this, `${this.props}CfnSchema`, {
             apiId: this.props.graphqlApi.attrApiId,
@@ -220,4 +216,5 @@ export class PrismaAppSyncStack extends Stack {
             });
         }
     }
+    */
 }

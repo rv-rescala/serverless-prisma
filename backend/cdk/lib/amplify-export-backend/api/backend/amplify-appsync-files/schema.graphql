@@ -1,12 +1,12 @@
 
-type Todo {
+type Todo @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: String
   status: String
+  comment: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 input ModelStringInput {
@@ -159,7 +159,7 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelTodoConnection {
+type ModelTodoConnection @aws_api_key @aws_cognito_user_pools {
   items: [Todo]!
   nextToken: String
 }
@@ -169,20 +169,22 @@ input ModelTodoFilterInput {
   name: ModelStringInput
   description: ModelStringInput
   status: ModelStringInput
+  comment: ModelStringInput
   and: [ModelTodoFilterInput]
   or: [ModelTodoFilterInput]
   not: ModelTodoFilterInput
 }
 
 type Query {
-  getTodo(id: ID!): Todo
-  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection
+  getTodo(id: ID!): Todo @aws_api_key @aws_cognito_user_pools
+  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection @aws_api_key @aws_cognito_user_pools
 }
 
 input ModelTodoConditionInput {
   name: ModelStringInput
   description: ModelStringInput
   status: ModelStringInput
+  comment: ModelStringInput
   and: [ModelTodoConditionInput]
   or: [ModelTodoConditionInput]
   not: ModelTodoConditionInput
@@ -193,6 +195,7 @@ input CreateTodoInput {
   name: String!
   description: String
   status: String
+  comment: String
 }
 
 input UpdateTodoInput {
@@ -200,6 +203,7 @@ input UpdateTodoInput {
   name: String
   description: String
   status: String
+  comment: String
 }
 
 input DeleteTodoInput {
@@ -207,9 +211,9 @@ input DeleteTodoInput {
 }
 
 type Mutation {
-  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo
-  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo
-  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo
+  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo @aws_api_key @aws_cognito_user_pools
+  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo @aws_api_key @aws_cognito_user_pools
+  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo @aws_api_key @aws_cognito_user_pools
 }
 
 input ModelSubscriptionTodoFilterInput {
@@ -217,13 +221,14 @@ input ModelSubscriptionTodoFilterInput {
   name: ModelSubscriptionStringInput
   description: ModelSubscriptionStringInput
   status: ModelSubscriptionStringInput
+  comment: ModelSubscriptionStringInput
   and: [ModelSubscriptionTodoFilterInput]
   or: [ModelSubscriptionTodoFilterInput]
 }
 
 type Subscription {
-  onCreateTodo(filter: ModelSubscriptionTodoFilterInput, owner: String): Todo @aws_subscribe(mutations: ["createTodo"])
-  onUpdateTodo(filter: ModelSubscriptionTodoFilterInput, owner: String): Todo @aws_subscribe(mutations: ["updateTodo"])
-  onDeleteTodo(filter: ModelSubscriptionTodoFilterInput, owner: String): Todo @aws_subscribe(mutations: ["deleteTodo"])
+  onCreateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["createTodo"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["updateTodo"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["deleteTodo"]) @aws_api_key @aws_cognito_user_pools
 }
 

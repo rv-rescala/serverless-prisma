@@ -1,4 +1,8 @@
-type User {
+type User
+    @aws_api_key
+    @aws_cognito_user_pools(
+        cognito_groups: ["user", "admin"]
+    ) {
     id: Int!
     email: AWSEmail!
     fullname: String
@@ -6,7 +10,11 @@ type User {
     createdAt: AWSDateTime!
 }
 
-type Post {
+type Post
+    @aws_api_key
+    @aws_cognito_user_pools(
+        cognito_groups: ["user", "admin"]
+    ) {
     id: Int!
     author: User
     authorId: Int
@@ -17,7 +25,11 @@ type Post {
     updatedAt: AWSDateTime!
 }
 
-type BatchPayload {
+type BatchPayload
+    @aws_api_key
+    @aws_cognito_user_pools(
+        cognito_groups: ["user", "admin"]
+    ) {
     count: Int
 }
 
@@ -571,6 +583,10 @@ type Mutation {
     Create a new single User record.
     """
     createUser(data: UserCreateInput!): User
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Create multiple new User records.
@@ -579,6 +595,10 @@ type Mutation {
         data: [UserCreateManyInput!]
         skipDuplicates: Boolean
     ): BatchPayload
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Update an existing single User record.
@@ -588,6 +608,10 @@ type Mutation {
         data: UserUpdateInput
         operation: UserOperationInput
     ): User
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Update multiple existing User records.
@@ -597,6 +621,10 @@ type Mutation {
         data: UserUpdateInput
         operation: UserOperationInput
     ): BatchPayload
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Update an existing or create a new single User record.
@@ -606,21 +634,37 @@ type Mutation {
         update: UserUpdateInput!
         where: UserWhereUniqueInput!
     ): User
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Delete a single User record.
     """
     deleteUser(where: UserWhereUniqueInput!): User
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Delete multiple User records.
     """
     deleteManyUsers(where: UserWhereInput!): BatchPayload
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Create a new single Post record.
     """
     createPost(data: PostCreateInput!): Post
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Create multiple new Post records.
@@ -629,6 +673,10 @@ type Mutation {
         data: [PostCreateManyInput!]
         skipDuplicates: Boolean
     ): BatchPayload
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Update an existing single Post record.
@@ -638,6 +686,10 @@ type Mutation {
         data: PostUpdateInput
         operation: PostOperationInput
     ): Post
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Update multiple existing Post records.
@@ -647,6 +699,10 @@ type Mutation {
         data: PostUpdateInput
         operation: PostOperationInput
     ): BatchPayload
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Update an existing or create a new single Post record.
@@ -656,22 +712,38 @@ type Mutation {
         update: PostUpdateInput!
         where: PostWhereUniqueInput!
     ): Post
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Delete a single Post record.
     """
     deletePost(where: PostWhereUniqueInput!): Post
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Delete multiple Post records.
     """
     deleteManyPosts(where: PostWhereInput!): BatchPayload
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 }
 type Query {
     """
     Find a single User record by unique identifier.
     """
     getUser(where: UserWhereUniqueInput!): User
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Find many User records (optional query filters).
@@ -682,6 +754,10 @@ type Query {
         skip: Int
         take: Int
     ): [User]
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Count all User records (optional query filters).
@@ -692,11 +768,19 @@ type Query {
         skip: Int
         take: Int
     ): Int
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Find a single Post record by unique identifier.
     """
     getPost(where: PostWhereUniqueInput!): Post
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Find many Post records (optional query filters).
@@ -707,6 +791,10 @@ type Query {
         skip: Int
         take: Int
     ): [Post]
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Count all Post records (optional query filters).
@@ -717,6 +805,10 @@ type Query {
         skip: Int
         take: Int
     ): Int
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 }
 type Subscription {
     """
@@ -724,24 +816,40 @@ type Subscription {
     """
     onCreatedUser(id: Int, email: AWSEmail): User
         @aws_subscribe(mutations: ["createUser"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `updateUser` mutation (excl. `updateManyUsers` and `upsertUser`).
     """
     onUpdatedUser(id: Int, email: AWSEmail): User
         @aws_subscribe(mutations: ["updateUser"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `upsertUser` mutation.
     """
     onUpsertedUser(id: Int, email: AWSEmail): User
         @aws_subscribe(mutations: ["upsertUser"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `deleteUser` mutation (excl. `deleteManyUsers`).
     """
     onDeletedUser(id: Int, email: AWSEmail): User
         @aws_subscribe(mutations: ["deleteUser"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from ANY SINGLE record mutation.
@@ -755,18 +863,30 @@ type Subscription {
                 "deleteUser"
             ]
         )
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `createManyUsers` mutation.
     """
     onCreatedManyUsers: BatchPayload
         @aws_subscribe(mutations: ["createManyUsers"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `updateManyUsers` mutation.
     """
     onUpdatedManyUsers: BatchPayload
         @aws_subscribe(mutations: ["updateManyUsers"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from ANY MULTIPLE records mutation.
@@ -779,36 +899,60 @@ type Subscription {
                 "deleteManyUsers"
             ]
         )
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `deleteManyUsers` mutation.
     """
     onDeletedManyUsers: BatchPayload
         @aws_subscribe(mutations: ["deleteManyUsers"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `createPost` mutation (excl. `createManyPosts` and `upsertPost`).
     """
     onCreatedPost(id: Int): Post
         @aws_subscribe(mutations: ["createPost"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `updatePost` mutation (excl. `updateManyPosts` and `upsertPost`).
     """
     onUpdatedPost(id: Int): Post
         @aws_subscribe(mutations: ["updatePost"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `upsertPost` mutation.
     """
     onUpsertedPost(id: Int): Post
         @aws_subscribe(mutations: ["upsertPost"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `deletePost` mutation (excl. `deleteManyPosts`).
     """
     onDeletedPost(id: Int): Post
         @aws_subscribe(mutations: ["deletePost"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from ANY SINGLE record mutation.
@@ -822,18 +966,30 @@ type Subscription {
                 "deletePost"
             ]
         )
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `createManyPosts` mutation.
     """
     onCreatedManyPosts: BatchPayload
         @aws_subscribe(mutations: ["createManyPosts"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `updateManyPosts` mutation.
     """
     onUpdatedManyPosts: BatchPayload
         @aws_subscribe(mutations: ["updateManyPosts"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from ANY MULTIPLE records mutation.
@@ -846,10 +1002,18 @@ type Subscription {
                 "deleteManyPosts"
             ]
         )
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 
     """
     Triggered from `deleteManyPosts` mutation.
     """
     onDeletedManyPosts: BatchPayload
         @aws_subscribe(mutations: ["deleteManyPosts"])
+        @aws_api_key
+        @aws_cognito_user_pools(
+            cognito_groups: ["user", "admin"]
+        )
 }

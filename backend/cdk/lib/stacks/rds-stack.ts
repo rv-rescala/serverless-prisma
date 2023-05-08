@@ -5,6 +5,7 @@ import { VpcRds } from "../modules/vpc-rds";
 interface RDSStackProps extends cdk.StackProps {
     envName: string;
     schemaName: string;
+    cidrRange: string;
 }
 
 export class RDSStack extends cdk.Stack {
@@ -17,7 +18,8 @@ export class RDSStack extends cdk.Stack {
         envName: props.envName,
         dbUserName: props.envName,
         dbName: props.envName,
-        schemaName: props.schemaName
+        schemaName: props.schemaName,
+        cidrRange: props.cidrRange
       });
       this.vpcRds = vpcRds;
     }

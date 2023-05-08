@@ -14,6 +14,7 @@ interface VpcRdsProps {
   dbUserName: string;
   dbName: string;
   schemaName: string;
+  cidrRange: string;
 }
 
 export class VpcRds {
@@ -31,8 +32,8 @@ export class VpcRds {
     const EXCLUDE_CHARACTERS = ":/?#[]@!$&'()*+,;=%\"";
 
     // VPC
-    const vpc = new ec2.Vpc(scope, "Vpc", {
-      ipAddresses: ec2.IpAddresses.cidr("10.100.0.0/16"),
+    const vpc = new ec2.Vpc(scope, `${envName}Vpc`, {
+      ipAddresses: ec2.IpAddresses.cidr(props.cidrRange),
       enableDnsHostnames: true,
       enableDnsSupport: true,
       natGateways: 1,
@@ -54,7 +55,7 @@ export class VpcRds {
 
     // Security Group
     // Security Group for DB Client
-    const dbClientSg = new ec2.SecurityGroup(scope, "DbClientSg", {
+    const dbClientSg = new ec2.SecurityGroup(scope, `${envName}DbClientSg`, {
       vpc,
       securityGroupName: `${envName}-db-client-sg`,
       description: "",
@@ -64,7 +65,7 @@ export class VpcRds {
     // Security Group for Lambda Functions that rotate secret
     const rotateSecretsLambdaFunctionSg = new ec2.SecurityGroup(
       scope,
-      "RotateSecretsLambdaFunctionSg",
+      `${envName}RotateSecretsLambdaFunctionSg`,
       {
         vpc,
         securityGroupName: `${envName}-rotate-secrets-lambda-sg`,
@@ -76,7 +77,7 @@ export class VpcRds {
   
     // Security Group for DB
     // Allow access from DB clients, Lambda Functions that rotate the secret and RDS Proxy
-    const dbSg = new ec2.SecurityGroup(scope, "DbSg", {
+    const dbSg = new ec2.SecurityGroup(scope, `${envName}DbSg`, {
       vpc,
       securityGroupName: `${envName}-db-sg`,
       description: "",
@@ -94,7 +95,7 @@ export class VpcRds {
     );
 
     // DB Admin User Secret
-    const dbAdminSecret = new secretsmanager.Secret(scope, "DbAdminSecret", {
+    const dbAdminSecret = new secretsmanager.Secret(scope, `${envName}DbAdminSecret`, {
       secretName: `${props.dbName}/AdminLoginInfo`,
       generateSecretString: {
         excludeCharacters: EXCLUDE_CHARACTERS,
@@ -106,7 +107,7 @@ export class VpcRds {
     });
 
     // Subnet Group
-    const subnetGroup = new rds.SubnetGroup(scope, "SubnetGroup", {
+    const subnetGroup = new rds.SubnetGroup(scope, `${envName}SubnetGroup`, {
       description: "description",
       vpc,
       subnetGroupName: `${envName}-SubnetGroup`,
@@ -117,7 +118,7 @@ export class VpcRds {
     });
 
     // RDS for PostgreSQL
-    const dbInstance = new rds.DatabaseInstance(scope, 'PostgresInstance', {
+    const dbInstance = new rds.DatabaseInstance(scope, `${envName}PostgresInstance`, {
       engine: rds.DatabaseInstanceEngine.postgres({ version: rds.PostgresEngineVersion.VER_13 }),
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T4G, ec2.InstanceSize.MICRO),
       vpc,
@@ -138,7 +139,7 @@ export class VpcRds {
     // DB Client IAM Policy
     const getSecretValueIamPolicy = new iam.ManagedPolicy(
       scope,
-      "GetSecretValueIamPolicy",
+      `${envName}GetSecretValueIamPolicy`,
       {
         statements: [
           new iam.PolicyStatement({
