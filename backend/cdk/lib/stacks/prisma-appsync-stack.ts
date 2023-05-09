@@ -32,12 +32,9 @@ export class PrismaAppSyncStack extends Stack {
     private props: PrismaAppSyncStackProps
     private resourcesPrefix: string
     private resourcesPrefixCamel: string
-    private directResolverFn: lambda.Alias
-    private apiRole: iam.Role
-    public dataSources: {
-        lambda?: appsync.CfnDataSource
-        none?: appsync.CfnDataSource
-    }
+    public directResolverFn: lambda.Alias
+    public lambdaApiRole: iam.Role
+
 
     constructor(scope: Construct, id: string, tplProps: PrismaAppSyncStackProps, props?: StackProps) {
         super(scope, id, props)
@@ -48,8 +45,6 @@ export class PrismaAppSyncStack extends Stack {
         this.resourcesPrefixCamel = camelCase(this.resourcesPrefix)
 
         this.createLambdaResolver()
-        this.createDataSources()
-        //this.createResolvers()
     }
 
 
@@ -142,7 +137,7 @@ export class PrismaAppSyncStack extends Stack {
         })
 
         // create IAM role
-        this.apiRole = new iam.Role(this, `${this.resourcesPrefixCamel}ApiRole`, {
+        this.lambdaApiRole = new iam.Role(this, `${this.resourcesPrefixCamel}ApiRole`, {
             roleName: `${this.resourcesPrefix}_api-role`,
             assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
             inlinePolicies: {
@@ -157,64 +152,4 @@ export class PrismaAppSyncStack extends Stack {
             },
         })
     }
-
-    createDataSources() {
-        this.dataSources = {}
-
-        this.dataSources.lambda = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}CfnLambdaDatasource`, {
-            apiId: this.props.graphqlApi.attrApiId,
-            name: `${this.resourcesPrefixCamel}CfnLambdaDatasource`,
-            serviceRoleArn: this.apiRole.roleArn,
-            type: 'AWS_LAMBDA',
-            lambdaConfig: {
-                lambdaFunctionArn: this.directResolverFn.functionArn
-            }
-        });
-
-        this.dataSources.none = new appsync.CfnDataSource(this, `${this.resourcesPrefixCamel}CfnNoneDatasource`, {
-            apiId: this.props.graphqlApi.attrApiId,
-            name: `${this.resourcesPrefixCamel}CfnNoneDatasource`,
-            type: 'NONE'
-        });
-    }
-
-    /*
-    createResolvers() {
-        const schema = new appsync.CfnGraphQLSchema(this, `${this.props}CfnSchema`, {
-            apiId: this.props.graphqlApi.attrApiId,
-            definition: readFileSync(this.props.schema).toString()
-        });
-
-        // read resolvers from yaml
-        const resolvers = load(readFileSync(this.props.resolvers, 'utf8'));
-
-        // create resolvers
-        if (Array.isArray(resolvers)) {
-            resolvers.forEach((resolver: any) => {
-                const resolvername = `${resolver.fieldName}${resolver.typeName}-resolver`
-
-                if (['lambda', 'prisma-appsync'].includes(resolver.dataSource) && this.dataSources.lambda) {
-                    const cfnResolver = new appsync.CfnResolver(this, resolvername, {
-                        apiId: this.props.graphqlApi.attrApiId,
-                        typeName: resolver.typeName,
-                        fieldName: resolver.fieldName,
-                        dataSourceName: this.dataSources.lambda.attrName
-                    });
-                    cfnResolver.addDependsOn(schema);
-                }
-                else if (resolver.dataSource === 'none' && this.dataSources.none) {
-                    const cfnResolver = new appsync.CfnResolver(this, resolvername, {
-                        apiId: this.props.graphqlApi.attrApiId,
-                        typeName: resolver.typeName,
-                        fieldName: resolver.fieldName,
-                        dataSourceName: this.dataSources.none.attrName,
-                        requestMappingTemplate: resolver.requestMappingTemplate,
-                        responseMappingTemplate: resolver.responseMappingTemplate
-                    });
-                    cfnResolver.addDependsOn(schema);
-                }
-            });
-        }
-    }
-    */
 }

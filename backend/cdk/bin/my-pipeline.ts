@@ -94,7 +94,9 @@ new ResolverStack(app, `${fullEnvName}ResolverStrack`, {
     schema: join(process.cwd(), 'prisma/generated/merged-schema.graphql'),
     resolvers: join(process.cwd(), 'prisma/generated/prisma-appsync/resolvers.yaml'),
     graphqlApi: graphqlApi,
-    dataSources: prismaStack.dataSources
+    lambdaApiRole: prismaStack.lambdaApiRole,
+    directResolverFn: prismaStack.directResolverFn
+
 });
 
 
