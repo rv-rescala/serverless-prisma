@@ -17,7 +17,7 @@ model User {
     id        Int      @id @default(autoincrement())
     email     String   @unique
     fullname  String?
-    oders     Order[]
+    orders     Order[]
     createdAt DateTime @default(now())
 }
 
@@ -27,6 +27,7 @@ model Order {
     authorId  Int?
     title     String
     views     Int?     @default(1)
+    value     Int?
     published Boolean? @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

@@ -2,7 +2,7 @@ type User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"]
   id: Int!
   email: AWSEmail!
   fullname: String
-  oders: [Order]
+  orders: [Order]
   createdAt: AWSDateTime!
 }
 
@@ -12,6 +12,7 @@ type Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"
   authorId: Int
   title: String!
   views: Int
+  value: Int
   published: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -43,7 +44,7 @@ input UserWhereInputWithoutNullables {
   id: IntFilter
   email: AWSEmailFilter
   fullname: StringNullableFilter
-  oders: OrderFilter
+  orders: OrderFilter
   createdAt: AWSDateTimeFilter
 }
 
@@ -56,7 +57,7 @@ input UserWhereInput {
   id: IntFilter
   email: AWSEmailFilter
   fullname: StringNullableFilter
-  oders: OrderFilter
+  orders: OrderFilter
   createdAt: AWSDateTimeFilter
 }
 
@@ -82,7 +83,7 @@ input UserExtendedWhereUniqueInput {
   id: Int
   email: AWSEmail
   fullname: StringNullableFilter
-  oders: OrderFilter
+  orders: OrderFilter
   createdAt: AWSDateTimeFilter
 }
 
@@ -90,7 +91,7 @@ input UserOrderByInput {
   id: OrderByArg
   email: OrderByArg
   fullname: OrderByArg
-  oders: OrderOrderByInput
+  orders: OrderOrderByInput
   createdAt: OrderByArg
 }
 
@@ -98,7 +99,7 @@ input UserCreateInput {
   id: Int
   email: AWSEmail!
   fullname: String
-  oders: UserOdersCreateNestedInput
+  orders: UserOrdersCreateNestedInput
   createdAt: AWSDateTime
 }
 
@@ -113,7 +114,7 @@ input UserUpdateInput {
   id: Int
   email: AWSEmail
   fullname: String
-  oders: UserOdersUpdateNestedInput
+  orders: UserOrdersUpdateNestedInput
   createdAt: AWSDateTime
 }
 
@@ -147,13 +148,13 @@ input UserConnectOrCreateInput {
   create: UserCreateInput!
 }
 
-input UserOdersCreateNestedInput {
+input UserOrdersCreateNestedInput {
   create: [OrderCreateInput]
   connect: [OrderWhereUniqueInput]
   connectOrCreate: [OrderConnectOrCreateInput]
 }
 
-input UserOdersUpdateNestedInput {
+input UserOrdersUpdateNestedInput {
   connect: [OrderWhereUniqueInput]
   create: [OrderCreateInput]
   connectOrCreate: [OrderConnectOrCreateInput]
@@ -181,6 +182,7 @@ input OrderWhereInputWithoutNullables {
   authorId: IntNullableFilter
   title: StringFilter
   views: IntNullableFilter
+  value: IntNullableFilter
   published: BooleanNullableFilter
   createdAt: AWSDateTimeFilter
   updatedAt: AWSDateTimeFilter
@@ -197,6 +199,7 @@ input OrderWhereInput {
   authorId: IntNullableFilter
   title: StringFilter
   views: IntNullableFilter
+  value: IntNullableFilter
   published: BooleanNullableFilter
   createdAt: AWSDateTimeFilter
   updatedAt: AWSDateTimeFilter
@@ -210,6 +213,7 @@ input OrderScalarWhereInput {
   authorId: IntNullableFilter
   title: StringFilter
   views: IntNullableFilter
+  value: IntNullableFilter
   published: BooleanNullableFilter
   createdAt: AWSDateTimeFilter
   updatedAt: AWSDateTimeFilter
@@ -228,6 +232,7 @@ input OrderExtendedWhereUniqueInput {
   authorId: IntNullableFilter
   title: StringFilter
   views: IntNullableFilter
+  value: IntNullableFilter
   published: BooleanNullableFilter
   createdAt: AWSDateTimeFilter
   updatedAt: AWSDateTimeFilter
@@ -239,6 +244,7 @@ input OrderOrderByInput {
   authorId: OrderByArg
   title: OrderByArg
   views: OrderByArg
+  value: OrderByArg
   published: OrderByArg
   createdAt: OrderByArg
   updatedAt: OrderByArg
@@ -249,6 +255,7 @@ input OrderCreateInput {
   author: OrderAuthorCreateNestedInput
   title: String!
   views: Int
+  value: Int
   published: Boolean
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -258,6 +265,7 @@ input OrderCreateManyInput {
   id: Int
   title: String!
   views: Int
+  value: Int
   published: Boolean
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -268,6 +276,7 @@ input OrderUpdateInput {
   author: OrderAuthorUpdateNestedInput
   title: String
   views: Int
+  value: Int
   published: Boolean
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -276,6 +285,7 @@ input OrderUpdateInput {
 input OrderOperationInput {
   id: IntOperation
   views: IntOperation
+  value: IntOperation
 }
 
 input OrderUpdateUniqueInput {
@@ -694,6 +704,7 @@ type Blog @aws_api_key {
 type Post @aws_api_key {
   id: ID!
   title: String!
+  status: String
   blog: Blog
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
   createdAt: AWSDateTime!
@@ -909,6 +920,7 @@ type ModelPostConnection @aws_api_key {
 input ModelPostFilterInput {
   id: ModelIDInput
   title: ModelStringInput
+  status: ModelStringInput
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
   not: ModelPostFilterInput
@@ -917,6 +929,7 @@ input ModelPostFilterInput {
 
 input ModelPostConditionInput {
   title: ModelStringInput
+  status: ModelStringInput
   and: [ModelPostConditionInput]
   or: [ModelPostConditionInput]
   not: ModelPostConditionInput
@@ -926,12 +939,14 @@ input ModelPostConditionInput {
 input CreatePostInput {
   id: ID
   title: String!
+  status: String
   blogPostsId: ID
 }
 
 input UpdatePostInput {
   id: ID!
   title: String
+  status: String
   blogPostsId: ID
 }
 
@@ -942,6 +957,7 @@ input DeletePostInput {
 input ModelSubscriptionPostFilterInput {
   id: ModelSubscriptionIDInput
   title: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
   and: [ModelSubscriptionPostFilterInput]
   or: [ModelSubscriptionPostFilterInput]
 }

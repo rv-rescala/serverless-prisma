@@ -6,7 +6,7 @@ type User
     id: Int!
     email: AWSEmail!
     fullname: String
-    oders: [Order]
+    orders: [Order]
     createdAt: AWSDateTime!
 }
 
@@ -20,6 +20,7 @@ type Order
     authorId: Int
     title: String!
     views: Int
+    value: Int
     published: Boolean
     createdAt: AWSDateTime!
     updatedAt: AWSDateTime!
@@ -55,7 +56,7 @@ input UserWhereInputWithoutNullables {
     id: IntFilter
     email: AWSEmailFilter
     fullname: StringNullableFilter
-    oders: OrderFilter
+    orders: OrderFilter
     createdAt: AWSDateTimeFilter
 }
 
@@ -68,7 +69,7 @@ input UserWhereInput {
     id: IntFilter
     email: AWSEmailFilter
     fullname: StringNullableFilter
-    oders: OrderFilter
+    orders: OrderFilter
     createdAt: AWSDateTimeFilter
 }
 
@@ -94,7 +95,7 @@ input UserExtendedWhereUniqueInput {
     id: Int
     email: AWSEmail
     fullname: StringNullableFilter
-    oders: OrderFilter
+    orders: OrderFilter
     createdAt: AWSDateTimeFilter
 }
 
@@ -102,7 +103,7 @@ input UserOrderByInput {
     id: OrderByArg
     email: OrderByArg
     fullname: OrderByArg
-    oders: OrderOrderByInput
+    orders: OrderOrderByInput
     createdAt: OrderByArg
 }
 
@@ -110,7 +111,7 @@ input UserCreateInput {
     id: Int
     email: AWSEmail!
     fullname: String
-    oders: UserOdersCreateNestedInput
+    orders: UserOrdersCreateNestedInput
     createdAt: AWSDateTime
 }
 
@@ -125,7 +126,7 @@ input UserUpdateInput {
     id: Int
     email: AWSEmail
     fullname: String
-    oders: UserOdersUpdateNestedInput
+    orders: UserOrdersUpdateNestedInput
     createdAt: AWSDateTime
 }
 
@@ -159,13 +160,13 @@ input UserConnectOrCreateInput {
     create: UserCreateInput!
 }
 
-input UserOdersCreateNestedInput {
+input UserOrdersCreateNestedInput {
     create: [OrderCreateInput]
     connect: [OrderWhereUniqueInput]
     connectOrCreate: [OrderConnectOrCreateInput]
 }
 
-input UserOdersUpdateNestedInput {
+input UserOrdersUpdateNestedInput {
     connect: [OrderWhereUniqueInput]
     create: [OrderCreateInput]
     connectOrCreate: [OrderConnectOrCreateInput]
@@ -193,6 +194,7 @@ input OrderWhereInputWithoutNullables {
     authorId: IntNullableFilter
     title: StringFilter
     views: IntNullableFilter
+    value: IntNullableFilter
     published: BooleanNullableFilter
     createdAt: AWSDateTimeFilter
     updatedAt: AWSDateTimeFilter
@@ -209,6 +211,7 @@ input OrderWhereInput {
     authorId: IntNullableFilter
     title: StringFilter
     views: IntNullableFilter
+    value: IntNullableFilter
     published: BooleanNullableFilter
     createdAt: AWSDateTimeFilter
     updatedAt: AWSDateTimeFilter
@@ -222,6 +225,7 @@ input OrderScalarWhereInput {
     authorId: IntNullableFilter
     title: StringFilter
     views: IntNullableFilter
+    value: IntNullableFilter
     published: BooleanNullableFilter
     createdAt: AWSDateTimeFilter
     updatedAt: AWSDateTimeFilter
@@ -240,6 +244,7 @@ input OrderExtendedWhereUniqueInput {
     authorId: IntNullableFilter
     title: StringFilter
     views: IntNullableFilter
+    value: IntNullableFilter
     published: BooleanNullableFilter
     createdAt: AWSDateTimeFilter
     updatedAt: AWSDateTimeFilter
@@ -251,6 +256,7 @@ input OrderOrderByInput {
     authorId: OrderByArg
     title: OrderByArg
     views: OrderByArg
+    value: OrderByArg
     published: OrderByArg
     createdAt: OrderByArg
     updatedAt: OrderByArg
@@ -261,6 +267,7 @@ input OrderCreateInput {
     author: OrderAuthorCreateNestedInput
     title: String!
     views: Int
+    value: Int
     published: Boolean
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
@@ -270,6 +277,7 @@ input OrderCreateManyInput {
     id: Int
     title: String!
     views: Int
+    value: Int
     published: Boolean
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
@@ -280,6 +288,7 @@ input OrderUpdateInput {
     author: OrderAuthorUpdateNestedInput
     title: String
     views: Int
+    value: Int
     published: Boolean
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
@@ -288,6 +297,7 @@ input OrderUpdateInput {
 input OrderOperationInput {
     id: IntOperation
     views: IntOperation
+    value: IntOperation
 }
 
 input OrderUpdateUniqueInput {

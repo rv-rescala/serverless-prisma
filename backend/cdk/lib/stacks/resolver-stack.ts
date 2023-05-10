@@ -1,40 +1,66 @@
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { readFileSync } from 'fs'
+import type { Construct } from 'constructs'
+import type { StackProps } from 'aws-cdk-lib'
 import {
-    aws_iam as iam,
+    Duration,
+    RemovalPolicy,
+    Stack,
     aws_appsync as appsync,
-    aws_lambda as lambda
+    aws_iam as iam,
+    aws_lambda as lambda,
+    aws_lambda_nodejs as lambdaNodejs,
 } from 'aws-cdk-lib'
+import { VpcRds } from '../modules/vpc-rds'
+import { aws_ec2 } from "aws-cdk-lib"
+import { kebabCase, camelCase } from 'scule'
+import { join } from 'path'
 import { load } from 'js-yaml'
 
-interface ResolverStackProps extends cdk.StackProps {
-    envName: string;
+
+export interface ResolverStackProps {
+    resourcesPrefix: string
+    function: {
+        handlerPath: string
+        memorySize: number
+        useWarmUp: number
+        policies?: iam.PolicyStatementProps[]
+        bundling?: lambdaNodejs.BundlingOptions
+        environment?: {}
+    }
     graphqlApi: appsync.CfnGraphQLApi
-    schema: string
-    resolvers: string
+    vpcRds: VpcRds
+    schemaPath: string
+    resolverPath: string
     lambdaApiRole: iam.Role
+    prismaLambda:  lambdaNodejs.NodejsFunction
     directResolverFn: lambda.Alias
 }
+import { readFileSync } from 'fs'
 
-export class ResolverStack extends cdk.Stack {
-    public readonly props: ResolverStackProps;
-    private lambdaDataSource: appsync.CfnDataSource;
-    private noneDataSource: appsync.CfnDataSource;
-    private id: string;
 
-    constructor(scope: Construct, id: string, props: ResolverStackProps) {
-        super(scope, id, props);
-        this.props = props;
-       
-        // force update for resolver
-        this.id = Math.floor( Math.random() * 100000 ).toString();
+export class ResolverStack extends Stack {
+    private props: ResolverStackProps
+    private resourcesPrefix: string
+    private resourcesPrefixCamel: string
+    private uuid: string
+    private lambdaDataSource: appsync.CfnDataSource
+    private noneDataSource: appsync.CfnDataSource
+
+
+    constructor(scope: Construct, id: string, tplProps: ResolverStackProps, props?: StackProps) {
+        super(scope, id, props)
+
+        // stack naming convention
+        this.props = tplProps;
+        this.resourcesPrefix = kebabCase(this.props.resourcesPrefix);
+        this.resourcesPrefixCamel = camelCase(this.resourcesPrefix);
+        this.uuid = Math.floor( Math.random() * 100000 ).toString();
+
         this.createDataSources();
         this.createResolvers();
     }
 
     createDataSources() {
-        const lambdaDatasourceName =  `${this.props.envName}${this.id}CfnLambdaDatasource`;
+        const lambdaDatasourceName =  `${this.props.resourcesPrefix}CfnLambdaDatasource`;
         this.lambdaDataSource = new appsync.CfnDataSource(this, lambdaDatasourceName, {
             apiId: this.props.graphqlApi.attrApiId,
             name: lambdaDatasourceName,
@@ -45,7 +71,7 @@ export class ResolverStack extends cdk.Stack {
             }
         });
 
-        const noneDatasourceName =  `${this.props.envName}${this.id}CfnNoneDatasource`
+        const noneDatasourceName =  `${this.props.resourcesPrefix}CfnNoneDatasource`
         this.noneDataSource = new appsync.CfnDataSource(this, noneDatasourceName, {
             apiId: this.props.graphqlApi.attrApiId,
             name: noneDatasourceName,
@@ -55,18 +81,19 @@ export class ResolverStack extends cdk.Stack {
 
     createResolvers() {
         // force update for shema and resolver
-        const schema = new appsync.CfnGraphQLSchema(this, `${this.props.envName}${this.id}CfnSchema`, {
+        const schema = new appsync.CfnGraphQLSchema(this, `${this.resourcesPrefix}${this.uuid}CfnSchema`, {
             apiId: this.props.graphqlApi.attrApiId,
-            definition: readFileSync(this.props.schema).toString()
+            definition: readFileSync(this.props.schemaPath).toString()
         });
+        schema.node.addDependency(this.lambdaDataSource);
 
         // read resolvers from yaml
-        const resolvers = load(readFileSync(this.props.resolvers, 'utf8'));
+        const resolvers = load(readFileSync(this.props.resolverPath, 'utf8'));
 
         // create resolvers
         if (Array.isArray(resolvers)) {
             resolvers.forEach((resolver: any) => {
-                const resolvername = `${resolver.fieldName}${resolver.typeName}${this.id}resolver`
+                const resolvername = `${resolver.fieldName}${resolver.typeName}${this.uuid}resolver`
 
                 if (['lambda', 'prisma-appsync'].includes(resolver.dataSource)) {
                     const cfnResolver = new appsync.CfnResolver(this, resolvername, {
@@ -75,7 +102,7 @@ export class ResolverStack extends cdk.Stack {
                         fieldName: resolver.fieldName,
                         dataSourceName: this.lambdaDataSource.attrName
                     });
-                    cfnResolver.addDependsOn(schema);
+                    cfnResolver.node.addDependency(schema);
                 }
                 else if (resolver.dataSource === 'none') {
                     const cfnResolver = new appsync.CfnResolver(this, resolvername, {
@@ -86,7 +113,7 @@ export class ResolverStack extends cdk.Stack {
                         requestMappingTemplate: resolver.requestMappingTemplate,
                         responseMappingTemplate: resolver.responseMappingTemplate
                     });
-                    cfnResolver.addDependsOn(schema);
+                    cfnResolver.node.addDependency(schema);
                 }
             });
         }

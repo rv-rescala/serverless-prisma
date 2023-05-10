@@ -4,7 +4,7 @@ import {
 } from 'aws-cdk-lib'
 import { join } from 'path'
 import { kebabCase } from 'scule'
-import { PrismaAppSyncStack } from '../stacks/prisma-appsync-stack'
+import { PrismaAppSyncStack } from '../stacks/resolver-stack'
 import type { Construct } from 'constructs'
 import { AuthorizationType } from 'aws-cdk-lib/aws-appsync'
 

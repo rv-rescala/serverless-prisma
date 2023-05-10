@@ -10,6 +10,7 @@ type Blog @aws_api_key {
 type Post @aws_api_key {
   id: ID!
   title: String!
+  status: String
   blog: Blog
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
   createdAt: AWSDateTime!
@@ -258,6 +259,7 @@ type ModelPostConnection @aws_api_key {
 input ModelPostFilterInput {
   id: ModelIDInput
   title: ModelStringInput
+  status: ModelStringInput
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
   not: ModelPostFilterInput
@@ -266,6 +268,7 @@ input ModelPostFilterInput {
 
 input ModelPostConditionInput {
   title: ModelStringInput
+  status: ModelStringInput
   and: [ModelPostConditionInput]
   or: [ModelPostConditionInput]
   not: ModelPostConditionInput
@@ -275,12 +278,14 @@ input ModelPostConditionInput {
 input CreatePostInput {
   id: ID
   title: String!
+  status: String
   blogPostsId: ID
 }
 
 input UpdatePostInput {
   id: ID!
   title: String
+  status: String
   blogPostsId: ID
 }
 
@@ -291,6 +296,7 @@ input DeletePostInput {
 input ModelSubscriptionPostFilterInput {
   id: ModelSubscriptionIDInput
   title: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
   and: [ModelSubscriptionPostFilterInput]
   or: [ModelSubscriptionPostFilterInput]
 }

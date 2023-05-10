@@ -11,6 +11,7 @@ type Blog @model {
 type Post @model {
   id: ID!
   title: String!
+  status: String
   blog: Blog @belongsTo
   comments: [Comment] @hasMany
 }

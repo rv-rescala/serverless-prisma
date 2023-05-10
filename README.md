@@ -85,7 +85,7 @@ docker-compose up -d
 2. Generate prisma client
 
 ```bash
-yarn generate # for generate prisma client, create GraphQL client to prisma/generate
+npm run generate # for generate prisma client, create GraphQL client to prisma/generate
 npx prisma migrate dev --name init # for create migration file, create sql and migrate it to DB to prisma/migration
 cp prisma/generated/migration/[target_date]/migration.sql prisma/migration.sql # for migration target sql
 ```
@@ -115,9 +115,9 @@ npm install
 
 ```bash
 # edit cdk.json, change app "name" and "schema" to your name
-# please update amplify/api/backend/cli-inputs.json and paramers.json of api name
+# please update amplify/api/backend/cli-inputs.json and amplify/api/backend/paramers.json of api name
 amplify export --out ./cdk/lib/
-cdk deploy --all -c env=[Name]
+npm run deploy --env=[Name]
 ```
 
 3. Create schema
@@ -147,8 +147,8 @@ yarn cdk destroy --all -c env={EnvName}
 2. Generate prisma client
 
 ```bash
-yarn generate
-yarn codegen
+npm run generate
+npm run codegen
 # rm -rf prisma/migrations
 npx prisma migrate dev --name init
 ```
@@ -156,6 +156,13 @@ npx prisma migrate dev --name init
 3. Copy prisma/migrations/[target_date]/migration.sql to prisma/migration.sql
 
 4. Test and Deploy to AWS
+
+! Please delete resolver stack before deploying, there are issue of overwriting resolver.
+
+```bash
+aws cloudformation list-stacks | grep "Resolver"
+cdk destroy --ServerlssPrismadevResolverStack
+````
 
 ## Appsync -> DynamoDB
 
