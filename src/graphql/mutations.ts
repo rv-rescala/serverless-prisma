@@ -2,6 +2,302 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createUser = /* GraphQL */ `
+  mutation CreateUser($data: UserCreateInput!) {
+    createUser(data: $data) {
+      id
+      email
+      fullname
+      orders {
+        id
+        author {
+          id
+          email
+          fullname
+          createdAt
+        }
+        authorId
+        title
+        views
+        value
+        published
+        createdAt
+        updatedAt
+      }
+      createdAt
+    }
+  }
+`;
+export const createManyUsers = /* GraphQL */ `
+  mutation CreateManyUsers(
+    $data: [UserCreateManyInput!]
+    $skipDuplicates: Boolean
+  ) {
+    createManyUsers(data: $data, skipDuplicates: $skipDuplicates) {
+      count
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $where: UserWhereUniqueInput!
+    $data: UserUpdateInput
+    $operation: UserOperationInput
+  ) {
+    updateUser(where: $where, data: $data, operation: $operation) {
+      id
+      email
+      fullname
+      orders {
+        id
+        author {
+          id
+          email
+          fullname
+          createdAt
+        }
+        authorId
+        title
+        views
+        value
+        published
+        createdAt
+        updatedAt
+      }
+      createdAt
+    }
+  }
+`;
+export const updateManyUsers = /* GraphQL */ `
+  mutation UpdateManyUsers(
+    $where: UserWhereInput!
+    $data: UserUpdateInput
+    $operation: UserOperationInput
+  ) {
+    updateManyUsers(where: $where, data: $data, operation: $operation) {
+      count
+    }
+  }
+`;
+export const upsertUser = /* GraphQL */ `
+  mutation UpsertUser(
+    $create: UserCreateInput!
+    $update: UserUpdateInput!
+    $where: UserWhereUniqueInput!
+  ) {
+    upsertUser(create: $create, update: $update, where: $where) {
+      id
+      email
+      fullname
+      orders {
+        id
+        author {
+          id
+          email
+          fullname
+          createdAt
+        }
+        authorId
+        title
+        views
+        value
+        published
+        createdAt
+        updatedAt
+      }
+      createdAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser($where: UserWhereUniqueInput!) {
+    deleteUser(where: $where) {
+      id
+      email
+      fullname
+      orders {
+        id
+        author {
+          id
+          email
+          fullname
+          createdAt
+        }
+        authorId
+        title
+        views
+        value
+        published
+        createdAt
+        updatedAt
+      }
+      createdAt
+    }
+  }
+`;
+export const deleteManyUsers = /* GraphQL */ `
+  mutation DeleteManyUsers($where: UserWhereInput!) {
+    deleteManyUsers(where: $where) {
+      count
+    }
+  }
+`;
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder($data: OrderCreateInput!) {
+    createOrder(data: $data) {
+      id
+      author {
+        id
+        email
+        fullname
+        orders {
+          id
+          authorId
+          title
+          views
+          value
+          published
+          createdAt
+          updatedAt
+        }
+        createdAt
+      }
+      authorId
+      title
+      views
+      value
+      published
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createManyOrders = /* GraphQL */ `
+  mutation CreateManyOrders(
+    $data: [OrderCreateManyInput!]
+    $skipDuplicates: Boolean
+  ) {
+    createManyOrders(data: $data, skipDuplicates: $skipDuplicates) {
+      count
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $where: OrderWhereUniqueInput!
+    $data: OrderUpdateInput
+    $operation: OrderOperationInput
+  ) {
+    updateOrder(where: $where, data: $data, operation: $operation) {
+      id
+      author {
+        id
+        email
+        fullname
+        orders {
+          id
+          authorId
+          title
+          views
+          value
+          published
+          createdAt
+          updatedAt
+        }
+        createdAt
+      }
+      authorId
+      title
+      views
+      value
+      published
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateManyOrders = /* GraphQL */ `
+  mutation UpdateManyOrders(
+    $where: OrderWhereInput!
+    $data: OrderUpdateInput
+    $operation: OrderOperationInput
+  ) {
+    updateManyOrders(where: $where, data: $data, operation: $operation) {
+      count
+    }
+  }
+`;
+export const upsertOrder = /* GraphQL */ `
+  mutation UpsertOrder(
+    $create: OrderCreateInput!
+    $update: OrderUpdateInput!
+    $where: OrderWhereUniqueInput!
+  ) {
+    upsertOrder(create: $create, update: $update, where: $where) {
+      id
+      author {
+        id
+        email
+        fullname
+        orders {
+          id
+          authorId
+          title
+          views
+          value
+          published
+          createdAt
+          updatedAt
+        }
+        createdAt
+      }
+      authorId
+      title
+      views
+      value
+      published
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder($where: OrderWhereUniqueInput!) {
+    deleteOrder(where: $where) {
+      id
+      author {
+        id
+        email
+        fullname
+        orders {
+          id
+          authorId
+          title
+          views
+          value
+          published
+          createdAt
+          updatedAt
+        }
+        createdAt
+      }
+      authorId
+      title
+      views
+      value
+      published
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteManyOrders = /* GraphQL */ `
+  mutation DeleteManyOrders($where: OrderWhereInput!) {
+    deleteManyOrders(where: $where) {
+      count
+    }
+  }
+`;
 export const createTodo = /* GraphQL */ `
   mutation CreateTodo(
     $input: CreateTodoInput!

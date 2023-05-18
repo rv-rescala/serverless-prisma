@@ -123,10 +123,11 @@ yarn run dev
 # edit cdk.json, change app "name" and "schema" to your name
 amplify init
 # if you want new env, please run this command:
-# amplify env add prod
+# amplify env add [env name]
 amplify push
 amplify export --out ./cdk/lib/
 cdk deploy --all
+amplify codegen # for sync schema
 ```
 
 3. Create schema
