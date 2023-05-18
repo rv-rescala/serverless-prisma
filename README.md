@@ -23,7 +23,7 @@ This template provides GraphQL using AWS serveless services.
 
 - Cognito authentication support
 
-Infra/Backen/Frontend code is written by typescript, and deploy and debelop by AWS CDK and Amplify.
+All of codes are written by typescript, and deploy it by AWS CDK and Amplify.
 
 ## Tech Stack
 
@@ -63,6 +63,19 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 ## Directory Structure
 
 ```bash
+├── amplify
+├── cdk
+├── cdk.json
+├── codegen.yml
+├── docker-compose.yaml
+├── docs
+├── dokcer
+├── gatsby
+├── gqlserver
+├── jest.config.js
+├── package.json
+├── prisma
+└── tsconfig.json
 ```
 
 # Getting Started
@@ -72,7 +85,6 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 1. Install dependencies
 
 ```bash
-cd backend
 npm install
 ```
 

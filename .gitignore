@@ -12,3 +12,7 @@ cdk.out
 # local env
 .DS_Store
 .vscode
+
+# prisma
+prisma/generated
+prisma/migrations
