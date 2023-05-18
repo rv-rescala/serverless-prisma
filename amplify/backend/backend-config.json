@@ -1,13 +1,13 @@
 {
   "api": {
-    "backend": {
+    "serverlessprisma": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "backend19ccda4f"
+          "resourceName": "serverlessprisma9afc49ff"
         }
       ],
       "output": {
@@ -15,8 +15,8 @@
           "additionalAuthenticationProviders": [
             {
               "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-05-09T02:27:02.884Z",
-                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2023-05-25T13:05:46.818Z",
+                "apiKeyExpirationDays": 7,
                 "description": ""
               },
               "authenticationType": "API_KEY"
@@ -25,7 +25,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authbackend19ccda4f"
+              "userPoolId": "authserverlessprisma9afc49ff"
             }
           }
         }
@@ -35,7 +35,7 @@
     }
   },
   "auth": {
-    "backend19ccda4f": {
+    "serverlessprisma9afc49ff": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -51,9 +51,7 @@
           "EMAIL"
         ],
         "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "verificationMechanisms": [
           "EMAIL"
         ]

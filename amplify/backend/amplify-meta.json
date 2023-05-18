@@ -1,28 +1,26 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-backend-dev-230022-authRole",
-      "UnauthRoleArn": "arn:aws:iam::119399226835:role/amplify-backend-dev-230022-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::119399226835:role/amplify-backend-dev-230022-authRole",
+      "AuthRoleName": "amplify-serverlessprisma-dev-220254-authRole",
+      "UnauthRoleArn": "arn:aws:iam::119399226835:role/amplify-serverlessprisma-dev-220254-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::119399226835:role/amplify-serverlessprisma-dev-220254-authRole",
       "Region": "ap-northeast-1",
-      "DeploymentBucketName": "amplify-backend-dev-230022-deployment",
-      "UnauthRoleName": "amplify-backend-dev-230022-unauthRole",
-      "StackName": "amplify-backend-dev-230022",
-      "StackId": "arn:aws:cloudformation:ap-northeast-1:119399226835:stack/amplify-backend-dev-230022/ada9d2f0-eda8-11ed-97b5-0a494010225d",
-      "AmplifyAppId": "d2l9fcwnsq65bn"
+      "DeploymentBucketName": "amplify-serverlessprisma-dev-220254-deployment",
+      "UnauthRoleName": "amplify-serverlessprisma-dev-220254-unauthRole",
+      "StackName": "amplify-serverlessprisma-dev-220254",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:119399226835:stack/amplify-serverlessprisma-dev-220254/4ed7f8c0-f57c-11ed-a592-0e4f81ea5495",
+      "AmplifyAppId": "d3ixpqmf9wxkuv"
     }
   },
   "auth": {
-    "backend19ccda4f": {
+    "serverlessprisma9afc49ff": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "signupAttributes": [
           "EMAIL"
         ],
@@ -37,20 +35,35 @@
         "verificationMechanisms": [
           "EMAIL"
         ]
-      }
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-serverlessprisma-dev-220254-deployment/amplify-cfn-templates/auth/serverlessprisma9afc49ff-cloudformation-template.json",
+        "logicalId": "authserverlessprisma9afc49ff"
+      },
+      "lastPushTimeStamp": "2023-05-18T13:13:33.788Z",
+      "output": {
+        "UserPoolId": "ap-northeast-1_Sx4z7Mut4",
+        "AppClientIDWeb": "1l14v0lqniubfvdbi9krpttdib",
+        "AppClientID": "1ltglrck33p5aqknbflf2glnro",
+        "IdentityPoolId": "ap-northeast-1:26341b89-c150-4cf3-ba9d-c51f270d56f1",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-northeast-1:119399226835:userpool/ap-northeast-1_Sx4z7Mut4",
+        "IdentityPoolName": "serverlessprisma9afc49ff_identitypool_9afc49ff__dev",
+        "UserPoolName": "serverlessprisma9afc49ff_userpool_9afc49ff"
+      },
+      "lastPushDirHash": "U0MA/IBK6yY7VQidUekQgWmZHW4="
     }
   },
   "api": {
-    "backend": {
+    "serverlessprisma": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
+          "category": "auth",
+          "resourceName": "serverlessprisma9afc49ff",
           "attributes": [
             "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "backend19ccda4f"
+          ]
         }
       ],
       "output": {
@@ -58,22 +71,30 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authbackend19ccda4f"
+              "userPoolId": "authserverlessprisma9afc49ff"
             }
           },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "API_KEY",
               "apiKeyConfig": {
-                "apiKeyExpirationDays": 365,
-                "apiKeyExpirationDate": "2024-05-09T02:27:02.884Z",
+                "apiKeyExpirationDays": 7,
+                "apiKeyExpirationDate": "2023-05-25T13:05:46.818Z",
                 "description": ""
               }
             }
           ]
-        }
+        },
+        "GraphQLAPIIdOutput": "edzo4bdkyvbs5iin7forbcqxda",
+        "GraphQLAPIEndpointOutput": "https://6mqlfsbzeffrvksythepkzmpgu.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-l2npztxdbfdplkvheijru37kme"
       },
-      "lastPushTimeStamp": "2023-05-10T02:27:03.880Z"
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-serverlessprisma-dev-220254-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiserverlessprisma"
+      },
+      "lastPushTimeStamp": "2023-05-18T13:13:33.788Z",
+      "lastPushDirHash": "sYDIO/H1dlhHwUNxTMp+AsQbyqM="
     }
   }
 }
