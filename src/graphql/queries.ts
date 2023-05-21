@@ -8,12 +8,18 @@ export const getUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -39,12 +45,18 @@ export const listUsers = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -77,6 +89,9 @@ export const getOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -112,6 +127,9 @@ export const listOrders = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId

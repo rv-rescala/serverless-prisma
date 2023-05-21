@@ -89,18 +89,10 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 npm install
 ```
 
-2. Run docker
+2. Build config
 
 ```bash
-docker-compose up -d
-```
-
-2. Generate prisma client
-
-```bash
-npm run generate # for generate prisma client, create GraphQL client to prisma/generate
-npx prisma migrate dev --name init # for create migration file, create sql and migrate it to DB to prisma/migration
-cp prisma/generated/migration/[target_date]/migration.sql prisma/migration.sql # for migration target sql
+bash ./scripts/build.sh [appname] [env] [schema_name] init
 ```
 
 3. Test by jest(Prisma Unit Test)
@@ -125,13 +117,10 @@ amplify init
 # if you want new env, please run this command:
 # amplify env add [env name]
 amplify push
-amplify export --out ./cdk/lib/
-cdk deploy --all
-amplify codegen # for sync schema
+bash ./scripts/build.sh [appname] [env] [schema_name] init
 ```
 
 3. Create schema
-
 ```bash
 aws lambda list-functions | grep "migration" # Please check function-name you deployed to AWS which include "migration"
 aws lambda invoke --function-name <function-name> output.json 
@@ -145,76 +134,41 @@ Please open Appsync and run GraphQL on the editor.
 x. Delete all resources
 
 ```bash
-cdk destroy --all
+bash ./scripts/destroy.sh [appname] [env] [schema_name] [version]
 ```
 
 # Customize
 
 ## Apprync -> Lambda -> RDS
 
-1. Edit prisma/schema.prisma
+1. Edit user/prisma/schema.prisma
 
-2. Generate prisma client
+2. Generate
 
 ```bash
-npm run generate
-npm run codegen
-# rm -rf prisma/migrations
-npx prisma migrate dev --name init
+bash ./scripts/build.sh [appname] [env] [schema_name] [version]
 ```
 
-3. Copy prisma/migrations/[target_date]/migration.sql to prisma/migration.sql
-
-4. Test and Deploy to AWS
-
-! Please delete resolver stack before deploying, there are issue of overwriting resolver.
+3. Deplpy
 
 ```bash
-aws cloudformation list-stacks | grep "Resolver"
-cdk destroy --ServerlssPrismadevResolverStack
-````
+bash ./scripts/deopy.sh [appname] [env] [schema_name] [version]
+```
 
 ## Appsync -> DynamoDB
 
-1. Edit amplify/api/backend/schema.graphql
+1. Edit amplify/schema.graphql
 
-2. Generate typescript 
+2. Generate
 
 ```bash
-# Change accessibility: @auth(rules: [{ allow: public }, { allow: groups, groups: ["user"] }])
-amplify export --out ./cdk/lib/
+bash ./scripts/build.sh [appname] [env] [schema_name] [version]
 ```
 
-# Frontend
-
-1. Install dependencies
+3. Deplpy
 
 ```bash
-cd frontend
-npm install
-```
-
-2. Setting amplify
-
-Please update src/aws-exports.js to your own Cognito Information
-
-```bash
-amplify init
-amplify add codegen --apiId [your graphql api id]
-# Please update src/aws-exports.js to your own Cognito Information
-# const awsmobile = {
-#    "aws_project_region": "", // Your region
-#    "aws_cognito_identity_pool_id": "", // Cognito Identity Pool ID
-#    "aws_cognito_region": "",  // Your region
-#    "aws_user_pools_id": "", // Cognito User Pool ID
-#    "aws_user_pools_web_client_id": ""  // Cognito User Pool ID
-# };
-```
-
-- [x] Update schema
-
-```bash
-amplify codegen
+bash ./scripts/deopy.sh [appname] [env] [schema_name] [version]
 ```
 
 ## Prerequisites

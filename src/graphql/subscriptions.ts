@@ -8,12 +8,18 @@ export const onCreatedUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -34,12 +40,18 @@ export const onUpdatedUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -60,12 +72,18 @@ export const onUpsertedUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -86,12 +104,18 @@ export const onDeletedUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -112,12 +136,18 @@ export const onMutatedUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -168,6 +198,9 @@ export const onCreatedOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -198,6 +231,9 @@ export const onUpdatedOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -228,6 +264,9 @@ export const onUpsertedOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -258,6 +297,9 @@ export const onDeletedOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -288,6 +330,9 @@ export const onMutatedOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId

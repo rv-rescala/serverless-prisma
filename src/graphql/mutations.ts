@@ -8,12 +8,18 @@ export const createUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -48,12 +54,18 @@ export const updateUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -89,12 +101,18 @@ export const upsertUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -115,12 +133,18 @@ export const deleteUser = /* GraphQL */ `
       id
       email
       fullname
+      comment
+      age
+      hoge
       orders {
         id
         author {
           id
           email
           fullname
+          comment
+          age
+          hoge
           createdAt
         }
         authorId
@@ -150,6 +174,9 @@ export const createOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -194,6 +221,9 @@ export const updateOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -239,6 +269,9 @@ export const upsertOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId
@@ -269,6 +302,9 @@ export const deleteOrder = /* GraphQL */ `
         id
         email
         fullname
+        comment
+        age
+        hoge
         orders {
           id
           authorId

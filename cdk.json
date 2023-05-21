@@ -18,10 +18,5 @@
     ]
   },
   "context": {
-    "app": {
-      "name": "serverlessprisma",
-      "schema": "cdk_prisma",
-      "env": "dev"
-    }
   }
 }
