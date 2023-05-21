@@ -1,12 +1,14 @@
 DROP SCHEMA IF EXISTS "cdk_prisma" CASCADE;
 CREATE SCHEMA "cdk_prisma";
-SET search_path TO "cdk_prisma";
-
+SET search_path TO "cdk_prisma"
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "fullname" TEXT,
+    "comment" TEXT,
+    "age" INTEGER,
+    "hoge" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -18,6 +20,7 @@ CREATE TABLE "Order" (
     "authorId" INTEGER,
     "title" TEXT NOT NULL,
     "views" INTEGER DEFAULT 1,
+    "value" INTEGER,
     "published" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

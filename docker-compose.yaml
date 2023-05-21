@@ -15,6 +15,6 @@ services:
       dockerfile: ./docker/Dockerfile
     restart: always
     ports:
-      - 15432:5432
+      - 5432:5432
     networks:
       - container-link

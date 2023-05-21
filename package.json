@@ -10,7 +10,7 @@
     "test": "jest",
     "cdk": "cdk",
     "generate": "npx prisma generate",
-    "dev": "npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx vite-node ./gqlserver/server.ts --watch -- --schema prisma/generated/prisma-appsync/schema.gql --handler gqlserver/handler.ts --watchers '[{\"watch\":[\"**/*.prisma\",\"*.prisma\"],\"exec\":\"npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:15432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && touch ./gqlserver/server.ts\"}]'",
+    "dev": "npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:5432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && DATABASE_URL='postgresql://postgres:postgres@localhost:5432/cdk_prisma?schema=cdk_prisma' npx vite-node ./gqlserver/server.ts --watch -- --schema prisma/generated/prisma-appsync/schema.gql --handler gqlserver/handler.ts --watchers '[{\"watch\":[\"**/*.prisma\",\"*.prisma\"],\"exec\":\"npx prisma generate && DATABASE_URL='postgresql://postgres:postgres@localhost:5432/cdk_prisma?schema=cdk_prisma' npx prisma db push --accept-data-loss && touch ./gqlserver/server.ts\"}]'",
     "codegen": "npx graphql-codegen"
   },
   "devDependencies": {
