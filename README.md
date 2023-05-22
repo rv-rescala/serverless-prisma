@@ -140,6 +140,12 @@ x. Delete all resources
 bash ./scripts/destroy.sh .env.dev
 ```
 
+# Frontend
+```bash
+cd gatsby
+npm install
+```
+
 # Customize
 
 ## Apprync -> Lambda -> RDS
@@ -174,7 +180,7 @@ bash ./scripts/build.sh [appname] [env] [schema_name] [version]
 bash ./scripts/deopy.sh [appname] [env] [schema_name] [version]
 ```
 
-## Prerequisites
+# Prerequisites
 
 - [Node.js](https://nodejs.org/en/download/) (v10.0.0 or higher)
 
@@ -182,8 +188,6 @@ bash ./scripts/deopy.sh [appname] [env] [schema_name] [version]
 
 - [Docker](https://docs.docker.com/get-docker/) (v19.03.0 or higher)
 
-
-## Installation
 
 # Reference
 1. [Prisma](https://www.prisma.io/)

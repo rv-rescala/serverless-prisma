@@ -4,22 +4,6 @@ import "@aws-amplify/ui-react/styles.css";
 import { API } from "aws-amplify";
 import { Auth } from "aws-amplify";
 
-async function getUserQuery(cognitoId: string) {
-  const q = `
-    query MyQuery {
-      getUser(where: { cognitoid: "${cognitoId}" }) {
-        username
-      }
-    }
-  `;
-  try {
-    const response = await API.graphql({ query: q });
-    console.log("Users:", response);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-  }
-}
-
 async function fetchUserGroups() {
 	try {
 	  const user = await Auth.currentAuthenticatedUser();
@@ -66,7 +50,6 @@ const IndexPage = () => {
 			  <p>Cognito ID: {cognitoId}</p>
 			  <p>User Groups: {userGroups.join(", ")}</p>
 			  <button onClick={signOut}>ログアウト</button>
-			  <button onClick={() => getUserQuery(cognitoId)}>getUserQuery</button>
 			</main>
 		  )}
 		</Authenticator>

@@ -1,13 +1,18 @@
 #!/bin/bash
 
-if [ $# -ne 4 ]; then
-  echo "Usage: $0 <appname> <env> <schema> <version>"
+if [ $# -eq 0 ]
+then
+  echo "Usage: $0 <env file>"
   exit 1
 fi
 
-appname=$1
-env=$2
-schema=$3
-version=$4
+if [ ! -f $1 ]
+then
+  echo "File not found: $1"
+  exit 1
+fi
 
-cdk destroy --all -c appname=$appname -c env=$env -c schema=$schema -c version=$version
+# .env load
+export $(cat $1 | xargs)
+
+cdk destroy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME
