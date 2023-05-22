@@ -1,0 +1,13 @@
+{
+  "stackName": "amplify-serverlessprisma-dev-144622",
+  "props": {
+    "templateFile": "root-stack-template.json",
+    "parameters": {
+      "AuthRoleName": "amplify-serverlessprisma-dev-144622-authRole",
+      "UnauthRoleName": "amplify-serverlessprisma-dev-144622-unauthRole",
+      "DeploymentBucketName": "amplify-serverlessprisma-dev-144622-deployment"
+    },
+    "preserveLogicalIds": true,
+    "loadNestedStacks": {}
+  }
+}
