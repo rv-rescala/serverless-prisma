@@ -11,7 +11,7 @@ export function createMigrateSQL(targetFolder: string, schenaName: string, isIni
     if(isInit) {
         sql = `DROP SCHEMA IF EXISTS "${schenaName}" CASCADE;
 CREATE SCHEMA "${schenaName}";
-SET search_path TO "${schenaName}"
+SET search_path TO "${schenaName}";
 ${migrateSQL}`
     }
     else {

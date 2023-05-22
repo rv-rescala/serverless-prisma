@@ -1,1 +1,1 @@
-CREATE SCHEMA cdk_prisma;
+CREATE SCHEMA serverlessprisma;

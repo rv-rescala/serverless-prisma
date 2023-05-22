@@ -1,40 +1,53 @@
 #!/bin/bash
 
-if [ $# -ne 4 ]; then
-  echo "Usage: $0 <appname> <env> <schema> <version>"
+if [ $# -eq 0 ]
+then
+  echo "Usage: $0 <env file>"
   exit 1
 fi
 
-appname=$1
-env=$2
-schema=$3
-version=$4
+if [ ! -f $1 ]
+then
+  echo "File not found: $1"
+  exit 1
+fi
+
+# .env load
+export $(cat $1 | xargs)
+
+echo $APPNAME
+echo $ENV
+echo $VERSION
+
+# create init
+echo "CREATE SCHEMA $APPNAME;" > docker/scripts/initdb/01_init_schema_and_tables.sql
+echo "DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/$APPNAME?schema=$APPNAME\"" > docker/.env.local
 
 cp user/prisma/shcema.prisma prisma/schema.prisma
-cp user/amplify/schema.gql amplify/backend/api/$appname/schema.graphql
+cp user/amplify/schema.gql amplify/backend/api/$APPNAME/schema.graphql
 amplify export --out ./cdk/lib/ -y
 tsc scripts/mergeGraphqlSchema.ts
-node scripts/mergeGraphqlSchema.js $appname
+node scripts/mergeGraphqlSchema.js $APPNAME
 npm run generate
 cp ./docker/.env.local ./.env
 docker compose up -d
-if [ "$version" = "init" ]; then
+if [ $VERSION = "init" ]; then
   npx prisma migrate reset
   rm -rf ./prisma/migrations
 fi
 echo "remove folders"
-find ./prisma/migrations -type d -name "*$version*" -print
-find ./prisma/migrations -type d -name "*$version*" -exec rm -rf {} \;
-npx prisma migrate dev --name $version
+find ./prisma/migrations -type d -name "*$VERSION*" -print
+find ./prisma/migrations -type d -name "*$VERSION*" -exec rm -rf {} \;
+npx prisma migrate dev --name $VERSION
 rm ./.env
 
 # geneate migration sql file
-migration_path=$(find ./prisma/migrations -type d -name "*$version*" -print)
+migration_path=$(find ./prisma/migrations -type d -name "*$VERSION*" -print)
 echo $migration_path
 
 tsc scripts/createMigrateSQL.ts
-if [ "$version" = "init" ]; then
-  node scripts/createMigrateSQL.js $migration_path $schema 1
+if [ "$VERSION" = "init" ]; then
+  node scripts/createMigrateSQL.js $migration_path $APPNAME 1
 else
-  node scripts/createMigrateSQL.js $migration_path $schema
+  node scripts/createMigrateSQL.js $migration_path $APPNAME
 fi

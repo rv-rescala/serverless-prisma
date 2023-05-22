@@ -1,6 +1,6 @@
-DROP SCHEMA IF EXISTS "cdk_prisma" CASCADE;
-CREATE SCHEMA "cdk_prisma";
-SET search_path TO "cdk_prisma"
+DROP SCHEMA IF EXISTS "serverlessprisma" CASCADE;
+CREATE SCHEMA "serverlessprisma";
+SET search_path TO "serverlessprisma";
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,

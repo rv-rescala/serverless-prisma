@@ -92,7 +92,10 @@ npm install
 2. Build config
 
 ```bash
-bash ./scripts/build.sh [appname] [env] [schema_name] init
+amplify init
+# add api, auth
+amplify push
+bash ./scripts/build.sh .env.dev
 ```
 
 3. Test by jest(Prisma Unit Test)
@@ -134,7 +137,7 @@ Please open Appsync and run GraphQL on the editor.
 x. Delete all resources
 
 ```bash
-bash ./scripts/destroy.sh [appname] [env] [schema_name] [version]
+bash ./scripts/destroy.sh .env.dev
 ```
 
 # Customize
