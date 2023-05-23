@@ -14,12 +14,14 @@ const app = new App();
 const appName = app.node.tryGetContext('appname');
 const env = app.node.tryGetContext('env');
 const schemaName = app.node.tryGetContext('schema');
+const cidr = app.node.tryGetContext('cidr');
 const fullEnvName = `${appName}${env}`;
 
 const rdsStack = new RDSStack(app, `${fullEnvName}RDSStack`, { 
     envName: `${fullEnvName}RDSStack`, 
+    appName: appName,
     schemaName: schemaName,
-    cidrRange: "10.100.0.0/16"
+    cidrRange: cidr
 });
 
 const useWarmUp = 0; // useWarmUp > 0 will incur extra costs

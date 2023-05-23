@@ -15,4 +15,4 @@ fi
 # .env load
 export $(cat $1 | xargs)
 
-cdk destroy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME
+cdk destroy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR

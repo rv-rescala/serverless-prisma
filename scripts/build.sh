@@ -18,6 +18,7 @@ export $(cat $1 | xargs)
 echo $APPNAME
 echo $ENV
 echo $VERSION
+echo $CIDR
 
 # create init
 echo "CREATE SCHEMA $APPNAME;" > docker/scripts/initdb/01_init_schema_and_tables.sql

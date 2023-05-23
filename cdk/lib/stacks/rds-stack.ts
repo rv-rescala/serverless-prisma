@@ -3,9 +3,10 @@ import { Construct } from "constructs";
 import { VpcRds } from "../modules/vpc-rds";
 
 interface RDSStackProps extends cdk.StackProps {
-    envName: string;
-    schemaName: string;
-    cidrRange: string;
+  envName: string;
+  appName: string;
+  schemaName: string;
+  cidrRange: string;
 }
 
 export class RDSStack extends cdk.Stack {
@@ -16,8 +17,8 @@ export class RDSStack extends cdk.Stack {
 
       const vpcRds = new VpcRds(this, {
         envName: props.envName,
-        dbUserName: props.envName,
-        dbName: props.envName,
+        dbUserName: "appuser",
+        dbName: props.appName,
         schemaName: props.schemaName,
         cidrRange: props.cidrRange
       });
