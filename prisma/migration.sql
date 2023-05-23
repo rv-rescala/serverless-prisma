@@ -3,8 +3,9 @@ CREATE SCHEMA "serverlessprisma";
 SET search_path TO "serverlessprisma";
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "groups" TEXT[],
     "fullname" TEXT,
     "comment" TEXT,
     "age" INTEGER,
@@ -17,7 +18,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
-    "authorId" INTEGER,
+    "userId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "views" INTEGER DEFAULT 1,
     "value" INTEGER,
@@ -29,7 +30,10 @@ CREATE TABLE "Order" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

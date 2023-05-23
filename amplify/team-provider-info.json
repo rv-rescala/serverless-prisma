@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-serverlessprisma-dev-173847-authRole",
+      "UnauthRoleArn": "arn:aws:iam::119399226835:role/amplify-serverlessprisma-dev-173847-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::119399226835:role/amplify-serverlessprisma-dev-173847-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-serverlessprisma-dev-173847-deployment",
+      "UnauthRoleName": "amplify-serverlessprisma-dev-173847-unauthRole",
+      "StackName": "amplify-serverlessprisma-dev-173847",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:119399226835:stack/amplify-serverlessprisma-dev-173847/3d46e770-f945-11ed-8bf2-0e08be4dc7b9",
+      "AmplifyAppId": "d18hr3bptaceu3"
+    },
+    "categories": {
+      "auth": {
+        "serverlessprisma02749e0c": {}
+      },
+      "api": {
+        "serverlessprisma": {}
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { AmplifyExportedBackend } from '@aws-amplify/cdk-exported-backend';
 import * as path from 'path'
 import { RDSStack } from '../lib/stacks/rds-stack';
 import { LambdaStack } from '../lib/stacks/lambda-stack';
+import { CognitoEventStack } from '../lib/stacks/cognito-event-stack';
 
 const app = new App();
 
@@ -96,4 +97,12 @@ new ResolverStack(app, `${fullEnvName}ResolverStack`, {
     lambdaApiRole: lambdaStack.lambdaApiRole
 });
 
+const cognitoUserPool = amplifyStack.authNestedStack().userPool();
+new CognitoEventStack(
+    app, `${fullEnvName}CognitoEventStack`, {
+        envName: `${fullEnvName}CognitoEventStack`,
+        cognitoUserPool: cognitoUserPool,
+        cognitoEventLambda: lambdaStack.cognitoEventLambda,
+    }
+)
 app.synth();

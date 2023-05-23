@@ -26,6 +26,7 @@ echo "DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/$APPNAME?sche
 
 cp user/prisma/shcema.prisma prisma/schema.prisma
 cp user/amplify/schema.gql amplify/backend/api/$APPNAME/schema.graphql
+amplify push --allow-destructive-graphql-schema-updates -y
 amplify export --out ./cdk/lib/ -y
 tsc scripts/mergeGraphqlSchema.ts
 node scripts/mergeGraphqlSchema.js $APPNAME

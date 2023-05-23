@@ -1,9 +1,10 @@
 import { Amplify, I18n } from 'aws-amplify'
 import { translations } from '@aws-amplify/ui-react'
-import awsConfig from "../src/aws-exports"
+import awsConfig from '../src/aws-exports'
 
 Amplify.configure(awsConfig)
 
+/*
 I18n.putVocabularies(translations);
 I18n.setLanguage('ja');
 
@@ -39,3 +40,4 @@ I18n.putVocabulariesForLanguage('ja', {
     'Custom auth lambda trigger is not configured for the user pool.': 'パスワードが入力されていません',
     'Send code': 'コードを送信する'
   })
+  */

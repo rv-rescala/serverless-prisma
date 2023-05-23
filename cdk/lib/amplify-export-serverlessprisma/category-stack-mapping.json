@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "category": "auth",
+    "resourceName": "serverlessprisma02749e0c",
+    "service": "Cognito"
+  },
+  {
+    "category": "api",
+    "resourceName": "serverlessprisma",
+    "service": "AppSync"
+  }
+]

@@ -37,6 +37,7 @@ export class LambdaStack extends Stack {
     private resourcesPrefixCamel: string
     public directResolverFn: lambda.Alias
     public lambdaApiRole: iam.Role
+    public cognitoEventLambda: lambdaNodejs.NodejsFunction
 
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props)
@@ -157,6 +158,33 @@ export class LambdaStack extends Stack {
             timeout: Duration.seconds(180),
             handler: 'main',
             entry: join(this.props.function.handlerPath, 'migration-handler.ts'),
+            memorySize: this.props.function.memorySize,
+            tracing: lambda.Tracing.ACTIVE,
+            currentVersionOptions: {
+                removalPolicy: RemovalPolicy.RETAIN,
+                retryAttempts: 2,
+            },
+            ...(this.props.function.bundling && {
+                bundling: this.props.function.bundling,
+            }),
+            securityGroups: [this.props.vpcRds.dbClientSg],
+            vpc: this.props.vpcRds.vpc,
+            vpcSubnets: this.props.vpcRds.vpc.selectSubnets({
+                subnetType: aws_ec2.SubnetType.PRIVATE_WITH_EGRESS,
+            }),
+        });
+
+        this.cognitoEventLambda = new lambdaNodejs.NodejsFunction(this, `${this.props.resourcesPrefix}CognitoEventLambdaFn`, {
+            functionName: `${this.props.resourcesPrefix}_cognito_event_fn`,
+            role: lambdaExecutionRole,
+            environment: {
+                ...this.props.function.environment,
+                SECRET_ID: this.props.vpcRds.rdsSecretArn
+            },
+            runtime: lambda.Runtime.NODEJS_16_X,
+            timeout: Duration.seconds(180),
+            handler: 'main',
+            entry: join(this.props.function.userHandlerPath, 'cognito-handler.ts'),
             memorySize: this.props.function.memorySize,
             tracing: lambda.Tracing.ACTIVE,
             currentVersionOptions: {

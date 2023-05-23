@@ -1,0 +1,924 @@
+type User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"]) {
+  id: String!
+  email: AWSEmail!
+  groups: [String]
+  fullname: String
+  comment: String
+  age: Int
+  hoge: String
+  orders: [Order]
+  createdAt: AWSDateTime!
+}
+
+type Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"]) {
+  id: Int!
+  userId: String!
+  title: String!
+  views: Int
+  value: Int
+  published: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  user: User!
+}
+
+type BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"]) {
+  count: Int
+}
+
+enum OrderByArg {
+  ASC
+  DESC
+}
+
+enum NullArg {
+  NULL
+}
+
+input UserFilter {
+  some: UserWhereInputWithoutNullables
+  every: UserWhereInputWithoutNullables
+  none: UserWhereInputWithoutNullables
+}
+
+input UserWhereInputWithoutNullables {
+  OR: [UserWhereInput]
+  NOT: [UserWhereInput]
+  AND: [UserWhereInput]
+  id: StringFilter
+  email: AWSEmailFilter
+  groups: StringListFilter
+  fullname: StringNullableFilter
+  comment: StringNullableFilter
+  age: IntNullableFilter
+  hoge: StringNullableFilter
+  orders: OrderFilter
+  createdAt: AWSDateTimeFilter
+}
+
+input UserWhereInput {
+  is: NullArg
+  isNot: NullArg
+  OR: [UserWhereInput]
+  NOT: [UserWhereInput]
+  AND: [UserWhereInput]
+  id: StringFilter
+  email: AWSEmailFilter
+  groups: StringListFilter
+  fullname: StringNullableFilter
+  comment: StringNullableFilter
+  age: IntNullableFilter
+  hoge: StringNullableFilter
+  orders: OrderFilter
+  createdAt: AWSDateTimeFilter
+}
+
+input UserScalarWhereInput {
+  OR: [UserScalarWhereInput]
+  NOT: [UserScalarWhereInput]
+  AND: [UserScalarWhereInput]
+  id: StringFilter
+  email: AWSEmailFilter
+  groups: StringListFilter
+  fullname: StringNullableFilter
+  comment: StringNullableFilter
+  age: IntNullableFilter
+  hoge: StringNullableFilter
+  createdAt: AWSDateTimeFilter
+}
+
+input UserWhereUniqueInput {
+  id: String
+  email: AWSEmail
+}
+
+input UserExtendedWhereUniqueInput {
+  OR: [UserWhereInput]
+  NOT: [UserWhereInput]
+  AND: [UserWhereInput]
+  id: String
+  email: AWSEmail
+  groups: StringListFilter
+  fullname: StringNullableFilter
+  comment: StringNullableFilter
+  age: IntNullableFilter
+  hoge: StringNullableFilter
+  orders: OrderFilter
+  createdAt: AWSDateTimeFilter
+}
+
+input UserOrderByInput {
+  id: OrderByArg
+  email: OrderByArg
+  groups: OrderByArg
+  fullname: OrderByArg
+  comment: OrderByArg
+  age: OrderByArg
+  hoge: OrderByArg
+  orders: OrderOrderByInput
+  createdAt: OrderByArg
+}
+
+input UserCreateInput {
+  id: String!
+  email: AWSEmail!
+  groups: [String]
+  fullname: String
+  comment: String
+  age: Int
+  hoge: String
+  orders: UserOrdersCreateNestedInput
+  createdAt: AWSDateTime
+}
+
+input UserCreateManyInput {
+  id: String!
+  email: AWSEmail!
+  groups: [String]
+  fullname: String
+  comment: String
+  age: Int
+  hoge: String
+  createdAt: AWSDateTime
+}
+
+input UserUpdateInput {
+  id: String
+  email: AWSEmail
+  groups: [String]
+  fullname: String
+  comment: String
+  age: Int
+  hoge: String
+  orders: UserOrdersUpdateNestedInput
+  createdAt: AWSDateTime
+}
+
+input UserOperationInput {
+  age: IntOperation
+}
+
+input UserUpdateUniqueInput {
+  data: UserUpdateInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserUpdateManyInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateInput!
+}
+
+input UserUpsertInput {
+  create: UserCreateInput!
+  update: UserUpdateInput!
+}
+
+input UserUpsertUniqueInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateInput!
+  update: UserUpdateInput!
+}
+
+input UserConnectOrCreateInput {
+  where: UserWhereUniqueInput!
+  create: UserCreateInput!
+}
+
+input UserOrdersCreateNestedInput {
+  create: [OrderCreateInput]
+  connect: [OrderWhereUniqueInput]
+  connectOrCreate: [OrderConnectOrCreateInput]
+}
+
+input UserOrdersUpdateNestedInput {
+  connect: [OrderWhereUniqueInput]
+  create: [OrderCreateInput]
+  connectOrCreate: [OrderConnectOrCreateInput]
+  update: [OrderUpdateUniqueInput]
+  upsert: [OrderUpsertUniqueInput]
+  delete: [OrderWhereUniqueInput]
+  disconnect: [OrderWhereUniqueInput]
+  deleteMany: [OrderScalarWhereInput]
+  set: [OrderWhereUniqueInput]
+  updateMany: [OrderUpdateManyInput]
+}
+
+input OrderFilter {
+  some: OrderWhereInputWithoutNullables
+  every: OrderWhereInputWithoutNullables
+  none: OrderWhereInputWithoutNullables
+}
+
+input OrderWhereInputWithoutNullables {
+  OR: [OrderWhereInput]
+  NOT: [OrderWhereInput]
+  AND: [OrderWhereInput]
+  id: IntFilter
+  userId: StringFilter
+  title: StringFilter
+  views: IntNullableFilter
+  value: IntNullableFilter
+  published: BooleanNullableFilter
+  createdAt: AWSDateTimeFilter
+  updatedAt: AWSDateTimeFilter
+  user: UserWhereInput
+}
+
+input OrderWhereInput {
+  is: NullArg
+  isNot: NullArg
+  OR: [OrderWhereInput]
+  NOT: [OrderWhereInput]
+  AND: [OrderWhereInput]
+  id: IntFilter
+  userId: StringFilter
+  title: StringFilter
+  views: IntNullableFilter
+  value: IntNullableFilter
+  published: BooleanNullableFilter
+  createdAt: AWSDateTimeFilter
+  updatedAt: AWSDateTimeFilter
+  user: UserWhereInput
+}
+
+input OrderScalarWhereInput {
+  OR: [OrderScalarWhereInput]
+  NOT: [OrderScalarWhereInput]
+  AND: [OrderScalarWhereInput]
+  id: IntFilter
+  userId: StringFilter
+  title: StringFilter
+  views: IntNullableFilter
+  value: IntNullableFilter
+  published: BooleanNullableFilter
+  createdAt: AWSDateTimeFilter
+  updatedAt: AWSDateTimeFilter
+}
+
+input OrderWhereUniqueInput {
+  id: Int
+}
+
+input OrderExtendedWhereUniqueInput {
+  OR: [OrderWhereInput]
+  NOT: [OrderWhereInput]
+  AND: [OrderWhereInput]
+  id: Int
+  userId: StringFilter
+  title: StringFilter
+  views: IntNullableFilter
+  value: IntNullableFilter
+  published: BooleanNullableFilter
+  createdAt: AWSDateTimeFilter
+  updatedAt: AWSDateTimeFilter
+  user: UserWhereInput
+}
+
+input OrderOrderByInput {
+  id: OrderByArg
+  userId: OrderByArg
+  title: OrderByArg
+  views: OrderByArg
+  value: OrderByArg
+  published: OrderByArg
+  createdAt: OrderByArg
+  updatedAt: OrderByArg
+  user: UserOrderByInput
+}
+
+input OrderCreateInput {
+  id: Int
+  title: String!
+  views: Int
+  value: Int
+  published: Boolean
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  user: OrderUserCreateNestedInput!
+}
+
+input OrderCreateManyInput {
+  id: Int
+  title: String!
+  views: Int
+  value: Int
+  published: Boolean
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input OrderUpdateInput {
+  id: Int
+  title: String
+  views: Int
+  value: Int
+  published: Boolean
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  user: OrderUserUpdateNestedInput
+}
+
+input OrderOperationInput {
+  id: IntOperation
+  views: IntOperation
+  value: IntOperation
+}
+
+input OrderUpdateUniqueInput {
+  data: OrderUpdateInput!
+  where: OrderWhereUniqueInput!
+}
+
+input OrderUpdateManyInput {
+  where: OrderScalarWhereInput!
+  data: OrderUpdateInput!
+}
+
+input OrderUpsertInput {
+  create: OrderCreateInput!
+  update: OrderUpdateInput!
+}
+
+input OrderUpsertUniqueInput {
+  where: OrderWhereUniqueInput!
+  create: OrderCreateInput!
+  update: OrderUpdateInput!
+}
+
+input OrderConnectOrCreateInput {
+  where: OrderWhereUniqueInput!
+  create: OrderCreateInput!
+}
+
+input OrderUserCreateNestedInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserConnectOrCreateInput
+}
+
+input OrderUserUpdateNestedInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateInput
+  connectOrCreate: UserConnectOrCreateInput
+  update: UserUpdateInput
+  upsert: UserUpsertInput
+  delete: Boolean
+  disconnect: Boolean
+}
+
+input IntOperation {
+  set: Int
+  increment: Int
+  decrement: Int
+  multiply: Int
+  divide: Int
+}
+
+input FloatOperation {
+  set: Float
+  increment: Float
+  decrement: Float
+  multiply: Float
+  divide: Float
+}
+
+input AWSDateTimeFilter {
+  equals: AWSDateTime
+  gt: AWSDateTime
+  gte: AWSDateTime
+  in: [AWSDateTime!]
+  lt: AWSDateTime
+  lte: AWSDateTime
+  not: AWSDateTimeFilter
+  notIn: [AWSDateTime!]
+}
+
+input AWSDateTimeNullableFilter {
+  equals: AWSDateTime
+  gt: AWSDateTime
+  gte: AWSDateTime
+  in: [AWSDateTime!]
+  lt: AWSDateTime
+  lte: AWSDateTime
+  not: AWSDateTimeFilter
+  notIn: [AWSDateTime!]
+  isNull: Boolean
+}
+
+input AWSDateTimeListFilter {
+  equals: [AWSDateTime!]
+  has: AWSDateTime
+  hasEvery: [AWSDateTime!]
+  hasSome: [AWSDateTime!]
+  isEmpty: Boolean
+}
+
+input FloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: FloatFilter
+  notIn: [Float!]
+  isNull: Boolean
+}
+
+input FloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: FloatFilter
+  notIn: [Float!]
+  isNull: Boolean
+}
+
+input FloatListFilter {
+  equals: [Float!]
+  has: Float
+  hasEvery: [Float!]
+  hasSome: [Float!]
+  isEmpty: Boolean
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: IntFilter
+  notIn: [Int!]
+}
+
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: IntFilter
+  notIn: [Int!]
+  isNull: Boolean
+}
+
+input IntListFilter {
+  equals: [Int!]
+  has: Int
+  hasEvery: [Int!]
+  hasSome: [Int!]
+  isEmpty: Boolean
+}
+
+input AWSJSONFilter {
+  contains: String
+  endsWith: String
+  equals: AWSJSON
+  in: [AWSJSON!]
+  not: AWSJSONFilter
+  notIn: [AWSJSON!]
+  startsWith: String
+}
+
+input AWSJSONNullableFilter {
+  contains: String
+  endsWith: String
+  equals: AWSJSON
+  in: [AWSJSON!]
+  not: AWSJSONFilter
+  notIn: [AWSJSON!]
+  startsWith: String
+  isNull: Boolean
+}
+
+input AWSJSONListFilter {
+  equals: [AWSJSON!]
+  has: AWSJSON
+  hasEvery: [AWSJSON!]
+  hasSome: [AWSJSON!]
+  isEmpty: Boolean
+}
+
+input AWSEmailFilter {
+  contains: String
+  endsWith: String
+  equals: AWSEmail
+  in: [AWSEmail!]
+  not: AWSEmailFilter
+  notIn: [AWSEmail!]
+  startsWith: String
+}
+
+input AWSEmailNullableFilter {
+  contains: String
+  endsWith: String
+  equals: AWSEmail
+  in: [AWSEmail!]
+  not: AWSEmailFilter
+  notIn: [AWSEmail!]
+  startsWith: String
+  isNull: Boolean
+}
+
+input AWSEmailListFilter {
+  equals: [AWSEmail!]
+  has: AWSEmail
+  hasEvery: [AWSEmail!]
+  hasSome: [AWSEmail!]
+  isEmpty: Boolean
+}
+
+input AWSURLFilter {
+  contains: String
+  endsWith: String
+  equals: AWSURL
+  in: [AWSURL!]
+  not: AWSURLFilter
+  notIn: [AWSURL!]
+  startsWith: String
+}
+
+input AWSURLNullableFilter {
+  contains: String
+  endsWith: String
+  equals: AWSURL
+  in: [AWSURL!]
+  not: AWSURLFilter
+  notIn: [AWSURL!]
+  startsWith: String
+  isNull: Boolean
+}
+
+input AWSURLListFilter {
+  equals: [AWSURL!]
+  has: AWSURL
+  hasEvery: [AWSURL!]
+  hasSome: [AWSURL!]
+  isEmpty: Boolean
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  in: [String!]
+  not: StringFilter
+  notIn: [String!]
+  startsWith: String
+  mode: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  in: [String!]
+  not: StringFilter
+  notIn: [String!]
+  startsWith: String
+  mode: String
+  isNull: Boolean
+}
+
+input StringListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input BooleanNullableFilter {
+  equals: Boolean
+  not: BooleanFilter
+  isNull: Boolean
+}
+
+input BooleanListFilter {
+  equals: [Boolean!]
+  has: Boolean
+  hasEvery: [Boolean!]
+  hasSome: [Boolean!]
+}
+
+type Mutation {
+  """Create a new single User record."""
+  createUser(data: UserCreateInput!): User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Create multiple new User records."""
+  createManyUsers(data: [UserCreateManyInput!], skipDuplicates: Boolean): BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Update an existing single User record."""
+  updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput, operation: UserOperationInput): User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Update multiple existing User records."""
+  updateManyUsers(where: UserWhereInput!, data: UserUpdateInput, operation: UserOperationInput): BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Update an existing or create a new single User record."""
+  upsertUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Delete a single User record."""
+  deleteUser(where: UserWhereUniqueInput!): User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Delete multiple User records."""
+  deleteManyUsers(where: UserWhereInput!): BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Create a new single Order record."""
+  createOrder(data: OrderCreateInput!): Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Create multiple new Order records."""
+  createManyOrders(data: [OrderCreateManyInput!], skipDuplicates: Boolean): BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Update an existing single Order record."""
+  updateOrder(where: OrderWhereUniqueInput!, data: OrderUpdateInput, operation: OrderOperationInput): Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Update multiple existing Order records."""
+  updateManyOrders(where: OrderWhereInput!, data: OrderUpdateInput, operation: OrderOperationInput): BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Update an existing or create a new single Order record."""
+  upsertOrder(create: OrderCreateInput!, update: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Delete a single Order record."""
+  deleteOrder(where: OrderWhereUniqueInput!): Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Delete multiple Order records."""
+  deleteManyOrders(where: OrderWhereInput!): BatchPayload @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo
+  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo
+  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo
+}
+
+type Query {
+  """Find a single User record by unique identifier."""
+  getUser(where: UserWhereUniqueInput!): User @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Find many User records (optional query filters)."""
+  listUsers(where: UserWhereInput, orderBy: [UserOrderByInput], skip: Int, take: Int): [User] @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Count all User records (optional query filters)."""
+  countUsers(where: UserWhereInput, orderBy: [UserOrderByInput], skip: Int, take: Int): Int @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Find a single Order record by unique identifier."""
+  getOrder(where: OrderWhereUniqueInput!): Order @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Find many Order records (optional query filters)."""
+  listOrders(where: OrderWhereInput, orderBy: [OrderOrderByInput], skip: Int, take: Int): [Order] @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Count all Order records (optional query filters)."""
+  countOrders(where: OrderWhereInput, orderBy: [OrderOrderByInput], skip: Int, take: Int): Int @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  getTodo(id: ID!): Todo
+  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection
+}
+
+type Subscription {
+  """
+  Triggered from `createUser` mutation (excl. `createManyUsers` and `upsertUser`).
+  """
+  onCreatedUser(id: String, email: AWSEmail): User @aws_subscribe(mutations: ["createUser"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """
+  Triggered from `updateUser` mutation (excl. `updateManyUsers` and `upsertUser`).
+  """
+  onUpdatedUser(id: String, email: AWSEmail): User @aws_subscribe(mutations: ["updateUser"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `upsertUser` mutation."""
+  onUpsertedUser(id: String, email: AWSEmail): User @aws_subscribe(mutations: ["upsertUser"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `deleteUser` mutation (excl. `deleteManyUsers`)."""
+  onDeletedUser(id: String, email: AWSEmail): User @aws_subscribe(mutations: ["deleteUser"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from ANY SINGLE record mutation."""
+  onMutatedUser(id: String, email: AWSEmail): User @aws_subscribe(mutations: ["createUser", "updateUser", "upsertUser", "deleteUser"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `createManyUsers` mutation."""
+  onCreatedManyUsers: BatchPayload @aws_subscribe(mutations: ["createManyUsers"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `updateManyUsers` mutation."""
+  onUpdatedManyUsers: BatchPayload @aws_subscribe(mutations: ["updateManyUsers"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from ANY MULTIPLE records mutation."""
+  onMutatedManyUsers: BatchPayload @aws_subscribe(mutations: ["createManyUsers", "updateManyUsers", "deleteManyUsers"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `deleteManyUsers` mutation."""
+  onDeletedManyUsers: BatchPayload @aws_subscribe(mutations: ["deleteManyUsers"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """
+  Triggered from `createOrder` mutation (excl. `createManyOrders` and `upsertOrder`).
+  """
+  onCreatedOrder(id: Int): Order @aws_subscribe(mutations: ["createOrder"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """
+  Triggered from `updateOrder` mutation (excl. `updateManyOrders` and `upsertOrder`).
+  """
+  onUpdatedOrder(id: Int): Order @aws_subscribe(mutations: ["updateOrder"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `upsertOrder` mutation."""
+  onUpsertedOrder(id: Int): Order @aws_subscribe(mutations: ["upsertOrder"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `deleteOrder` mutation (excl. `deleteManyOrders`)."""
+  onDeletedOrder(id: Int): Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from ANY SINGLE record mutation."""
+  onMutatedOrder(id: Int): Order @aws_subscribe(mutations: ["createOrder", "updateOrder", "upsertOrder", "deleteOrder"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `createManyOrders` mutation."""
+  onCreatedManyOrders: BatchPayload @aws_subscribe(mutations: ["createManyOrders"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `updateManyOrders` mutation."""
+  onUpdatedManyOrders: BatchPayload @aws_subscribe(mutations: ["updateManyOrders"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from ANY MULTIPLE records mutation."""
+  onMutatedManyOrders: BatchPayload @aws_subscribe(mutations: ["createManyOrders", "updateManyOrders", "deleteManyOrders"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  """Triggered from `deleteManyOrders` mutation."""
+  onDeletedManyOrders: BatchPayload @aws_subscribe(mutations: ["deleteManyOrders"]) @aws_api_key @aws_cognito_user_pools(cognito_groups: ["user", "admin"])
+  onCreateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["createTodo"])
+  onUpdateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["updateTodo"])
+  onDeleteTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["deleteTodo"])
+}
+
+type Todo {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTodoConnection {
+  items: [Todo]!
+  nextToken: String
+}
+
+input ModelTodoFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelTodoFilterInput]
+  or: [ModelTodoFilterInput]
+  not: ModelTodoFilterInput
+}
+
+input ModelTodoConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelTodoConditionInput]
+  or: [ModelTodoConditionInput]
+  not: ModelTodoConditionInput
+}
+
+input CreateTodoInput {
+  id: ID
+  name: String!
+  description: String
+}
+
+input UpdateTodoInput {
+  id: ID!
+  name: String
+  description: String
+}
+
+input DeleteTodoInput {
+  id: ID!
+}
+
+input ModelSubscriptionTodoFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTodoFilterInput]
+  or: [ModelSubscriptionTodoFilterInput]
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
