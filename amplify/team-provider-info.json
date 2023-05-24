@@ -9,7 +9,9 @@
       "UnauthRoleName": "amplify-serverlessprisma-dev-173847-unauthRole",
       "StackName": "amplify-serverlessprisma-dev-173847",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:119399226835:stack/amplify-serverlessprisma-dev-173847/3d46e770-f945-11ed-8bf2-0e08be4dc7b9",
-      "AmplifyAppId": "d18hr3bptaceu3"
+      "AmplifyAppId": "d18hr3bptaceu3",
+      "ExportsOutputFnGetAttapiserverlessprismaOutputsserverlessprismadevAmplifyExportedBackendamplifybackendstackAmplifyCfnIncludeapiserverlessprismaGraphQLAPIA92E45F0ApiIdC7D59881": "2t542peqh5fsdeiyzj7zjhg6wa",
+      "ExportsOutputFnGetAttauthserverlessprisma02749e0cOutputsserverlessprismadevAmplifyExportedBackendamplifybackendstackAmplifyCfnIncludeauthserverlessprisma02749e0cUserPool224036BBRef3DBA12B2": "ap-northeast-1_fXMnSNgcB"
     },
     "categories": {
       "auth": {

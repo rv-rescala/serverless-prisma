@@ -141,10 +141,18 @@ bash ./scripts/destroy.sh .env.dev
 ```
 
 # Frontend
+
+1. Install dependencies
 ```bash
 cd gatsby
 npm install
 ```
+
+2. run gatsby
+```bash
+gatsby develop
+```
+
 
 # Customize
 
@@ -166,7 +174,7 @@ bash ./scripts/deopy.sh [appname] [env] [schema_name] [version]
 
 ## Appsync -> DynamoDB
 
-1. Edit amplify/schema.graphql
+1. Edit user/amplify/schema.graphql
 
 2. Generate
 
