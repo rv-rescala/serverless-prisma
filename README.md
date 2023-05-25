@@ -93,10 +93,9 @@ npm install
 
 ```bash
 amplify init
-amplify add api
-# add api, auth
+amplify add api # select cognito and API KEY for authentication type
 amplify push
-bash ./scripts/build.sh .env.dev
+./[install_path]/scripts/build.sh .env.dev
 ```
 
 3. Test by jest(Prisma Unit Test)

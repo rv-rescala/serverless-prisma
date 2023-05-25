@@ -15,21 +15,23 @@ fi
 # .env load
 export $(cat $1 | xargs)
 
+echo $MODULE_PATH
 echo $APPNAME
 echo $ENV
 echo $VERSION
 echo $CIDR
 
-# create init
-echo "CREATE SCHEMA $APPNAME;" > docker/scripts/initdb/01_init_schema_and_tables.sql
-echo "DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/$APPNAME?schema=$APPNAME\"" > docker/.env.local
-
-cp user/prisma/shcema.prisma prisma/schema.prisma
+cp user/prisma/shcema.prisma $MODULE_PATH/prisma/schema.prisma
 cp user/amplify/schema.gql amplify/backend/api/$APPNAME/schema.graphql
-amplify push --allow-destructive-graphql-schema-updates -y
-amplify export --out ./cdk/lib/ -y
+amplify export --out $MODULE_PATH/cdk/lib/ -y
+
+cd $MODULE_PATH
+# create schema and tables definition
+echo "CREATE SCHEMA $APPNAME;" > ./docker/scripts/initdb/01_init_schema_and_tables.sql
+echo "DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/$APPNAME?schema=$APPNAME\"" > ./docker/.env.local
 tsc scripts/mergeGraphqlSchema.ts
 node scripts/mergeGraphqlSchema.js $APPNAME
+
 npm run generate
 cp ./docker/.env.local ./.env
 docker compose up -d
@@ -54,3 +56,4 @@ else
   node scripts/createMigrateSQL.js $migration_path $APPNAME
 fi
 cdk synth --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR
+cd ../
