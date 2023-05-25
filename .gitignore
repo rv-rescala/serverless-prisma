@@ -21,6 +21,7 @@ prisma/migrations
 cdk/lib/amplify-export-*
 
 #amplify-do-not-edit-begin
+amplify/
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
