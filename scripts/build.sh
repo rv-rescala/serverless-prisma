@@ -53,3 +53,4 @@ if [ "$VERSION" = "init" ]; then
 else
   node scripts/createMigrateSQL.js $migration_path $APPNAME
 fi
+cdk synth --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR

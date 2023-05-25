@@ -16,5 +16,6 @@ fi
 export $(cat $1 | xargs)
 
 bash ./scripts/build.sh $1
+amplify delete
 cdk deploy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR
 amplify codegen
