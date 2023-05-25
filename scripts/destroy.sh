@@ -15,4 +15,5 @@ fi
 # .env load
 export $(cat $1 | xargs)
 
+amplify delete
 cdk destroy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR

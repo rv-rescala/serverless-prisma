@@ -93,6 +93,7 @@ npm install
 
 ```bash
 amplify init
+amplify add api
 # add api, auth
 amplify push
 bash ./scripts/build.sh .env.dev
