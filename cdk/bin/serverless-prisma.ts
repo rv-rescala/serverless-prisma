@@ -87,7 +87,7 @@ export function serverlessPrismaStack(app: App, userLambdaHandlerPath: string) {
 
     new ResolverStack(app, `${fullEnvName}ResolverStack`, {
         resourcesPrefix: `${fullEnvName}PrismaAppSync`,
-        schemaPath: join(process.cwd(), `cdk/lib/amplify-export-${appName}/api/${appName}/amplify-appsync-files/schema.graphql`),
+        schemaPath: path.resolve(__dirname, '..', `./lib/amplify-export-${appName}/api/${appName}/amplify-appsync-files/schema.graphql`),
         resolverPath: join(process.cwd(), 'prisma/generated/prisma-appsync/resolvers.yaml'),
         graphqlApi: graphqlApi,
         vpcRds: rdsStack.vpcRds,

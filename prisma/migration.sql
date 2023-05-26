@@ -1,6 +1,6 @@
-DROP SCHEMA IF EXISTS "serverlessprisma" CASCADE;
-CREATE SCHEMA "serverlessprisma";
-SET search_path TO "serverlessprisma";
+DROP SCHEMA IF EXISTS "serverlessprisma2" CASCADE;
+CREATE SCHEMA "serverlessprisma2";
+SET search_path TO "serverlessprisma2";
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,

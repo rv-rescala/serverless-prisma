@@ -1,7 +1,7 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Context } from 'aws-lambda';
 import { UserController } from '../controller/userController';
-import { getPrismaClient } from '../../../cdk/lambda/repository/prisma/client';
+import { getPrismaClient } from '../../../serverless-prisma/cdk/lambda/repository/prisma/client';
 
 interface CognitoTriggerEvent {
     version: string,
@@ -45,8 +45,5 @@ export async function main(event: CognitoTriggerEvent, context: Context) {
       throw new Error(`Unhandled trigger source: ${event.triggerSource}`);
   }
   */
- return {
-    statusCode: 200,
-    body: JSON.stringify({event, context}),
- }
+ return event;
 }
