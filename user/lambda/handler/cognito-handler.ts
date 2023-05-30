@@ -4,26 +4,26 @@ import { UserController } from '../controller/userController';
 import { getPrismaClient } from '../../../serverless-prisma/cdk/lambda/repository/prisma/client';
 
 interface CognitoTriggerEvent {
-    version: string,
-    region: string,
-    userPoolId: string,
-    userName: string,
-    triggerSource:
-        | "PreSignUp_SignUp"
-        | "PostConfirmation_ConfirmSignUp"
-        | "PreAuthentication_Authentication"
-        | "PostAuthentication_Authentication"
-        | "CustomMessage_SignUp"
-    ,
-    callerContext: {
-        awsSdkVersion: string,
-        clientId: string
-    },
-    request: {
-        userAttributes: { [key: string]: string }
-    },
-    response: {
-    }
+  version: string,
+  region: string,
+  userPoolId: string,
+  userName: string,
+  triggerSource:
+  | "PreSignUp_SignUp"
+  | "PostConfirmation_ConfirmSignUp"
+  | "PreAuthentication_Authentication"
+  | "PostAuthentication_Authentication"
+  | "CustomMessage_SignUp"
+  ,
+  callerContext: {
+    awsSdkVersion: string,
+    clientId: string
+  },
+  request: {
+    userAttributes: { [key: string]: string }
+  },
+  response: {
+  }
 }
 
 const cognito = new CognitoIdentityServiceProvider();
@@ -33,17 +33,22 @@ export async function main(event: CognitoTriggerEvent, context: Context) {
   const cognitoUserName = event.userName;
   const defaultUserGroup = 'user'; // Default user group name
   console.log("event", event);
+  const prismaClient = await getPrismaClient();
 
-  /*
   switch (event.triggerSource) {
     case 'PostConfirmation_ConfirmSignUp':
-      return await handlePostConfirmation(event, userPoolId, cognitoUserName, defaultUserGroup);
-    case 'CustomMessage_SignUp':
-      return await handleCustomMessageSignUp(event, userPoolId, cognitoUserName, defaultUserGroup);
-    // Add additional cases for other Cognito events
+      // Add user to default user group
+      const userController = new UserController(prismaClient);
+      await userController.create(
+        event.request.userAttributes.sub,
+        event.request.userAttributes.email,
+        cognitoUserName,
+        [defaultUserGroup]
+      );
+      break;
     default:
-      throw new Error(`Unhandled trigger source: ${event.triggerSource}`);
+      console.log(`Unhandled trigger source: ${event.triggerSource}`);
+      break;
   }
-  */
- return event;
+  return event;
 }
