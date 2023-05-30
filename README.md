@@ -63,9 +63,21 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 ## Directory Structure
 
 ```bash
-├── amplify # for amplify
-├── cdk  # for cdk and lambda
+├── amplify # for user defined amplify
+├── bin  # for user defined cdk
+├── lib  # for user defined cdk
+├── gatsby # for user defined frontend
+├── gqlserver # for local graphql server
 ├── prisma # for prisma defenition
+└── user # user defined directory
+    ├── amplify
+    │   └── schema.gql amplify # for DynamoDB schema
+    ├── lambda
+    │   ├── controller # for access controller
+    │   ├── handler    # for lambda functions, under this folder functions are depolyed automatically
+    │   └── hooks.ts   # for Prisma Hoolks
+    └── prisma
+        └── shcema.prisma # for RDS/Prisma schema
 └── serverless-prisma # modules
 ```
 
@@ -107,29 +119,25 @@ amplify push
 1. Deploy to AWS
 
 ```bash
-# edit cdk.json, change app "name" and "schema" to your name
-amplify init
 # if you want new env, please run this command:
 # amplify env add [env name]
-amplify push
-bash ./scripts/build.sh [appname] [env] [schema_name] init
+./deplopy.sh .env.dev
 ```
 
-3. Create schema
+2. Create schema
 ```bash
 aws lambda list-functions | grep "migration" # Please check function-name you deployed to AWS which include "migration"
 aws lambda invoke --function-name <function-name> output.json 
 ```
 
-4. Insert data to DynamoDB/RDS via GraphQL API
+3. Insert data to DynamoDB/RDS via GraphQL API
 
 Please open Appsync and run GraphQL on the editor.
-
 
 x. Delete all resources
 
 ```bash
-bash ./scripts/destroy.sh .env.dev
+./destroy.sh .env.dev
 ```
 
 # Frontend
@@ -144,7 +152,6 @@ npm install
 ```bash
 gatsby develop
 ```
-
 
 # Customize
 
