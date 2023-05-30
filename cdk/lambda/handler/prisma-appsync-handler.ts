@@ -1,5 +1,5 @@
-import type { AppSyncResolverEvent } from '../../../prisma/generated/prisma-appsync/client'
-import { PrismaAppSync } from '../../../prisma/generated/prisma-appsync/client'
+import type { AppSyncResolverEvent } from '../../../../prisma/generated/prisma-appsync/client'
+import { PrismaAppSync } from '../../../../prisma/generated/prisma-appsync/client'
 import { hooks } from '../../../user/lambda/hooks';
 import {
     SecretsManagerClient,

@@ -15,8 +15,8 @@ fi
 # .env load
 export $(cat $1 | xargs)
 
-$MODULE_PATH=serverless-prisma
-bash $MODULE_PATH/scripts/build.sh $1
+./build.sh $1
 amplify push --allow-destructive-graphql-schema-updates -y
-cdk deploy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR
+cdk deploy --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR -s
+rm -rf $MODULE_PATH/cdk/lib/amplify-*
 amplify codegen

@@ -6,7 +6,7 @@ var fs_1 = require("fs");
 var graphql_1 = require("graphql");
 var path_1 = require("path");
 function mergeSchema(path, appName) {
-    var generatedSchemaPath = (0, path_1.join)(process.cwd(), "".concat(path, "/prisma/generated/prisma-appsync/schema.gql"));
+    var generatedSchemaPath = (0, path_1.join)(process.cwd(), "prisma/generated/prisma-appsync/schema.gql");
     console.log("generatedSchemaPath", generatedSchemaPath);
     var generatedSchema = (0, graphql_1.parse)((0, fs_1.readFileSync)(generatedSchemaPath, 'utf8'));
     var amplifySchema = (0, graphql_1.parse)((0, fs_1.readFileSync)((0, path_1.join)(process.cwd(), "".concat(path, "/cdk/lib/amplify-export-").concat(appName, "/api/").concat(appName, "/amplify-appsync-files/schema.graphql")), 'utf8'));

@@ -1,7 +1,7 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Context } from 'aws-lambda';
 import { UserController } from '../controller/userController';
-import { getPrismaClient } from '../../../cdk/lambda/repository/prisma/client';
+import { getPrismaClient } from '../../../serverless-prisma/cdk/lambda/repository/prisma/client';
 
 interface CognitoTriggerEvent {
     version: string,

@@ -24,6 +24,7 @@ echo $CIDR
 
 cp user/prisma/shcema.prisma prisma/schema.prisma
 cp user/amplify/schema.gql amplify/backend/api/$APPNAME/schema.graphql
+npx prisma generate
 amplify export --out $MODULE_PATH/cdk/lib/ -y
 
 # create schema and tables definition
@@ -32,8 +33,7 @@ echo "DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/$APPNAME?sche
 tsc $MODULE_PATH/scripts/mergeGraphqlSchema.ts
 node $MODULE_PATH/scripts/mergeGraphqlSchema.js $MODULE_PATH $APPNAME
 
-cp $MODULE_PATH/docker/.env.local .env
-npx prisma generate
+echo "DATABASE_URL="postgresql://postgres:postgres@localhost:5432/$APPNAME?schema=$APPNAME"" >> .env
 docker-compose -f $MODULE_PATH/docker-compose.yaml up -d
 
 if [ $VERSION = "init" ]; then
@@ -56,4 +56,3 @@ else
   node $MODULE_PATH/scripts/createMigrateSQL.js $migration_path $APPNAME
 fi
 cdk synth --all -c appname=$APPNAME -c env=$ENV -c schema=$APPNAME -c cidr=$CIDR
-rm .env

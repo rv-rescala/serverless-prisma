@@ -1,1 +1,1 @@
-CREATE SCHEMA serverlessprisma2;
+CREATE SCHEMA serverlessprisma;

@@ -4,7 +4,7 @@ import { parse, print, DocumentNode } from 'graphql';
 import { join, dirname } from 'path';
 
 export function mergeSchema(path: string, appName: string){
-    const generatedSchemaPath = join(process.cwd(), `${path}/prisma/generated/prisma-appsync/schema.gql`);
+    const generatedSchemaPath = join(process.cwd(), `prisma/generated/prisma-appsync/schema.gql`);
     console.log("generatedSchemaPath", generatedSchemaPath);
     const generatedSchema = parse(readFileSync(generatedSchemaPath, 'utf8'));
 
