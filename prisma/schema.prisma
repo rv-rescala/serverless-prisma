@@ -15,7 +15,7 @@ generator appsync {
 
 model User {
     id            String        @id @unique
-    email     String   @unique
+    username     String   @unique
     groups    String[]
     fullname  String?
     comment    String?

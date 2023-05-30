@@ -35,20 +35,34 @@ export async function main(event: CognitoTriggerEvent, context: Context) {
   console.log("event", event);
   const prismaClient = await getPrismaClient();
 
-  switch (event.triggerSource) {
-    case 'PostConfirmation_ConfirmSignUp':
-      // Add user to default user group
-      const userController = new UserController(prismaClient);
-      await userController.create(
-        event.request.userAttributes.sub,
-        event.request.userAttributes.email,
-        cognitoUserName,
-        [defaultUserGroup]
-      );
-      break;
-    default:
-      console.log(`Unhandled trigger source: ${event.triggerSource}`);
-      break;
+  try {
+    await cognito
+      .adminAddUserToGroup({
+        UserPoolId: userPoolId,
+        Username: cognitoUserName,
+        GroupName: defaultUserGroup,
+      })
+      .promise();
+
+    switch (event.triggerSource) {
+      case 'PostConfirmation_ConfirmSignUp':
+        // Add user to default user group
+        const userController = new UserController(prismaClient);
+        await userController.create(
+          event.request.userAttributes.sub,
+          event.request.userAttributes.email,
+          cognitoUserName,
+          [defaultUserGroup]
+        );
+        break;
+      default:
+        console.log(`Unhandled trigger source: ${event.triggerSource}`);
+        break;
+    }
+    return event;
   }
-  return event;
+  catch (error) {
+    console.error(`Error adding user ${userPoolId} to default group ${defaultUserGroup}:`, error);
+    throw error;
+  }
 }
