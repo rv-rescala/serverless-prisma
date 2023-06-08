@@ -5,7 +5,9 @@ import { parse, print, DocumentNode } from 'graphql';
 import { join, dirname } from 'path';
 
 export function createMigrateSQL(targetFolder: string, schenaName: string, isInit?: string){
+    console.log('targetFolder: ', targetFolder);
     const migrateSQLPath = join(process.cwd(), `${targetFolder}/migration.sql`);
+    console.log('migration.sql path: ', migrateSQLPath);
     const migrateSQL = readFileSync(migrateSQLPath, 'utf8');
     let sql: string
     if(isInit) {

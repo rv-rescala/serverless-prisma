@@ -4,7 +4,9 @@ exports.createMigrateSQL = void 0;
 var fs_1 = require("fs");
 var path_1 = require("path");
 function createMigrateSQL(targetFolder, schenaName, isInit) {
+    console.log('targetFolder: ', targetFolder);
     var migrateSQLPath = (0, path_1.join)(process.cwd(), "".concat(targetFolder, "/migration.sql"));
+    console.log('migration.sql path: ', migrateSQLPath);
     var migrateSQL = (0, fs_1.readFileSync)(migrateSQLPath, 'utf8');
     var sql;
     if (isInit) {
