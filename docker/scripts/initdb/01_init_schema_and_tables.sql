@@ -1,1 +1,1 @@
-CREATE SCHEMA bidderforjepx;
+CREATE SCHEMA serverlessprisma;

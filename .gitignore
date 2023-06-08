@@ -41,3 +41,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+docker/scripts/initdb/01_init_schema_and_tables.sql
+docker/.env.local

@@ -95,7 +95,7 @@ git clone https://github.com/rv-rescala/serverless-prisma.git
 1. Install
 
 ```bash
-./serverless-prisma/scripts/install.sh
+./serverless-prisma/install.sh
 ```
 
 2. Build config
@@ -103,9 +103,8 @@ git clone https://github.com/rv-rescala/serverless-prisma.git
 ```bash
 amplify init # input project name
 amplify add api # Select GraphQL, Cognito and API KEY for authentication type
-amplify push
 # update .env.dev same as amplify inited project name
-./build.sh .env.dev
+make build ENV_FILE=.env.dev
 ```
 
 3. Test by GraphQL Playground
