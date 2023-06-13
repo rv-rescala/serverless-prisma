@@ -32,12 +32,12 @@ export interface LambdaStackProps extends cdk.StackProps {
 
 export class LambdaStack extends Stack {
     private props: LambdaStackProps
-    public prismaLambda: lambdaNodejs.NodejsFunction
-    private resourcesPrefix: string
-    private resourcesPrefixCamel: string
-    public directResolverFn: lambda.Alias
-    public lambdaApiRole: iam.Role
-    public cognitoEventLambda: lambdaNodejs.NodejsFunction
+    public prismaLambda!: lambdaNodejs.NodejsFunction
+    private resourcesPrefix!: string
+    private resourcesPrefixCamel!: string
+    public directResolverFn!: lambda.Alias
+    public lambdaApiRole!: iam.Role
+    public cognitoEventLambda!: lambdaNodejs.NodejsFunction
 
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
         super(scope, id, props)

@@ -34,8 +34,8 @@ export class ResolverStack extends Stack {
     private resourcesPrefix: string
     private resourcesPrefixCamel: string
     private uuid: string
-    private lambdaDataSource: appsync.CfnDataSource
-    private noneDataSource: appsync.CfnDataSource
+    private lambdaDataSource!: appsync.CfnDataSource
+    private noneDataSource!: appsync.CfnDataSource
 
 
     constructor(scope: Construct, id: string, tplProps: ResolverStackProps, props?: StackProps) {
