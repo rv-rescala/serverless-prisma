@@ -110,7 +110,7 @@ make build ENV_FILE=.env.dev
 3. Test by GraphQL Playground
 
 ```bash
-./gqlserver.sh
+make run ENV_FILE=.env.dev
 ```
 
 ## Deploy to AWS
@@ -120,7 +120,7 @@ make build ENV_FILE=.env.dev
 ```bash
 # if you want new env, please run this command:
 # amplify env add [env name]
-./deplopy.sh .env.dev
+make deploy ENV_FILE=.env.dev
 ```
 
 2. Create schema
