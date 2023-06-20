@@ -75,7 +75,7 @@ run:
 	@npx vite-node ./gqlserver/server.ts --watch -- --schema prisma/generated/prisma-appsync/schema.gql --handler gqlserver/handler.ts --watchers '[{"watch":["**/*.prisma","*.prisma"],"exec":" npx prisma generate && npx prisma db push --accept-data-loss && touch ./gqlserver/server.ts"}]'
 
 .PHONY: destroy
-deploy:
+destroy:
 	@export $(shell cat $(ENV_FILE) | xargs)
 	@echo "App Name: $(APPNAME)"
 	@echo "Env: $(ENV)"
