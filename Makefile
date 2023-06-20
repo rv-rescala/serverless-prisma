@@ -85,4 +85,4 @@ destroy:
 	@cdk destroy --all -c appname=$(APPNAME) -c env=$(ENV) -c schema=$(APPNAME) -c cidr=$(CIDR)
 	@amplify delete -y
 	@rm -rf amplify
-	@rm -rf $MODULE_PATH/cdk/lib/amplify-*
+	@rm -rf $(MODULE_PATH)/cdk/lib/amplify-*
