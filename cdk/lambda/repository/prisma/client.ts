@@ -26,6 +26,7 @@ import {
       else{
         dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?schema=${secret.schema}&connection_limit=1&socket_timeout=3`;
       }
+      console.log("dbUrl: ", dbUrl);
       dbClient = new PrismaClient({
         datasources: {
           db: {

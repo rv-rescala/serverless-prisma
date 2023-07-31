@@ -8,20 +8,33 @@ import * as path from 'path'
 import { RDSStack } from '../lib/stacks/rds-stack';
 import { LambdaStack } from '../lib/stacks/lambda-stack';
 import { CognitoEventStack } from '../lib/stacks/cognito-event-stack';
+import * as cdk from 'aws-cdk-lib';
 
-export function serverlessPrismaStack(app: App, userLambdaHandlerPath: string) {
+export function serverlessPrismaStack(app: cdk.Stage, userLambdaHandlerPath: string) {
     // $appname $env $schema $version
     const appName = app.node.tryGetContext('appname');
     const env = app.node.tryGetContext('env');
     const schemaName = app.node.tryGetContext('schema');
     const cidr = app.node.tryGetContext('cidr');
+    const vpcid = app.node.tryGetContext('vpcid');
     const fullEnvName = `${appName}${env}`;
+
+    console.log('serverlessPrismaStack');
+    console.log('appName', appName);
+    console.log('env', env);
+    console.log('schemaName', schemaName);
+    console.log('cidr', cidr);
+    console.log('vpcid', vpcid);
+    console.log('fullEnvName', fullEnvName);
+    console.log('CDK_DEFAULT_ACCOUNT', process.env.CDK_DEFAULT_ACCOUNT);
+    console.log('CDK_DEFAULT_REGION', process.env.CDK_DEFAULT_REGION);
 
     const rdsStack = new RDSStack(app, `${fullEnvName}RDSStack`, {
         envName: `${fullEnvName}RDSStack`,
         appName: appName,
         schemaName: schemaName,
-        cidrRange: cidr
+        cidrRange: cidr,
+        vpcid: vpcid
     });
 
     const useWarmUp = 0; // useWarmUp > 0 will incur extra costs
@@ -78,7 +91,7 @@ export function serverlessPrismaStack(app: App, userLambdaHandlerPath: string) {
     )
 
     const amplifyCDKName = `amplify-export-${appName}`
-    const amplifyStack = new AmplifyExportedBackend(app, `${fullEnvName}AmplifyExportedBackend`, {
+    const amplifyStack = new AmplifyExportedBackend(app, `${fullEnvName}Amplify`, {
         path: path.resolve(__dirname, '..', `./lib/${amplifyCDKName}`),
         amplifyEnvironment: env
     });

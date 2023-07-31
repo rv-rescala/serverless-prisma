@@ -9,20 +9,7 @@ import { argv, createServer } from 'prisma-appsync/dist/server'
     const watchers = argv.flags.watchers ? JSON.parse(argv.flags.watchers) : []
     const headers = argv.flags.headers ? JSON.parse(argv.flags.headers) : {}
 
-    const defaultQuery = /* GraphQL */`
-        query listPosts {
-            listPosts {
-                id
-                title
-            }
-        }
-            
-        mutation createPost {
-            createPost(data:{ title: "My first post" }) {
-                title
-            }
-        }
-        `
+    const defaultQuery = /* GraphQL */``
 
     createServer({
         schema,

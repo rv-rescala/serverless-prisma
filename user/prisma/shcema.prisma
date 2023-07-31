@@ -1,38 +1,79 @@
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider      = "prisma-client-js"
-    binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  // previewFeatures = ["clientExtensions"]
 }
 
 generator appsync {
-    provider = "prisma-appsync"
-    defaultDirective = "@auth(model: [{ allow: apiKey }, { allow: userPools, groups: ['user', 'admin'] }])"
+  provider = "prisma-appsync"
+}
+generator erd {
+  provider = "prisma-erd-generator"
 }
 
+/// @gql(fields: { hiddenField: null }, subscriptions: null, scalars: { website: "AWSURL" })
+/// @auth(model: [{ allow: apiKey }, { allow: userPools, groups: ["ADMIN"] }])
 model User {
-    id            String        @id @unique
-    email     String   @unique
-    groups    String[]
-    fullname  String?
-    comment    String?
-    age        Int?
-    hoge       String?
-    orders     Order[]
-    createdAt DateTime @default(now())
+    uuid        String    @id @default(uuid()) @db.VarChar(200)
+    username    String    @unique
+    email       String    @unique
+    website     String?
+    hiddenField String?
+    roles       String[]
+    posts       Post[]
+    profile     Profile?
+    comments    Comment[]
 }
 
-model Order {
-    id        Int      @id @default(autoincrement())
-    userId    String
-    title     String
-    views     Int?     @default(1)
-    value     Int?
-    published Boolean? @default(false)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    user    User    @relation(fields: [userId], references: [id])
+model Profile {
+    uuid      String  @id @default(uuid()) @db.VarChar(200)
+    owner     User?   @relation(fields: [ownerUuid], references: [uuid])
+    ownerUuid String? @unique @db.VarChar(200)
+    bio       String?
+}
+
+/// @gql(model: null)
+model hiddenModel {
+    id Int @id @default(autoincrement())
+}
+
+/// @auth(model: [{ allow: apiKey }, { allow: userPools, groups: ["USER", "ADMIN"] }])
+model Post {
+    id          Int       @id @default(autoincrement())
+    title       String
+    author      User?     @relation(fields: [authorUuid], references: [uuid])
+    authorUuid  String?   @db.VarChar(200)
+    published   Boolean?  @default(false)
+    comments    Comment[]
+    views       Int?      @default(0)
+    lastSavedAt DateTime? @default(now())
+}
+
+model Comment {
+    id          Int       @id @default(autoincrement())
+    author      User?     @relation(fields: [authorUuid], references: [uuid])
+    authorUuid  String?   @db.VarChar(200)
+    post        Post      @relation(fields: [postId], references: [id])
+    postId      Int
+    message     String
+    lastSavedAt DateTime? @default(now())
+}
+
+/// @auth(model: [{ allow: apiKey }, { allow: userPools, groups: ["ADMIN"] }])
+model Like {
+    id         Int    @id @default(autoincrement())
+    authorUuid String @db.VarChar(200)
+    postId     Int
+
+    @@unique([authorUuid, postId])
+}
+
+enum RoleType {
+    USER
+    ADMIN
 }

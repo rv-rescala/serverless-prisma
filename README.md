@@ -88,8 +88,9 @@ AWS AppSync is a managed GraphQL service that makes it easy to develop, secure, 
 1. Initialization
 
 ```bash
-cdk init --typescript
-git clone https://github.com/rv-rescala/serverless-prisma.git
+ cdk  init app --language=typescript
+# add serverless-prisma/ to .git ignore
+git clone https://github.com/NishiharaEnergy/serverless-prisma.git
 ```
 
 1. Install
@@ -113,14 +114,47 @@ make build ENV_FILE=.env.dev
 make run ENV_FILE=.env.dev
 ```
 
+open http://localhost:4000/graphql or
+check the database using pgAdmin(address is written in .env, user=postgres, password=postgres)
+
+4. Test by jest(Prisma Unit Test)
+
+```bash
+npx jest -- user-controller.test.ts
+```
+
 ## Deploy to AWS
 
 1. Deploy to AWS
 
+Update bin/[appname].ts to
+
+```typescript
+#!/usr/bin/env node
+import 'source-map-support/register';
+import { App } from 'aws-cdk-lib'
+import { ServerlessPrismaStage } from '../serverless-prisma/cdk/lib/serverless-prisma-stage';
+
+const app = new App();
+const env = app.node.tryGetContext('env');
+const stage = new ServerlessPrismaStage(app, env, {
+    userLambdaHandlerPath: 'user/lambda/handler/',
+    env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: process.env.CDK_DEFAULT_REGION,
+    }
+})
+stage.synth();
+```
+
 ```bash
-# if you want new env, please run this command:
-# amplify env add [env name]
+make init-migration ENV_FILE=.env.dev
+# if you want to diff migration, please run this command:
+# make diff-deploy ENV_FILE=.env.dev
+
 make deploy ENV_FILE=.env.dev
+# if you want to publish new env, please run this command:
+# make init-deploy ENV_FILE=.env.dev
 ```
 
 2. Create schema
@@ -184,6 +218,42 @@ bash ./scripts/build.sh [appname] [env] [schema_name] [version]
 
 ```bash
 bash ./scripts/deopy.sh [appname] [env] [schema_name] [version]
+```
+
+# ENV profile
+
+# ENV profile
+
+1. Create new VPC and RDS
+
+```bash
+APPNAME="Your App Name" # ex. serverless-prisma
+STAGE="Stage Name" # ex. dev, prod
+CIDR="10.2.0.0/16" # VPC CIDR, ex. 10.2.0.0/16 if you want to use existing VPC, please do not set this value.
+VERSION=v1 # version of your app, please do not use "." in this value.
+```
+
+2. Create new RDS, using existing VPC
+
+```bash
+APPNAME="Your App Name" # ex. serverless-prisma
+STAGE="Stage Name" # ex. dev, prod
+VERSION=v1 # version of your app, please do not use "." in this value.
+VPC_ID="vpc-xxxxxx" # VPC ID, ex. vpc-xxxxxx if you want to use existing VPC, please set this value.
+```
+
+3. Using existing VPC and RDS
+
+```bash
+APPNAME=demoserverlessprisma
+STAGE=staging
+VPC_ID=vpc-008d961a15bd9ab12
+VERSION=v1
+DB_INSTANCE_ENDPOINT_ADDRESS=dev-demoserverlessprismar-devdemoserverlessprismar-iq7hq7zwxmkm.ch3ckmqedqmv.ap-northeast-1.rds.amazonaws.com
+DB_INSTANCE_IDENTIFER=dev-demoserverlessprismar-devdemoserverlessprismar-iq7hq7zwxmkm
+DB_PASSWORD=PHYTgG4Y7eHX\KbYJuSAgqkIpgHuxT~5
+DB_SG_GROUP_ID=sg-0de0280f18aea2a05
+DB_CLIENT_SG_GROUP_ID=sg-0a17a0b79d1b44474
 ```
 
 # Prerequisites

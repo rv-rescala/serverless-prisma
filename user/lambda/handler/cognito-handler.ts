@@ -1,6 +1,6 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { Context } from 'aws-lambda';
-import { UserController } from '../controller/userController';
+import { UserController } from '../controller/user-controller';
 import { getPrismaClient } from '../../../serverless-prisma/cdk/lambda/repository/prisma/client';
 
 interface CognitoTriggerEvent {
@@ -31,7 +31,7 @@ const cognito = new CognitoIdentityServiceProvider();
 export async function main(event: CognitoTriggerEvent, context: Context) {
   const userPoolId = event.userPoolId;
   const cognitoUserName = event.userName;
-  const defaultUserGroup = 'user'; // Default user group name
+  const defaultUserGroup = 'USER'; // Default user group name
   console.log("event", event);
   const prismaClient = await getPrismaClient();
 

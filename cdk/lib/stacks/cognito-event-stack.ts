@@ -18,10 +18,16 @@ export class CognitoEventStack extends cdk.Stack {
         super(scope, id, props);
 
         // for cognito post confirmation
-        const cfnUserPoolGroup = new cognito.CfnUserPoolGroup(this, `envNameCfnUserPoolGroup`, {
+        new cognito.CfnUserPoolGroup(this, `${props.envName}CfnUserPoolGroup`, {
             userPoolId: props.cognitoUserPool.ref,
             description: 'for general user',
             groupName: 'user'
+        });
+        // for cognito post confirmation
+        new cognito.CfnUserPoolGroup(this, `${props.envName}CfnAdminPoolGroup`, {
+            userPoolId: props.cognitoUserPool.ref,
+            description: 'for admin',
+            groupName: 'admin'
         });
         props.cognitoUserPool.lambdaConfig = {
             "postConfirmation": props.cognitoEventLambda.functionArn

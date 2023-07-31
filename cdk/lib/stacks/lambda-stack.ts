@@ -17,7 +17,7 @@ import * as path from 'path';
 
 
 export interface LambdaStackProps extends cdk.StackProps {
-    resourcesPrefix: string
+    resourcesPrefix: string;
     function: {
         handlerPath: string
         userHandlerPath: string
@@ -27,7 +27,7 @@ export interface LambdaStackProps extends cdk.StackProps {
         bundling?: lambdaNodejs.BundlingOptions
         environment?: {}
     }
-    vpcRds: VpcRds
+    vpcRds: VpcRds;
 }
 
 export class LambdaStack extends Stack {
@@ -40,7 +40,7 @@ export class LambdaStack extends Stack {
     public cognitoEventLambda!: lambdaNodejs.NodejsFunction
 
     constructor(scope: Construct, id: string, props: LambdaStackProps) {
-        super(scope, id, props)
+        super(scope, id, props);
         this.props = props
         this.resourcesPrefix = kebabCase(this.props.resourcesPrefix);
         this.resourcesPrefixCamel = camelCase(this.resourcesPrefix);
@@ -51,28 +51,28 @@ export class LambdaStack extends Stack {
         const dynamoDbReadWritePolicyDocument = {
             Version: '2012-10-17',
             Statement: [
-              {
-                Effect: 'Allow',
-                Action: [
-                  'dynamodb:BatchGetItem',
-                  'dynamodb:BatchWriteItem',
-                  'dynamodb:PutItem',
-                  'dynamodb:GetItem',
-                  'dynamodb:UpdateItem',
-                  'dynamodb:DeleteItem',
-                  'dynamodb:Query',
-                  'dynamodb:Scan',
-                ],
-                Resource: ['arn:aws:dynamodb:*:*:table/*'],
-              },
+                {
+                    Effect: 'Allow',
+                    Action: [
+                        'dynamodb:BatchGetItem',
+                        'dynamodb:BatchWriteItem',
+                        'dynamodb:PutItem',
+                        'dynamodb:GetItem',
+                        'dynamodb:UpdateItem',
+                        'dynamodb:DeleteItem',
+                        'dynamodb:Query',
+                        'dynamodb:Scan',
+                    ],
+                    Resource: ['arn:aws:dynamodb:*:*:table/*'],
+                },
             ],
-          };
-        
-          const dynamoDbReadWritePolicy = new iam.ManagedPolicy(this, `${this.props.resourcesPrefix}DynamoDBReadWriteAccess`, {
-            document: iam.PolicyDocument.fromJson(dynamoDbReadWritePolicyDocument),
-           });    
+        };
 
-           const lambdaExecutionRole = new iam.Role(this, `${this.props.resourcesPrefix}LambdaFnExecRole`, {
+        const dynamoDbReadWritePolicy = new iam.ManagedPolicy(this, `${this.props.resourcesPrefix}DynamoDBReadWriteAccess`, {
+            document: iam.PolicyDocument.fromJson(dynamoDbReadWritePolicyDocument),
+        });
+
+        const lambdaExecutionRole = new iam.Role(this, `${this.props.resourcesPrefix}LambdaFnExecRole`, {
             roleName: `${this.props.resourcesPrefix}_lambda_fn-exec-role`,
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
             managedPolicies: [
@@ -80,7 +80,6 @@ export class LambdaStack extends Stack {
                 iam.ManagedPolicy.fromAwsManagedPolicyName(`service-role/AWSLambdaVPCAccessExecutionRole`), // for rds
                 dynamoDbReadWritePolicy, // for dynamodb
                 this.props.vpcRds.iamGetSecretPolicy, // for rds
-                
             ],
             ...(this.props.function?.policies
                 && this.props.function.policies.length > 0 && {
@@ -201,7 +200,9 @@ export class LambdaStack extends Stack {
             }),
         });
 
+
         // create user defined lambda functions
+        /*
         const files = fs.readdirSync(this.props.function.userHandlerPath);
         files.forEach(file => {
             const targetFullPath = path.resolve(this.props.function.userHandlerPath, file);
@@ -233,5 +234,6 @@ export class LambdaStack extends Stack {
                 }),
             });
         });
+        */
     }
 }

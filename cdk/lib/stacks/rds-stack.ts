@@ -7,6 +7,12 @@ interface RDSStackProps extends cdk.StackProps {
   appName: string;
   schemaName: string;
   cidrRange: string;
+  vpcid: string;
+  instanceEndpointAddress: string;
+  instanceIdentifier: string;
+  passowrd: string;
+  sgGroupId: string;
+  cliengSgGroupId: string;
 }
 
 export class RDSStack extends cdk.Stack {
@@ -20,7 +26,13 @@ export class RDSStack extends cdk.Stack {
         dbUserName: "appuser",
         dbName: props.appName,
         schemaName: props.schemaName,
-        cidrRange: props.cidrRange
+        cidrRange: props.cidrRange,
+        vpcid: props.vpcid,
+        instanceEndpointAddress: props.instanceEndpointAddress,
+        instanceIdentifier: props.instanceIdentifier,
+        passowrd: props.passowrd,
+        sgGroupId: props.sgGroupId,
+        cliengSgGroupId: props.cliengSgGroupId,
       });
       this.vpcRds = vpcRds;
     }

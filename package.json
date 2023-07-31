@@ -19,7 +19,7 @@
     "@types/node": "^18.16.1",
     "@types/node-fetch": "^2.6.3",
     "prisma": "^4.13.0",
-    "prisma-appsync": "^1.0.0-rc.5",
+    "prisma-appsync": "^1.0.0-rc.6",
     "ts-jest": "^29.1.0"
   },
   "dependencies": {

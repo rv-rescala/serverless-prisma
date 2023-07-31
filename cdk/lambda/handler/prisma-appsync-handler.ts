@@ -1,6 +1,6 @@
 import type { AppSyncResolverEvent } from '../../../../prisma/generated/prisma-appsync/client'
 import { PrismaAppSync } from '../../../../prisma/generated/prisma-appsync/client'
-import { hooks } from '../../../user/lambda/hooks';
+import { hooks } from '../../../../user/lambda/hooks';
 import {
     SecretsManagerClient,
     GetSecretValueCommand,
@@ -27,8 +27,9 @@ export const main = async (event: AppSyncResolverEvent<any>) => {
 
     //const dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?connection_limit=1&socket_timeout=3`;
     const dbUrl = `postgresql://${secret.username}:${secret.password}@${secret.host}:${secret.port}/${secret.dbname}?schema=${secret.schema}&connection_limit=1&socket_timeout=3`;
-        const prismaAppSync = new PrismaAppSync({ connectionString: dbUrl });
-    
+    console.log("dbUrl: ", dbUrl);
+    const prismaAppSync = new PrismaAppSync({ connectionString: dbUrl, maxDepth: 10 });
+
     return await prismaAppSync.resolve({
         event,
         hooks: {

@@ -14,9 +14,9 @@ import { aws_ec2 } from "aws-cdk-lib"
 import { kebabCase, camelCase } from 'scule'
 import { join } from 'path'
 import { load } from 'js-yaml'
+import * as cdk from "aws-cdk-lib";
 
-
-export interface ResolverStackProps {
+export interface ResolverStackProps extends cdk.StackProps{
     resourcesPrefix: string
     graphqlApi: appsync.CfnGraphQLApi
     vpcRds: VpcRds
@@ -39,13 +39,12 @@ export class ResolverStack extends Stack {
 
 
     constructor(scope: Construct, id: string, tplProps: ResolverStackProps, props?: StackProps) {
-        super(scope, id, props)
+        super(scope, id, props);
 
         // stack naming convention
         this.props = tplProps;
         this.resourcesPrefix = kebabCase(this.props.resourcesPrefix);
         this.resourcesPrefixCamel = camelCase(this.resourcesPrefix);
-        this.uuid = Math.floor( Math.random() * 100000 ).toString();
 
         this.createDataSources();
         this.createResolvers();

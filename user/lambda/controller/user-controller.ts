@@ -3,13 +3,13 @@ import { PrismaClient } from "@prisma/client";
 export class UserController {
   constructor(private prismaClient: PrismaClient) { }
 
-  async create(id: string, email: string, username: string, groups: string[]) {
+  async create(id: string, email: string, username: string, roles: string[]) {
     const r = await this.prismaClient.user.create({
       data: {
-        id: id,
+        uuid: id,
         email: email,
         username: username,
-        groups: groups
+        roles: roles
       },
     });
     return r;
